@@ -6,12 +6,12 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 16:18:13 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/24 15:23:31 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/04/25 14:22:37 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../include/tokenize.h"
+#include "../../include/parser.h"
 
 /*	make it so that the error message prints in the stderror!	*/
 int	parser_error_msg(int error_code, char error_char)

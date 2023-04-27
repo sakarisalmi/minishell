@@ -6,7 +6,7 @@
 #    By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/04 10:03:33 by ssalmi            #+#    #+#              #
-#    Updated: 2023/04/24 13:56:34 by ssalmi           ###   ########.fr        #
+#    Updated: 2023/04/27 14:40:38 by ssalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,13 +32,18 @@ BUILTINS_FILES = echo pwd env
 PARSER_DIR = parser/
 PARSER_FILES = ft_funcs minishell_parser read_line_split rl_split_utils1 \
 				rl_split_utils2 tokens_creator token_unpacker \
-				token_unpacker_get_var parser_error_msg token_lst_utils1
+				token_unpacker_get_var parser_error_msg token_lst_utils1 \
+				token_unpacker_pipe_and_redir
+
+TOKENIZER_DIR = tokenizer/
+TOKENIZER_FILES = tokenizer tokenizer_set_token_args tokenizer_error_msg
 
 MISC_DIR = misc/
-MISC_FILES = minishell
+MISC_FILES = minishell str_array_utils1
 
 FILES += $(addprefix $(BUILTINS_DIR), $(BUILTINS_FILES))
 FILES += $(addprefix $(PARSER_DIR), $(PARSER_FILES))
+FILES += $(addprefix $(TOKENIZER_DIR), $(TOKENIZER_FILES))
 FILES += $(addprefix $(MISC_DIR), $(MISC_FILES))
 
 SRCS = $(addprefix $(SRCS_DIR), $(addsuffix .c, $(FILES)))
@@ -64,6 +69,7 @@ $(OBJSF):
 		@mkdir -p $(OBJS_DIR)
 		@mkdir -p $(OBJS_DIR)$(BUILTINS_DIR)
 		@mkdir -p $(OBJS_DIR)$(PARSER_DIR)
+		@mkdir -p $(OBJS_DIR)$(TOKENIZER_DIR)
 		@mkdir -p $(OBJS_DIR)$(MISC_DIR)
 
 clean:

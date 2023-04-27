@@ -6,12 +6,12 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:28:19 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/24 14:02:06 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/04/25 14:23:18 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../include/tokenize.h"
+#include "../../include/parser.h"
 
 t_token	*token_lst_init_new_node(char *token_string)
 {
@@ -20,7 +20,7 @@ t_token	*token_lst_init_new_node(char *token_string)
 	new_node = malloc(sizeof(t_token));
 	if (!new_node)
 		return (NULL);
-	new_node->type = -1;
+	new_node->type = 0;
 	new_node->string = token_string;
 	new_node->next = NULL;
 	new_node->prev = NULL;
