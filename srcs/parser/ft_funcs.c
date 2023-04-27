@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:40:57 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/21 15:11:44 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/04/27 14:32:43 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,23 @@ char	*ft_strncpy(char *dest, const char *src, size_t n)
 	return (dest);
 }
 
+// char	*new_strncat(char *dest, const char *src, size_t n)
+// {
+// 	unsigned int	len_dest;
+// 	unsigned int	len_src;
+
+// 	len_dest = ft_strlen(dest);
+// 	len_src = ft_strlen(src);
+// 	if (len_src < n)
+// 		ft_strcpy(&dest[len_dest], src);
+// 	else
+// 	{
+// 		ft_strncpy(&dest[len_dest], src, n);
+// 		dest[len_dest + n] = '\0';
+// 	}
+// 	return (dest);
+// }
+
 char	*ft_strncat(char *dest, const char *src, size_t n)
 {
 	unsigned int	len1;
@@ -70,6 +87,20 @@ char	*ft_strncat(char *dest, const char *src, size_t n)
 	}
 	return (dest);
 }
+
+/*	This function was created to solve the heap-buffer-overflow issues
+	that were created by the ft_strncat function. This function simply
+	adds the src-char to the end of the dest-string and sets the next
+	char as NULL. */
+// char	*minishell_strcat(char *dest, const char src_char_to_add)
+// {
+// 	unsigned int	dest_len;
+
+// 	dest_len = ft_strlen(dest);
+// 	dest[dest_len] = src_char_to_add;
+// 	dest[dest_len + 1] = '\0';
+// 	return (dest);
+// }
 
 void	*ft_realloc(void *ptr, size_t size)
 {
@@ -89,3 +120,23 @@ void	*ft_realloc(void *ptr, size_t size)
 	}
 	return (new_ptr);
 }
+
+// int	main()
+// {
+// 	t_list	*lst;
+// 	char	*src = "add this string to dest";
+// 	int		i;
+
+// 	printf("program to fix ft_strncat\n");
+// 	lst = NULL;
+// 	ft_lstadd_back(&lst, ft_lstnew(ft_calloc((ft_strlen(src) + 1), sizeof(char))));
+// 	i = 0;
+// 	while (src[i])
+// 	{
+// 		ft_strncat(ft_lstlast(lst)->content, &src[i], 1);
+// 		printf("src[%i]; dest: %s\n", i, ft_lstlast(lst)->content);
+// 		i++;
+// 	}
+// 	printf("final dest: %s\n", ft_lstlast(lst)->content);
+// 	return (0);
+// }

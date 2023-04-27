@@ -6,12 +6,12 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 14:04:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/24 15:09:04 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/04/25 14:40:11 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../include/tokenize.h"
+#include "../../include/parser.h"
 
 char		*token_unpacker_get_var(char *rl_part, char *token,
 				t_token_unpacker *tunp, t_data *data);
@@ -34,7 +34,7 @@ char	*token_unpacker_get_var(char *rl_part, char *token,
 	j = tunp->i;
 	while (ft_isalnum(rl_part[j]))
 		j++;
-	var_name = malloc((j - tunp->i) * sizeof(char));
+	var_name = ft_calloc(j - tunp->i, sizeof(char));
 	if (!var_name)
 	{
 		tunp->i = j;

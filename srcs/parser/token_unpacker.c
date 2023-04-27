@@ -6,12 +6,12 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 15:37:49 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/24 15:08:09 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/04/25 16:25:22 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../include/tokenize.h"
+#include "../../include/parser.h"
 
 #define FORBIDDEN_SYMBOLS "\\;"
 
@@ -59,6 +59,7 @@ int	token_unpacker(char *rl_part, t_token *token,
 						tunp->error_idx));
 		}
 	}
+	token_unpacker_pipe_and_redir(token, rl_part);
 	return (0);
 }
 
@@ -78,7 +79,7 @@ static int	token_unpacker_outside_quotes(char *rl_part, char *token,
 			if (tunp->i == 0 || !ft_isalnum(rl_part[tunp->i - 1]))
 			{
 				token = token_unpacker_get_var(rl_part, token, tunp, data);
-				token_lst_last(data->parser.token_ls)->string = token;
+				token_lst_last(data->parser.token_lst)->string = token;
 			}
 			else
 				token_unpacker_skip_var(rl_part, tunp);
@@ -105,7 +106,7 @@ static int	token_unpacker_in_quotes(char *rl_part, char *token,
 			if (tunp->i == 0 || !ft_isalnum(rl_part[tunp->i - 1]))
 			{
 				token = token_unpacker_get_var(rl_part, token, tunp, data);
-				token_lst_last(data->parser.token_ls)->string = token;
+				token_lst_last(data->parser.token_lst)->string = token;
 			}
 			else
 				token_unpacker_skip_var(rl_part, tunp);
