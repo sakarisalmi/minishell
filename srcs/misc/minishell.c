@@ -27,6 +27,12 @@ int	main(int argc, char **argv, char **envp)
 	data.envs = minishell_env_setup(envp);
 	printf("calling env func\n");
 	env(&data);
+	if (signal(SIGINT, signal_handler) == SIG_ERR || \
+	signal(SIGQUIT, signal_handler) == SIG_ERR)
+	{
+		printf("Error installing signal handler\n");
+		return (1);
+	}
 	while (1)
 	{
 		read_line = readline("prototype_minishell> ");
