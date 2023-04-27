@@ -6,7 +6,7 @@
 #    By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/04 10:03:33 by ssalmi            #+#    #+#              #
-#    Updated: 2023/04/27 14:40:38 by ssalmi           ###   ########.fr        #
+#    Updated: 2023/04/27 14:56:38 by ssalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,7 @@ $(NAME): $(OBJS)
 		cp $(LIBFT)libft.a .
 		mv libft.a $(LIBRARY)
 		$(AR) $(LIBRARY) $(OBJS)
-		$(CC) $(CFLAGS) -lreadline -L. $(LIBRARY) $(SRCS) -o $(NAME)
+		$(CC) $(CFLAGS) -lreadline -fsanitize=address -L. $(LIBRARY) $(SRCS) -o $(NAME)
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJSF)
 		@$(CC) $(CFLAGS) -I $(INCLUDES) -c $< -o $@

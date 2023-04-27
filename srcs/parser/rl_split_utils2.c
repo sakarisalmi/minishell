@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:34:15 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/27 14:38:31 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/04/27 15:04:33 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	rl_s_handle_whitespace(char *line, t_list **rl_parts_ls, t_rl_split *t)
 		if (!t->in_token)
 		{
 			ft_lstadd_back(rl_parts_ls,
-				ft_lstnew(malloc((ft_strlen(&line[t->i]) + 1) * sizeof(char))));
+				ft_lstnew(ft_calloc((ft_strlen(&line[t->i]) + 1), sizeof(char))));
 			t->in_token = 1;
 		}
 		ft_strncat(ft_lstlast(*rl_parts_ls)->content, &line[t->i], 1);
