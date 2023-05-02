@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <signal.h>
 # include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -64,6 +65,9 @@ typedef struct s_data
 }	t_data;
 
 /*----------------------------------------------------------------------------*/
+
+// signal.c
+void	signal_handler(int signum);
 
 // pwd.c
 int			pwd(void);

@@ -42,7 +42,7 @@ EXECUTOR_DIR = executor/
 EXECUTOR_FILES = job_utils1
 
 MISC_DIR = misc/
-MISC_FILES = minishell str_array_utils1
+MISC_FILES = minishell str_array_utils1 signal
 
 FILES += $(addprefix $(BUILTINS_DIR), $(BUILTINS_FILES))
 FILES += $(addprefix $(PARSER_DIR), $(PARSER_FILES))
@@ -64,7 +64,7 @@ $(NAME): $(OBJS)
 		cp $(LIBFT)libft.a .
 		mv libft.a $(LIBRARY)
 		$(AR) $(LIBRARY) $(OBJS)
-		$(CC) $(CFLAGS) -lreadline -fsanitize=address -L. $(LIBRARY) $(SRCS) -o $(NAME)
+		$(CC) $(CFLAGS) -lreadline -L. $(LIBRARY) $(SRCS) -o $(NAME)
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJSF)
 		@$(CC) $(CFLAGS) -I $(INCLUDES) -c $< -o $@
