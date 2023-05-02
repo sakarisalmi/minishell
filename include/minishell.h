@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/02 15:42:43 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/02 17:54:50 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_data
 /*----------------------------------------------------------------------------*/
 
 // signal.c
-void	signal_handler(int signum);
+void		signal_handler(int signum);
 
 // pwd.c
 int			pwd(void);
