@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 14:04:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/25 14:40:11 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/04/27 16:54:59 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,30 +27,31 @@ char	*token_unpacker_get_var(char *rl_part, char *token,
 	t_token_unpacker *tunp, t_data *data)
 {
 	char	*var_name;
-	char	*var_result;
+	char	*result;
 	int		j;
 
 	tunp->i++;
 	j = tunp->i;
-	while (ft_isalnum(rl_part[j]))
+	while (ft_isalnum(rl_part[j]) || rl_part[j] == '_')
 		j++;
 	var_name = ft_calloc(j - tunp->i, sizeof(char));
 	if (!var_name)
 	{
 		tunp->i = j;
-		// remove later?
-		printf("tunp_get_var malloc failure\n");
+		ft_putstr_fd("tunp_get_var malloc failure\n", 2);
 		return (token);
 	}
 	ft_strncpy(var_name, rl_part + tunp->i, j - tunp->i);
 	tunp->i = j;
 	if (!var_name || ft_strlen(var_name) == 0)
 		return (token);
-	var_result = token_unpacker_get_var_from_env(var_name, data);
+	result = token_unpacker_get_var_from_env(var_name, data);
+	if (!result)
+		return (token);
 	free (var_name);
-	token = (char *)ft_realloc(token, ft_strlen(rl_part) + ft_strlen(var_result));
-	ft_strncat(token, var_result, ft_strlen(var_result));
-	free (var_result);
+	token = (char *)ft_realloc(token, ft_strlen(rl_part) + ft_strlen(result));
+	ft_strncat(token, result, ft_strlen(result));
+	free (result);
 	return (token);
 }
 
@@ -63,7 +64,8 @@ static char	*token_unpacker_get_var_from_env(char *var_name, t_data *data)
 	i = 0;
 	while (data->envs[i] != NULL)
 	{
-		if (ft_strnstr(data->envs[i], var_name, var_name_len))
+		if (ft_strnstr(data->envs[i], var_name, var_name_len)
+			&& data->envs[i][var_name_len] == '=')
 			return (ft_strdup(data->envs[i] + var_name_len + 1));
 		i++;
 	}
@@ -75,7 +77,7 @@ static char	*token_unpacker_get_var_from_env(char *var_name, t_data *data)
 char	*token_unpacker_skip_var(char *rl_part, t_token_unpacker *tunp)
 {
 	tunp->i++;
-	while (ft_isalnum(rl_part[tunp->i]))
+	while (ft_isalnum(rl_part[tunp->i]) || rl_part[tunp->i] == '_')
 		tunp->i++;
 	return (NULL);
 }

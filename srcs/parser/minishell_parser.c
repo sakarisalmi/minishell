@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:07:38 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/26 14:06:32 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/02 15:23:37 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../include/parser.h"
 #include "../../include/tokenizer.h"
 
-int	minishell_parser(char *read_line, t_data *data)
+int	test_minishell_parser(char *read_line, t_data *data)
 {
 	int		i;
 	int		j;
@@ -66,8 +66,31 @@ int	minishell_parser(char *read_line, t_data *data)
 			i++;
 		}
 		ft_lstclear(&data->parser.rl_parts_lst, free);
-		token_lst_clear_ls(&data->parser.token_lst);
+		token_lst_clear_lst(&data->parser.token_lst);
 		printf("\n");
+	}
+	return (0);
+}
+
+int	real_minishell_parser(char *read_line, t_data *data)
+{
+	data->parser.rl_parts_lst = NULL;
+	data->parser.token_lst = NULL;
+	data->parser.token_amount = 0;
+	read_line_split(read_line, &data->parser.rl_parts_lst,
+		&data->parser.token_amount);
+	if (tokens_creator(&data->parser, data) != 0)
+	{
+		ft_lstclear(&data->parser.rl_parts_lst, free);
+		token_lst_clear_lst(&data->parser.token_lst);
+		return (258);
+	}
+	ft_lstclear(&data->parser.rl_parts_lst, free);
+	if (tokenizer(data->parser.token_lst) != 0)
+	{
+		data->latest_exit_status = 258;
+		token_lst_clear_lst(&data->parser.token_lst);
+		return (258);
 	}
 	return (0);
 }

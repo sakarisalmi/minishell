@@ -6,11 +6,12 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:09 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/23 15:59:44 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/02 17:09:17 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include "../../include/colors.h"
 
 int			main(int argc, char **argv, char **envp);
 static char	**minishell_env_setup(char **envp);
@@ -29,8 +30,8 @@ int	main(int argc, char **argv, char **envp)
 	env(&data);
 	while (1)
 	{
-		read_line = readline("prototype_minishell> ");
-		minishell_parser(read_line, &data);
+		read_line = readline("\033[0;32mprototype_minishell> \033[0;37m");
+		test_minishell_parser(read_line, &data);
 	}
 	return (0);
 }

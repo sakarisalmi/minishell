@@ -67,13 +67,13 @@ t_token	*token_lst_init_new_node(char *token_string);
 void	token_lst_addback(t_token **token_lst, t_token *new_node);
 t_token	*token_lst_last(t_token *token_lst);
 void	token_lst_del_node(t_token *token_node);
-void	token_lst_clear_ls(t_token **token_lst);
+void	token_lst_clear_lst(t_token **token_lst);
 
 // tokens.creator.c
 int		tokens_creator(t_parser *parser, t_data *data);
 
 // parser_error_msg.c
-int		parser_error_msg(int error_code, char error_char);
+int		tunp_error_msg(int error_code, char error_char);
 
 // token_unpacker.c
 int		token_unpacker(char *rl_part, t_token *token,

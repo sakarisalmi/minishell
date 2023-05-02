@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/26 15:00:17 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/02 15:42:43 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,26 @@ typedef struct s_parser
 	t_token			*token_lst;
 }	t_parser;
 
+typedef struct s_job
+{
+	t_token	**tokens_array;
+	int		fd_in;
+	int		fd_out;
+}	t_job;
+
+typedef struct s_executor
+{
+	int		token_amount;
+	t_token	*token_lst;
+	int		jobs_amount;
+	t_job	**jobs_array;
+}	t_executor;
+
 typedef struct s_data
 {
 	char		**envs;
 	t_parser	parser;
+	t_executor	executor;
 	int			latest_exit_status;
 }	t_data;
 
@@ -67,6 +83,6 @@ char		**str_array_add_str(char **str_array, char *new_str);
 char		**str_array_remove_str_by_index(char **str_array, int index);
 
 // minishell_parser.c
-int			minishell_parser(char *read_line, t_data *data);
+int			test_minishell_parser(char *read_line, t_data *data);
 
 #endif
