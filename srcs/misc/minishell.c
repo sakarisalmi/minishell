@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:09 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/02 17:09:17 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/03 11:18:38 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		read_line = readline("\033[0;32mprototype_minishell> \033[0;37m");
 		test_minishell_parser(read_line, &data);
+		test_executor(&data);
 	}
 	return (0);
 }

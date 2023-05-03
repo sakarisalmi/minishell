@@ -6,19 +6,20 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:38:36 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/02 17:10:57 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/03 12:56:40 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/tokenizer.h"
 
-t_job	**create_jobs_from_tokens(t_token *token_lst);
-t_job	**executor_jobs_array_add_new_job(t_job **jobs_array, t_job *new_job);
-t_job	*job_init_new_job(void);
-t_token	**job_tokens_array_add_new_token(t_token **tokens_array,
-			t_token *new_token);
-void	job_free_job(t_job *job);
+t_job			**create_jobs_from_tokens(t_token *token_lst);
+static t_job	**executor_jobs_array_add_new_job(t_job **jobs_array,
+					t_job *new_job);
+static t_job	*job_init_new_job(void);
+static t_token	**job_tokens_array_add_new_token(t_token **tokens_array,
+					t_token *new_token);
+void			job_free_job(t_job *job);
 
 /*----------------------------------------------------------------------------*/
 
@@ -28,7 +29,7 @@ t_job	**create_jobs_from_tokens(t_token *token_lst)
 	t_job	**jobs_array;
 	int		i;
 
-	jobs_array = malloc(sizeof(t_job *));
+	jobs_array = ft_calloc(1, sizeof(t_job *));
 	if (!jobs_array)
 		return (NULL);
 	jobs_array[0] = NULL;
@@ -37,7 +38,8 @@ t_job	**create_jobs_from_tokens(t_token *token_lst)
 	while (tmp_token)
 	{
 		if (jobs_array[i] == NULL)
-			executor_jobs_array_add_new_job(jobs_array, job_init_new_job());
+			jobs_array = executor_jobs_array_add_new_job(jobs_array,
+					job_init_new_job());
 		if (tmp_token->type == T_PIPE)
 			i++;
 		else
@@ -48,7 +50,8 @@ t_job	**create_jobs_from_tokens(t_token *token_lst)
 	return (jobs_array);
 }
 
-t_job	**executor_jobs_array_add_new_job(t_job **jobs_array, t_job *new_job)
+static t_job	**executor_jobs_array_add_new_job(t_job **jobs_array,
+	t_job *new_job)
 {
 	t_job	**new_jobs_array;
 	int		size;
@@ -57,7 +60,7 @@ t_job	**executor_jobs_array_add_new_job(t_job **jobs_array, t_job *new_job)
 	size = 0;
 	while (jobs_array[size])
 		size++;
-	new_jobs_array = malloc((size + 2) * sizeof(t_job *));
+	new_jobs_array = ft_calloc(size + 2, sizeof(t_job *));
 	if (!new_jobs_array)
 		return (NULL);
 	i = -1;
@@ -69,7 +72,7 @@ t_job	**executor_jobs_array_add_new_job(t_job **jobs_array, t_job *new_job)
 	return (new_jobs_array);
 }
 
-t_job	*job_init_new_job(void)
+static t_job	*job_init_new_job(void)
 {
 	t_job	*new_job;
 
@@ -82,10 +85,11 @@ t_job	*job_init_new_job(void)
 	new_job->tokens_array[0] = NULL;
 	new_job->fd_in = 0;
 	new_job->fd_out = 1;
+	new_job->append_mode = 0;
 	return (new_job);
 }
 
-t_token	**job_tokens_array_add_new_token(t_token **tokens_array,
+static t_token	**job_tokens_array_add_new_token(t_token **tokens_array,
 	t_token *new_token)
 {
 	t_token	**new_tokens_array;
@@ -95,7 +99,7 @@ t_token	**job_tokens_array_add_new_token(t_token **tokens_array,
 	size = 0;
 	while (tokens_array[size])
 		size++;
-	new_tokens_array = malloc((size + 2) * sizeof(t_token *));
+	new_tokens_array = ft_calloc(size + 2, sizeof(t_token *));
 	if (!new_tokens_array)
 		return (NULL);
 	i = -1;

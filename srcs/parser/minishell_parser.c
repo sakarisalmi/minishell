@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:07:38 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/02 15:23:37 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/03 14:49:18 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ int	test_minishell_parser(char *read_line, t_data *data)
 			token_tmp = token_tmp->next;
 			i++;
 		}
-		ft_lstclear(&data->parser.rl_parts_lst, free);
-		token_lst_clear_lst(&data->parser.token_lst);
 		printf("\n");
 	}
 	return (0);
