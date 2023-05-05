@@ -12,16 +12,33 @@
 
 #include "../../include/minishell.h"
 
+void	turnoff_echo(struct termios *termios)
+{
+	termios->c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSANOW, termios);
+}
+
+void	turnon_echo(struct termios *termios)
+{
+	termios->c_lflag |= ECHOCTL;
+	tcsetattr(0, TCSANOW, termios);
+}
+
 void	signal_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		printf("\n");
-		write(STDOUT_FILENO, "prototype_minishell> ", 22);
+		rl_replace_line("", 0);
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		rl_on_new_line();
 	}
 	if (signum == SIGQUIT)
 	{
-		printf("exit\n");
-		exit(1);
 	}
+}
+
+void	ctrl_d_handler(void)
+{
+	printf("exit\n");
+	exit(1);
 }

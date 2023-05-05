@@ -60,7 +60,7 @@ $(NAME): $(OBJS)
 		cp $(LIBFT)libft.a .
 		mv libft.a $(LIBRARY)
 		$(AR) $(LIBRARY) $(OBJS)
-		$(CC) $(CFLAGS) -lreadline -L. $(LIBRARY) $(SRCS) -o $(NAME)
+		$(CC) $(CFLAGS) -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -L. $(LIBRARY) $(SRCS) -o $(NAME)
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJSF)
 		@$(CC) $(CFLAGS) -I $(INCLUDES) -c $< -o $@
