@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/03 17:20:33 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/04 14:39:50 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,9 @@ int		handle_redir_greater(t_token *token);
 int		handle_redir_greater_greater(t_token *token);
 int		handle_redir_lesser(t_token *token);
 int		handle_redir_lesser_lesser(t_token *token, t_data *data);
+
+// fds_array_utils1.c
+int		**fds_array_create_fds_for_piping(int amount_of_jobs);
+void	fds_array_free(int **fds_array, int free_until_idx);
 
 #endif

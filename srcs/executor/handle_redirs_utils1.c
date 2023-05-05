@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:16 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/03 16:29:41 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/04 13:24:20 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,7 @@ int	handle_redir_lesser(t_token *token)
 /*	Do later! how do you do the here_doc, check for examples!*/
 int	handle_redir_lesser_lesser(t_token *token, t_data *data)
 {
-
+	(void)token;
+	(void)data;
+	return (0);
 }

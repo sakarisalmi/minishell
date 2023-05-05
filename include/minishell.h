@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/03 14:55:25 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/04 14:26:19 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_executor
 	t_token	*token_lst;
 	int		jobs_amount;
 	t_job	**jobs_array;
+	int		**fds_array;
 }	t_executor;
 
 typedef struct s_data

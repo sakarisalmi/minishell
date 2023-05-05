@@ -6,12 +6,13 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 13:26:18 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/03 16:43:08 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/04 13:23:35 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/tokenizer.h"
+#include "../../include/executor.h"
 
 int			job_handle_redirs(t_job *job, t_data *data);
 static int	job_handle_redirs_lessers(t_job *job, int idx, t_data *data);
@@ -33,7 +34,7 @@ int	job_handle_redirs(t_job *job, t_data *data)
 	i = -1;
 	while (job->tokens_array[++i])
 	{
-		if (job->tokens_array[i] == T_REDIR)
+		if (job->tokens_array[i]->type == T_REDIR)
 		{
 			if (job->tokens_array[i]->string[0] == '<')
 				latest_result = job_handle_redirs_lessers(job, i, data);
