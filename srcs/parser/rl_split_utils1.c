@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 13:32:59 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/27 14:22:42 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/04/27 16:25:14 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	rl_s_handle_quotes(char *line, t_list **rl_parts_lst, t_rl_split *t)
 		else
 		{
 			ft_lstadd_back(rl_parts_lst,
-				ft_lstnew(malloc((ft_strlen((line + t->i)) + 1)
-						* sizeof(char))));
+				ft_lstnew(ft_calloc((ft_strlen((line + t->i)) + 1),
+						sizeof(char))));
 			t->in_token = 1;
 			ft_strncat(ft_lstlast(*rl_parts_lst)->content, &line[t->i], 1);
 		}
@@ -63,7 +63,8 @@ void	rl_s_handle_s_quotes(char *line, t_list **rl_parts_lst, t_rl_split *t)
 		else
 		{
 			ft_lstadd_back(rl_parts_lst,
-				ft_lstnew(malloc((ft_strlen(line + t->i) + 1) * sizeof(char))));
+				ft_lstnew(ft_calloc((ft_strlen((line + t->i)) + 1),
+						sizeof(char))));
 			t->in_token = 1;
 			ft_strncat(ft_lstlast(*rl_parts_lst)->content, &line[t->i], 1);
 		}

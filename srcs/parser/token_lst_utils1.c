@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:28:19 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/25 14:23:18 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/02 15:22:46 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	token_lst_del_node(t_token *token_node)
 	}
 }
 
-void	token_lst_clear_ls(t_token **token_lst)
+void	token_lst_clear_lst(t_token **token_lst)
 {
 	t_token	*tmp;
 

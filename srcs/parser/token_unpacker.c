@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 15:37:49 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/27 15:06:34 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/02 14:50:29 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,21 @@ int	token_unpacker(char *rl_part, t_token *token,
 		{
 			if (token_unpacker_in_quotes(rl_part, token->string,
 					tunp, data) != 0)
-				return (parser_error_msg(tunp->error_code,
-						tunp->error_idx));
+				return (tunp_error_msg(tunp->error_code,
+						rl_part[tunp->error_idx]));
 		}				
 		else if (rl_part[tunp->i] == '\'')
 		{
 			if (token_unpacker_in_s_quotes(rl_part, token->string, tunp) != 0)
-				return (parser_error_msg(tunp->error_code,
-						tunp->error_idx));
+				return (tunp_error_msg(tunp->error_code,
+						rl_part[tunp->error_idx]));
 		}
 		else
 		{
 			if (token_unpacker_outside_quotes(rl_part, token->string,
 					tunp, data) != 0)
-				return (parser_error_msg(tunp->error_code,
-						tunp->error_idx));
+				return (tunp_error_msg(tunp->error_code,
+						rl_part[tunp->error_idx]));
 		}
 	}
 	token_unpacker_pipe_and_redir(token, rl_part);
@@ -76,7 +76,7 @@ static int	token_unpacker_outside_quotes(char *rl_part, char *token,
 		}
 		if (rl_part[tunp->i] == '$')
 		{
-			if (tunp->i == 0 || !ft_isalnum(rl_part[tunp->i - 1]))
+			if (ft_isalpha(rl_part[tunp->i + 1]) || rl_part[tunp->i + 1] == '_')
 			{
 				token = token_unpacker_get_var(rl_part, token, tunp, data);
 				token_lst_last(data->parser.token_lst)->string = token;
