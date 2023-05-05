@@ -20,22 +20,27 @@ static char	**minishell_env_setup(char **envp);
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_data	data;
-	char	*read_line;
+	t_data			data;
+	struct termios	termios;
+	char			*read_line;
 
 	(void)argc;
 	(void)argv;
+	(void)envp;
+	tcgetattr(STDIN_FILENO, &termios);
 	data.envs = minishell_env_setup(envp);
 	printf("calling env func\n");
 	env(&data);
-	if (signal(SIGINT, signal_handler) == SIG_ERR || \
-	signal(SIGQUIT, signal_handler) == SIG_ERR)
-	{
-		printf("Error installing signal handler\n");
-		return (1);
-	}
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
 	while (1)
 	{
+		turnoff_echo(&termios);
+		read_line = readline("prototype_minishell> ");
+		if (read_line == NULL)
+			ctrl_d_handler();
+		turnon_echo(&termios);
+		minishell_parser(read_line, &data);
 		read_line = readline("\033[0;32mprototype_minishell> \033[0;37m");
 		test_minishell_parser(read_line, &data);
 	}

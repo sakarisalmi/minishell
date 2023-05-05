@@ -23,7 +23,7 @@ FILES = ft_isalpha ft_isdigit ft_isalnum ft_isascii ft_isprint ft_strlen ft_mems
 		ft_putchar_fd ft_putstr_fd ft_putendl_fd ft_putnbr_fd \
 		ft_lstnew ft_lstadd_front ft_lstsize ft_lstlast ft_lstadd_back ft_lstdelone \
 		ft_lstclear ft_lstiter ft_lstmap get_next_line_bonus get_next_line_utils_bonus \
-		ft_printf ft_printf_utils
+		ft_printf ft_printf_utils ft_strcmp
 
 SRCS = $(addsuffix .c, $(FILES))
 OBJS = $(SRCS:.c=.o)

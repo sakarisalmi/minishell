@@ -1,36 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sharsune <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/04 14:09:33 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/04 15:12:52 by ssalmi           ###   ########.fr       */
+/*   Created: 2023/01/30 16:27:09 by sharsune          #+#    #+#             */
+/*   Updated: 2023/01/30 16:27:11 by sharsune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*int	echo(char **args)
- {
-	int	i;
-	int	newline;
+#include "libft.h"
 
-	i = -1;
-	newline = 1;
-	while (args[++i])
-	{
-		if (ft_strcmp(args[i], "-n") == 0)
-		{
-			newline = 0;
-			break ;
-		}
-	}
-	i = -1;
-	while (args[++i])
-	{
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
 
-		
-	}
-	return (0);
- }*/
- 
+	i = 0;
+	while (s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
