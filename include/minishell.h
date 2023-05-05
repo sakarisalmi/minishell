@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/04 14:26:19 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/05 16:07:41 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,18 @@ int			pwd(void);
 // env.c
 int			env(t_data *data);
 
+// check_for_builtin.c
+int			check_for_builtin(t_token **tokens_array);
+
 // ft_funcs.c
 int			ft_isspace(char c);
 char		*ft_strcpy(char *dest, const char *src);
 char		*ft_strncpy(char *dest, const char *src, size_t n);
 char		*ft_strncat(char *dest, const char *src, size_t n);
 void		*ft_realloc(void *ptr, size_t size);
+
+// ft_strncmp_casein.c
+int			ft_strncmp_casein(const char *s1, const char *s2, size_t n);
 
 // str_array_add_str.c
 char		**str_array_add_str(char **str_array, char *new_str);
@@ -92,6 +98,6 @@ char		**str_array_remove_str_by_index(char **str_array, int index);
 int			test_minishell_parser(char *read_line, t_data *data);
 
 // executor.c
-int			test_executor(t_data *data);
+int			test_executor_pre_setup(t_data *data);
 
 #endif

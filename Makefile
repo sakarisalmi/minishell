@@ -6,7 +6,7 @@
 #    By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/04 10:03:33 by ssalmi            #+#    #+#              #
-#    Updated: 2023/05/04 14:40:17 by ssalmi           ###   ########.fr        #
+#    Updated: 2023/05/05 15:56:16 by ssalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ EXECUTOR_FILES = executor job_utils1 handle_redirs handle_redirs_utils1 \
 					fds_array_utils1
 
 MISC_DIR = misc/
-MISC_FILES = minishell str_array_utils1 signal
+MISC_FILES = minishell str_array_utils1 signal ft_strncmp_casein
 
 FILES += $(addprefix $(BUILTINS_DIR), $(BUILTINS_FILES))
 FILES += $(addprefix $(PARSER_DIR), $(PARSER_FILES))
