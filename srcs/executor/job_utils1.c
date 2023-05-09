@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:38:36 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/03 12:56:40 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/08 15:52:11 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,10 @@ static t_job	*job_init_new_job(void)
 	if (!new_job->tokens_array)
 		return (NULL);
 	new_job->tokens_array[0] = NULL;
-	new_job->fd_in = 0;
-	new_job->fd_out = 1;
+	*new_job->fd_in = STDIN_FILENO;
+	*new_job->fd_out = STDOUT_FILENO;
 	new_job->append_mode = 0;
+	new_job->cmd_path = NULL;
 	return (new_job);
 }
 

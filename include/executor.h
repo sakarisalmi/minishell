@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/04 14:39:50 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/09 11:01:37 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ enum e_stds
 
 // executor.c
 int		test_executor(t_data *data);
+int		test_executor_pre_setup(t_data *data);
+int		test_executor_builtin(t_job *job, t_data *data);
+int		executor_exec_cmd(t_job *job, t_data *data);
 
 // job_utils1.c
 t_job	**create_jobs_from_tokens(t_token *token_lst);
@@ -39,7 +42,13 @@ int		handle_redir_lesser(t_token *token);
 int		handle_redir_lesser_lesser(t_token *token, t_data *data);
 
 // fds_array_utils1.c
+int		executor_pipe_set_up(t_executor *exec);
+void	close_pipe_ends_parent_process(int *fds);
 int		**fds_array_create_fds_for_piping(int amount_of_jobs);
 void	fds_array_free(int **fds_array, int free_until_idx);
+
+// executor_cmd_utils1.c
+t_token	*job_get_cmd_token(t_job *job);
+char	*find_cmd_path(char *cmd, char **env);
 
 #endif
