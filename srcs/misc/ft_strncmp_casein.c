@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 15:44:24 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/05 15:55:42 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/09 14:05:35 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,5 @@ int	ft_strncmp_casein(const char *s1, const char *s2, size_t n)
 		result = 1;
 	else if (result < 0)
 		result = -1;
-	return (0);
+	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 17:29:37 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/05 16:06:56 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/09 14:08:56 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@ int	check_for_builtin(t_token **tokens_array)
 	{
 		if (tokens_array[i]->type == T_COMMAND)
 		{
-			if (ft_strncmp_casein(tokens_array[i]->string, "cd", 2) == 0)
+			if (ft_strncmp_casein(tokens_array[i]->string, "cd", 3) == 0)
 				return (1);
-			if (ft_strncmp_casein(tokens_array[i]->string, "echo", 4) == 0)
+			if (ft_strncmp_casein(tokens_array[i]->string, "echo", 5) == 0)
 				return (1);
-			if (ft_strncmp_casein(tokens_array[i]->string, "pwd", 3) == 0)
+			if (ft_strncmp_casein(tokens_array[i]->string, "pwd", 4) == 0)
 				return (1);
-			if (ft_strncmp_casein(tokens_array[i]->string, "export", 6) == 0)
+			if (ft_strncmp_casein(tokens_array[i]->string, "export", 7) == 0)
 				return (1);
-			if (ft_strncmp_casein(tokens_array[i]->string, "unset", 5) == 0)
+			if (ft_strncmp_casein(tokens_array[i]->string, "unset", 6) == 0)
 				return (1);
-			if (ft_strncmp_casein(tokens_array[i]->string, "env", 3) == 0)
+			if (ft_strncmp_casein(tokens_array[i]->string, "env", 4) == 0)
 				return (1);
-			if (ft_strncmp_casein(tokens_array[i]->string, "exit", 4) == 0)
+			if (ft_strncmp_casein(tokens_array[i]->string, "exit", 5) == 0)
 				return (1);
 		}
 		i++;

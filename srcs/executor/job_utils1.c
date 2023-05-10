@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:38:36 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/08 15:52:11 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/09 13:50:42 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,10 @@ t_job	**create_jobs_from_tokens(t_token *token_lst)
 	while (tmp_token)
 	{
 		if (jobs_array[i] == NULL)
+		{
 			jobs_array = executor_jobs_array_add_new_job(jobs_array,
 					job_init_new_job());
+		}
 		if (tmp_token->type == T_PIPE)
 			i++;
 		else
@@ -79,12 +81,12 @@ static t_job	*job_init_new_job(void)
 	new_job = malloc(sizeof(t_job));
 	if (!new_job)
 		return (NULL);
-	new_job->tokens_array = ft_calloc(1, sizeof(t_token *));
+	new_job->tokens_array = malloc(sizeof(t_token *));
 	if (!new_job->tokens_array)
 		return (NULL);
 	new_job->tokens_array[0] = NULL;
-	*new_job->fd_in = STDIN_FILENO;
-	*new_job->fd_out = STDOUT_FILENO;
+	new_job->fd_in = STDIN_FILENO;
+	new_job->fd_out = STDOUT_FILENO;
 	new_job->append_mode = 0;
 	new_job->cmd_path = NULL;
 	return (new_job);

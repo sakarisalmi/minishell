@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 13:49:03 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/09 11:09:16 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/09 15:48:24 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	executor_pipe_set_up(t_executor *exec)
 	if (!exec->fds_array)
 		return (1);
 	i = 0;
-	while (exec->fds_array[i])
+	while (i < exec->jobs_amount - 1)
 	{
 		if (set_up_pipes_between_jobs(exec->fds_array[i], exec->jobs_array[i],
 				exec->jobs_array[i + 1]) != 0)
@@ -46,15 +46,17 @@ static int	set_up_pipes_between_jobs(int *fds, t_job *job_from, t_job *job_to)
 		perror("Minishell: Pipe");
 		return (1);
 	}
-	job_from->fd_out = &fds[0];
-	job_to->fd_in = &fds[1];
+	job_from->fd_out = fds[0];
+	job_to->fd_in = fds[1];
 	return (0);
 }
 
 void	close_pipe_ends_parent_process(int *fds)
 {
+	printf("in close_pipe_ends\n");
 	close(fds[0]);
 	close(fds[1]);
+	printf("end of close_pipe_ends\n");
 }
 
 int	**fds_array_create_fds_for_piping(int amount_of_jobs)
