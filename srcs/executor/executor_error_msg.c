@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:34:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/10 11:43:58 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/10 15:41:11 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@
 	1. fork failure
 	2. executor_pipe_set_up failure
 	3. execve failure
-	4. command not found
-	*/
+	4. command not found	*/
 int	executor_error_msg(char *s, int error_code)
 {
 	if (error_code == 1)

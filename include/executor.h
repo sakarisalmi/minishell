@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/10 10:45:38 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/10 17:24:09 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,17 @@ enum e_stds
 	T_STDERR
 };
 
+enum e_PIPE_ENDS
+{
+	T_PIPE_READ,
+	T_PIPE_WRITE
+};
+
 // executor.c
 int		test_executor(t_data *data);
+int		real_executor(t_data *data);
 int		test_executor_pre_setup(t_data *data);
+int		real_executor_pre_setup(t_data *data);
 int		test_executor_builtin(t_job *job, t_data *data);
 void	executor_exec_cmd(t_job *job, t_data *data);
 
@@ -47,11 +55,17 @@ void	close_pipe_ends_parent_process(int *fds);
 int		**fds_array_create_fds_for_piping(int amount_of_jobs);
 void	fds_array_free(int **fds_array, int free_until_idx);
 
+// fds_array_utils2.c
+void	child_process_close_all_fds(t_executor *exec);
+
 // executor_cmd_utils1.c
 t_token	*job_get_cmd_token(t_job *job);
 char	*find_cmd_path(char *cmd, char **env);
 
 // executor_error_msg.c
 int		executor_error_msg(char *s, int error_code);
+
+// executor_clean_up.c
+void	executor_clean_up(t_data *data, int jobs_amount);
 
 #endif

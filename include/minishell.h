@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/09 15:36:33 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/10 17:52:46 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct s_token
 
 typedef struct s_parser
 {
-	char	*read_line;
 	t_list	*rl_parts_lst;
 	int		token_amount;
 	t_token	*token_lst;
@@ -94,11 +93,13 @@ int			ft_strncmp_casein(const char *s1, const char *s2, size_t n);
 // str_array_add_str.c
 char		**str_array_add_str(char **str_array, char *new_str);
 char		**str_array_remove_str_by_index(char **str_array, int index);
+void		str_array_free_everything(char **str_array);
 
 // minishell_parser.c
 int			test_minishell_parser(char *read_line, t_data *data);
 
 // executor.c
 int			test_executor_pre_setup(t_data *data);
+int			real_executor_pre_setup(t_data *data);
 
 #endif

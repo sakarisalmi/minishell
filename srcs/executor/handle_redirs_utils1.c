@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:16 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/09 11:06:29 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/10 13:07:49 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	handle_redir_greater(t_token *token)
 	int	result;
 
 	// check the last part (permissions)!
-	result = open(token->args[0], O_WRONLY | O_TRUNC | O_CREAT, 0777);
+	result = open(token->args[0], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (result < 0)
 	{
 		ft_putstr_fd("MINISHELL: ", 2);
@@ -41,7 +41,7 @@ int	handle_redir_greater_greater(t_token *token)
 
 	// check the last part (permissions).
 	// Also check if the options are correct).
-	result = open(token->args[0], O_WRONLY | O_APPEND | O_CREAT, 0777);
+	result = open(token->args[0], O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (result < 0)
 	{
 		ft_putstr_fd("MINISHELL: ", 2);

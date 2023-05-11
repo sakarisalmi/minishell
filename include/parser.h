@@ -87,4 +87,8 @@ char	*token_unpacker_skip_var(char *rl_part, t_token_unpacker *tunp);
 // token_unpacker_pipe_and_redir.c
 void	token_unpacker_pipe_and_redir(t_token *token, char *rl_part);
 
+// parser_clean_up.c
+void	tokens_clean_up(t_data *data);
+void	read_line_clean_up(t_data *data);
+
 #endif

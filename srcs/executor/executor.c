@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/10 10:57:54 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/10 16:11:21 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 #include "../../include/tokenizer.h"
 
 int		test_executor(t_data *data);
+int		real_executor(t_data *data);
 int		test_executor_pre_setup(t_data *data);
+int		real_executor_pre_setup(t_data *data);
 int		test_executor_builtin(t_job *job, t_data *data);
 void	executor_exec_cmd(t_job *job, t_data *data);
 
@@ -27,9 +29,12 @@ int	test_executor(t_data *data)
 	int	result;
 	int	pid;
 	int	i;
+	int	pgid;
 
 	printf("\tIN TEST_EXECUTOR\n");
 	i = -1;
+	pgid = getpgrp();
+	printf("\t\tthe pgid is %d\n", pgid);
 	while (++i < data->executor.jobs_amount)
 	{
 		printf("\ttest_executor (job[%d])\n", i);
@@ -54,19 +59,21 @@ int	test_executor(t_data *data)
 				return (-1);
 			}
 			printf("\tTEST_EXECUTOR; stage 1\n");
-			if (i < data->executor.jobs_amount - 1)
-				close_pipe_ends_parent_process(data->executor.fds_array[i]);
+			if (i != 0)
+				close_pipe_ends_parent_process(data->executor.fds_array[i - 1]);
 			printf("\tTEST_EXECUTOR; stage 2\n");
+			waitpid(WAIT_ANY, &data->latest_exit_status, 0);
 		}
 	}
 	printf("\tTEST_EXECUTOR; parent process, after job iteration\n");
 	// continue
 	/*	possible issue; what if the final job reads from a file that doesn't exist,
 		but then you do the waitpid and set a different exit code as the with that?*/
-	if (result == 0)
-		waitpid(pid, &data->latest_exit_status, 0);
-	else
-		data->latest_exit_status = result;
+	// if (result == 0)
+	// while (waitpid(-pgid, &data->latest_exit_status, 0))
+	// 	;
+	// else
+		// data->latest_exit_status = result;
 	printf("\tEND OF TEST_EXECUTOR\n");
 	return (0);
 }
@@ -94,13 +101,12 @@ int	real_executor(t_data *data)
 			}
 			else if (pid < 0)
 				return (executor_error_msg(NULL, 1));
-			if (i < data->executor.jobs_amount - 1)
-				close_pipe_ends_parent_process(data->executor.fds_array[i]);
+			if (i != 0)
+				close_pipe_ends_parent_process(data->executor.fds_array[i - 1]);
+			wait(&data->latest_exit_status);
 		}
 	}
-	if (result == 0)
-		waitpid(pid, &data->latest_exit_status, 0);
-	else
+	if (result != 0)
 		data->latest_exit_status = result;
 	return (0);
 }
@@ -174,9 +180,9 @@ int	real_executor_pre_setup(t_data *data)
 		if (data->executor.jobs_amount > 1)
 		{
 			if (executor_pipe_set_up(&data->executor) != 0)
-				executor_error_msg(NULL, 2);
+				return (executor_error_msg(NULL, 2));
 		}
-		test_executor(data);
+		real_executor(data);
 	}
 	return (0);
 }
@@ -211,23 +217,15 @@ void	executor_exec_cmd(t_job *job, t_data *data)
 		dup2(job->fd_in, STDIN_FILENO);
 	if (job->fd_out != STDOUT_FILENO)
 		dup2(job->fd_out, STDOUT_FILENO);
-	// cmd_token built-in func here?
+	child_process_close_all_fds(&data->executor);
 	cmd_token = job_get_cmd_token(job);
 	if (cmd_token)
 	{
 		job->cmd_path = find_cmd_path(cmd_token->string, data->envs);
 		if (!job->cmd_path)
-		{
-			ft_putstr_fd("MINISHELL: ", 2);
-			ft_putstr_fd(cmd_token->string, 2);
-			ft_putendl_fd(": command not found", 2);
-			exit(127);
-		}
+			exit(executor_error_msg(cmd_token->string, 4));
 		if (execve(job->cmd_path, cmd_token->args, data->envs) < 0)
-		{
-			perror("MINISHELL: execve");
-			exit(1);
-		}
+			exit(executor_error_msg(NULL, 3));
 	}
 	exit(0);
 }
