@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/10 17:24:09 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/11 12:07:19 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,16 @@ enum e_PIPE_ENDS
 	T_PIPE_WRITE
 };
 
+typedef struct s_executor_function
+{
+	int	result;
+	int	pid;
+	int	i;
+}	t_executor_function;
+
 // executor.c
 int		test_executor(t_data *data);
-int		real_executor(t_data *data);
+int		real_executor(t_executor *ex, t_data *data);
 int		test_executor_pre_setup(t_data *data);
 int		real_executor_pre_setup(t_data *data);
 int		test_executor_builtin(t_job *job, t_data *data);

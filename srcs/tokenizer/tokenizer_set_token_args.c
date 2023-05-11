@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 16:44:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/10 11:53:41 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/11 13:25:42 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,8 @@ void	tok_set_token_args(t_token *token)
 		token->args[0] = NULL;
 		token->args = str_array_add_str(token->args, token->string);
 		tmp_token = token->next;
-		printf("\ttok set token args for command token (token: %s)\n", token->string);
 		while (tmp_token && tmp_token->type != T_PIPE)
 		{
-			printf("\t\\ttoken: %s, token type: %d\n", tmp_token->string, tmp_token->type);
 			if (tmp_token->type == T_REDIR)
 				tmp_token = tok_skip_redir_and_file(tmp_token);
 			else
@@ -58,11 +56,6 @@ void	tok_set_token_args(t_token *token)
 				tmp_token = tmp_token->next;
 			}
 		}
-		int	i = -1;
-		printf("\t token[%s] args: ", token->string);
-		while (token->args[++i])
-			printf("%s, ", token->args[i]);
-		printf("\n");
 	}
 }
 

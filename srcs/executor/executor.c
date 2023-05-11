@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/10 16:11:21 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/11 12:30:44 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../../include/tokenizer.h"
 
 int		test_executor(t_data *data);
-int		real_executor(t_data *data);
+int		real_executor(t_executor *ex, t_data *data);
 int		test_executor_pre_setup(t_data *data);
 int		real_executor_pre_setup(t_data *data);
 int		test_executor_builtin(t_job *job, t_data *data);
@@ -78,37 +78,33 @@ int	test_executor(t_data *data)
 	return (0);
 }
 
-int	real_executor(t_data *data)
+int	real_executor(t_executor *ex, t_data *data)
 {
-	t_executor	*ex;
-	int			result;
-	int			pid;
-	int			i;
+	t_executor_function	f;
 
-	ex = &data->executor;
-	i = -1;
-	while (++i < data->executor.jobs_amount)
+	f.i = -1;
+	while (++f.i < ex->jobs_amount)
 	{
-		result = job_handle_redirs(ex->jobs_array[i], data);
-		if (result == 0)
+		f.result = job_handle_redirs(ex->jobs_array[f.i], data);
+		if (f.result == 0)
 		{
-			pid = fork();
-			if (pid == 0)
+			f.pid = fork();
+			if (f.pid == 0)
 			{
-				if (check_for_builtin(ex->jobs_array[i]->tokens_array))
-					exit(test_executor_builtin(ex->jobs_array[i], data));
-				executor_exec_cmd(ex->jobs_array[i], data);
+				if (check_for_builtin(ex->jobs_array[f.i]->tokens_array))
+					exit(test_executor_builtin(ex->jobs_array[f.i], data));
+				executor_exec_cmd(ex->jobs_array[f.i], data);
 			}
-			else if (pid < 0)
+			else if (f.pid < 0)
 				return (executor_error_msg(NULL, 1));
-			if (i != 0)
-				close_pipe_ends_parent_process(data->executor.fds_array[i - 1]);
+			if (f.i != 0)
+				close_pipe_ends_parent_process(ex->fds_array[f.i - 1]);
 			wait(&data->latest_exit_status);
 		}
 	}
-	if (result != 0)
-		data->latest_exit_status = result;
-	return (0);
+	if (f.result == 0)
+		waitpid(f.pid, &f.result, 0);
+	return (f.result);
 }
 
 int	test_executor_pre_setup(t_data *data)
@@ -173,8 +169,7 @@ int	real_executor_pre_setup(t_data *data)
 	data->executor.jobs_amount = i;
 	if (data->executor.jobs_amount == 1
 		&& check_for_builtin(data->executor.jobs_array[0]->tokens_array))
-		data->latest_exit_status = \
-			test_executor_builtin(data->executor.jobs_array[0], data);
+		return (test_executor_builtin(data->executor.jobs_array[0], data));
 	else
 	{
 		if (data->executor.jobs_amount > 1)
@@ -182,7 +177,7 @@ int	real_executor_pre_setup(t_data *data)
 			if (executor_pipe_set_up(&data->executor) != 0)
 				return (executor_error_msg(NULL, 2));
 		}
-		real_executor(data);
+		return (real_executor(&data->executor, data));
 	}
 	return (0);
 }

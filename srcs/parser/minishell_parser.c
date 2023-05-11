@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:07:38 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/03 14:49:18 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/11 13:13:13 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,12 @@ int	real_minishell_parser(char *read_line, t_data *data)
 		&data->parser.token_amount);
 	if (tokens_creator(&data->parser, data) != 0)
 	{
-		ft_lstclear(&data->parser.rl_parts_lst, free);
-		token_lst_clear_lst(&data->parser.token_lst);
+		data->latest_exit_status = 258;
 		return (258);
 	}
-	ft_lstclear(&data->parser.rl_parts_lst, free);
 	if (tokenizer(data->parser.token_lst) != 0)
 	{
 		data->latest_exit_status = 258;
-		token_lst_clear_lst(&data->parser.token_lst);
 		return (258);
 	}
 	return (0);

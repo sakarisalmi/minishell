@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:09 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/10 17:56:05 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/11 13:11:54 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,15 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		read_line = readline("\033[0;32mprototype_minishell> \033[0;37m");
-		if (test_minishell_parser(read_line, &data) != 0)
+		if (real_minishell_parser(read_line, &data) != 0)
 		{
 			read_line_clean_up(&data);
 			tokens_clean_up(&data);
 			continue ;
 		}
 		read_line_clean_up(&data);
-		real_executor_pre_setup(&data);
+		data.latest_exit_status = real_executor_pre_setup(&data);
+		minishell_loop_clean_up(&data);
 	}
 	return (0);
 }
@@ -77,8 +78,6 @@ static char	**minishell_env_setup(char **envp)
 
 static int	minishell_sig_hand_err_msg(t_data *data)
 {
-	int	i;
-
 	ft_putendl_fd("MINISHELL: Error installing signal handler", 2);
 	str_array_free_everything(data->envs);
 	return (1);

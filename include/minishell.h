@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/10 17:52:46 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/11 13:14:04 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,13 @@ void		str_array_free_everything(char **str_array);
 
 // minishell_parser.c
 int			test_minishell_parser(char *read_line, t_data *data);
+int			real_minishell_parser(char *read_line, t_data *data);
 
 // executor.c
 int			test_executor_pre_setup(t_data *data);
 int			real_executor_pre_setup(t_data *data);
+
+// minishell_loop_clean_up.c
+void		minishell_loop_clean_up(t_data *data);
 
 #endif

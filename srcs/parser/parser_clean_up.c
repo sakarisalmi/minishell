@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 16:18:41 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/10 16:53:27 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/11 13:24:31 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ void	tokens_clean_up(t_data *data)
 /*	This function handle the freeing of everything allocated for the rl_parts.*/
 void	read_line_clean_up(t_data *data)
 {
-	ft_lstclear(data->parser.rl_parts_lst, free);
+	ft_lstclear(&data->parser.rl_parts_lst, free);
 	data->parser.rl_parts_lst = NULL;
 }

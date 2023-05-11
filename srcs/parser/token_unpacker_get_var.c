@@ -6,19 +6,36 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 14:04:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/27 16:54:59 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/11 14:35:04 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/parser.h"
 
+char		*token_unpacker_hit_var(char *rl_part, char *token,
+				t_token_unpacker *tunp, t_data *data);
 char		*token_unpacker_get_var(char *rl_part, char *token,
 				t_token_unpacker *tunp, t_data *data);
 static char	*token_unpacker_get_var_from_env(char *var_name, t_data *data);
 char		*token_unpacker_skip_var(char *rl_part, t_token_unpacker *tunp);
+static char	*token_unpacker_get_last_exit(char *rl_part, char *token,
+				t_token_unpacker *tunp, t_data *data);
 
 /*----------------------------------------------------------------------------*/
+
+/*	This function is called if during the token_unpacker functions the
+	dollar-sign is found. This function was made to save space in
+	tunp_outside_quotes and tunp_in_quotes. */
+char	*token_unpacker_hit_var(char *rl_part, char *token,
+	t_token_unpacker *tunp, t_data *data)
+{
+	if (rl_part[tunp->i + 1] == '?')
+		return (token_unpacker_get_last_exit(rl_part, token, tunp, data));
+	else
+		return (token_unpacker_get_var(rl_part, token, tunp, data));
+	return (NULL);
+}
 
 /*	This function handles the retrieving of shell or environmental variables
 	that are preceded by a $-sign. We check for the variable
@@ -80,4 +97,19 @@ char	*token_unpacker_skip_var(char *rl_part, t_token_unpacker *tunp)
 	while (ft_isalnum(rl_part[tunp->i]) || rl_part[tunp->i] == '_')
 		tunp->i++;
 	return (NULL);
+}
+
+/*	This function is called if the next char after the dollar-sign
+	is the question-mark. Will get the latest exit_status from data.*/
+static char	*token_unpacker_get_last_exit(char *rl_part, char *token,
+	t_token_unpacker *tunp, t_data *data)
+{
+	char	*result;
+
+	tunp->i += 2;
+	result = ft_itoa(data->latest_exit_status);
+	token = (char *)ft_realloc(token, ft_strlen(rl_part) + ft_strlen(result));
+	ft_strncat(token, result, ft_strlen(result));
+	free(result);
+	return (token);
 }

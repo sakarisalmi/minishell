@@ -80,6 +80,8 @@ int		token_unpacker(char *rl_part, t_token *token,
 			t_token_unpacker *tunp, t_data *data);
 
 // token_unpacker_get_var.c
+char	*token_unpacker_hit_var(char *rl_part, char *token,
+			t_token_unpacker *tunp, t_data *data);
 char	*token_unpacker_get_var(char *rl_part, char *token,
 			t_token_unpacker *tunp, t_data *data);
 char	*token_unpacker_skip_var(char *rl_part, t_token_unpacker *tunp);
