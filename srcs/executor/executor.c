@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/12 12:45:36 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/12 13:25:37 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,7 @@ int	test_executor_builtin(t_job *job, t_data *data)
 		dup2(job->fd_in, STDIN_FILENO);
 	if (job->fd_out != STDOUT_FILENO)
 		dup2(job->fd_out, STDOUT_FILENO);
+	child_process_close_all_fds(&data->executor);
 	printf("IN TEST_EXECUTOR_BUILTIN; feature coming soon!\n");
 	(void)data;
 	return (0);
