@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:34:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/12 16:41:43 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/12 16:49:07 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	executor_end(t_executor_function *f, t_executor *ex)
 	else
 	{
 		if (WIFEXITED(f->result_pid))
-			return (WIFEXITED(f->result_pid));
+			return (WEXITSTATUS(f->result_pid));
 		if (WIFSIGNALED(f->result_pid))
 			return (WTERMSIG(f->result_pid));
 		return (0);
