@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:34:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/12 15:14:11 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/12 16:10:33 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,46 @@
 #include "../../include/executor.h"
 #include "../../include/tokenizer.h"
 
-int	executor_check_if_to_fork(t_executor_function *f, t_executor *ex,
-		t_data *data);
-int	executor_error_msg(char *s, int error_code);
-int	executor_get_latest_exit_status(int lexit);
+void	executor_start(t_executor_function *f, t_executor *ex);
+int		executor_end(t_executor_function *f, t_executor *ex);
+int		executor_check_if_to_fork(t_executor_function *f, t_executor *ex,
+			t_data *data);
+int		executor_error_msg(char *s, int error_code);
+int		executor_get_latest_exit_status(int lexit);
 
 /*----------------------------------------------------------------------------*/
+
+void	executor_start(t_executor_function *f, t_executor *ex)
+{
+	f->i = -1;
+	f->j = -1;
+	f->pid_temp = NULL;
+	f->pid_temp = ft_calloc(ex->jobs_amount, sizeof(int));
+	if (!f->pid_temp)
+	{
+		ft_putendl_fd("MINISHELL: executor: pid(s) allocation failed", 2);
+		return ;
+	}
+}
+
+int	executor_end(t_executor_function *f, t_executor *ex)
+{
+	int	last_pid_status;
+
+	while (++f->j < ex->jobs_amount)
+		waitpid(f->pid_temp[f->j], &f->result_pid, 0);
+	if (f->result != 0)
+	{
+		free(f->pid_temp);
+		return (f->result);
+	}
+	else
+	{
+		last_pid_status = executor_get_latest_exit_status(f->result_pid);
+		free(f->pid_temp);
+		return (last_pid_status);
+	}
+}
 
 /*	This function will be used before forking to check if the fork is needed.*/
 int	executor_check_if_to_fork(t_executor_function *f, t_executor *ex,

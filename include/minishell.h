@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/11 13:14:04 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/12 14:36:14 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	signal_handler(int signum);
 void	ctrl_d_handler(void);
 void	turnoff_echo(struct termios *termios);
 void	turnon_echo(struct termios *termios);
-void		signal_handler(int signum);
+void	signal_handler(int signum);
 
 // pwd.c
 int			pwd(void);
