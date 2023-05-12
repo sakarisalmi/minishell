@@ -32,7 +32,7 @@ int	main(int argc, char **argv, char **envp)
 	tcgetattr(STDIN_FILENO, &termios);
 	data.envs = minishell_env_setup(envp);
 	if (signal(SIGINT, signal_handler) == SIG_ERR || \
-	signal(SIGQUIT, signal_handler) == SIG_ERR)
+	signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		return (minishell_sig_hand_err_msg(&data));
 	while (1)
 	{

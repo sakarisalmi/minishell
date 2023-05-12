@@ -32,9 +32,6 @@ void	signal_handler(int signum)
 		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 		rl_on_new_line();
 	}
-	if (signum == SIGQUIT)
-	{
-	}
 }
 
 void	ctrl_d_handler(void)
