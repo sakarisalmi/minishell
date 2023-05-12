@@ -16,7 +16,9 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
+# include <termios.h>
 # include <fcntl.h>
+# include <sys/ioctl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -69,6 +71,10 @@ typedef struct s_data
 /*----------------------------------------------------------------------------*/
 
 // signal.c
+void	signal_handler(int signum);
+void	ctrl_d_handler(void);
+void	turnoff_echo(struct termios *termios);
+void	turnon_echo(struct termios *termios);
 void		signal_handler(int signum);
 
 // pwd.c
@@ -86,6 +92,8 @@ char		*ft_strcpy(char *dest, const char *src);
 char		*ft_strncpy(char *dest, const char *src, size_t n);
 char		*ft_strncat(char *dest, const char *src, size_t n);
 void		*ft_realloc(void *ptr, size_t size);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
+int			ft_strcmp(const char *s1, const char *s2);
 
 // ft_strncmp_casein.c
 int			ft_strncmp_casein(const char *s1, const char *s2, size_t n);
@@ -96,6 +104,8 @@ char		**str_array_remove_str_by_index(char **str_array, int index);
 void		str_array_free_everything(char **str_array);
 
 // minishell_parser.c
+int			minishell_parser(char *read_line, t_data *data);
+void		rl_replace_line(const char *text, int clear_undo);
 int			test_minishell_parser(char *read_line, t_data *data);
 int			real_minishell_parser(char *read_line, t_data *data);
 
