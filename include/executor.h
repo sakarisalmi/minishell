@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/12 16:10:22 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/12 16:38:25 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ typedef struct s_executor_function
 {
 	int	result;
 	int	result_pid;
-	int	pid;
-	int	*pid_temp;
+	int	*pid;
 	int	i;
 	int	j;
 }	t_executor_function;
@@ -78,7 +77,6 @@ int		executor_end(t_executor_function *f, t_executor *ex);
 int		executor_check_if_to_fork(t_executor_function *f,
 			t_executor *ex, t_data *data);
 int		executor_error_msg(char *s, int error_code);
-int		executor_get_latest_exit_status(int lexit);
 
 // executor_clean_up.c
 void	executor_clean_up(t_data *data, int jobs_amount);

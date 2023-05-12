@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:34:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/12 16:15:39 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/12 16:41:43 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int		executor_end(t_executor_function *f, t_executor *ex);
 int		executor_check_if_to_fork(t_executor_function *f, t_executor *ex,
 			t_data *data);
 int		executor_error_msg(char *s, int error_code);
-int		executor_get_latest_exit_status(int lexit);
 
 /*----------------------------------------------------------------------------*/
 
@@ -27,9 +26,9 @@ void	executor_start(t_executor_function *f, t_executor *ex)
 {
 	f->i = -1;
 	f->j = -1;
-	f->pid_temp = NULL;
-	f->pid_temp = ft_calloc(ex->jobs_amount, sizeof(int));
-	if (!f->pid_temp)
+	f->pid = NULL;
+	f->pid = ft_calloc(ex->jobs_amount, sizeof(int));
+	if (!f->pid)
 	{
 		ft_putendl_fd("MINISHELL: executor: pid(s) allocation failed", 2);
 		return ;
@@ -38,18 +37,19 @@ void	executor_start(t_executor_function *f, t_executor *ex)
 
 int	executor_end(t_executor_function *f, t_executor *ex)
 {
-	int	last_pid_status;
-
 	while (++f->j < ex->jobs_amount)
-		waitpid(f->pid_temp[f->j], &f->result_pid, 0);
-	free(f->pid_temp);
-	f->pid_temp = NULL;
+		waitpid(f->pid[f->j], &f->result_pid, 0);
+	free(f->pid);
+	f->pid = NULL;
 	if (f->result != 0)
 		return (f->result);
 	else
 	{
-		last_pid_status = executor_get_latest_exit_status(f->result_pid);
-		return (last_pid_status);
+		if (WIFEXITED(f->result_pid))
+			return (WIFEXITED(f->result_pid));
+		if (WIFSIGNALED(f->result_pid))
+			return (WTERMSIG(f->result_pid));
+		return (0);
 	}
 }
 
@@ -113,17 +113,5 @@ int	executor_error_msg(char *s, int error_code)
 		ft_putendl_fd(": command not found", 2);
 		return (127);
 	}
-	return (0);
-}
-
-/*	This function returns the correct exit status of the latest process for
-	the executor to return to the minishell so
-	that the data's latest_exit_status can be set.*/
-int	executor_get_latest_exit_status(int lexit)
-{
-	if (WIFEXITED(lexit))
-		return (WIFEXITED(lexit));
-	if (WIFSIGNALED(lexit))
-		return (WTERMSIG(lexit));
 	return (0);
 }
