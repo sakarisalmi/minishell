@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: Sharsune <sharsune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 16:32:29 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/05 16:32:32 by ssalmi           ###   ########.fr       */
+/*   Created: 2023/05/11 14:43:03 by Sharsune          #+#    #+#             */
+/*   Updated: 2023/05/11 14:43:05 by Sharsune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../include/minishell.h"
 
 int	unset(char **args)
 {
