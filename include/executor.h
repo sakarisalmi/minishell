@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/11 18:11:27 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/12 15:07:25 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ enum e_PIPE_ENDS
 typedef struct s_executor_function
 {
 	int	result;
+	int	result_last_pid;
 	int	pid;
 	int	i;
 }	t_executor_function;
@@ -70,6 +71,8 @@ t_token	*job_get_cmd_token(t_job *job);
 char	*find_cmd_path(char *cmd, char **env);
 
 // executor_utils1.c
+int		executor_check_if_to_fork(t_executor_function *f,
+			t_executor *ex, t_data *data);
 int		executor_error_msg(char *s, int error_code);
 int		executor_get_latest_exit_status(int lexit);
 
