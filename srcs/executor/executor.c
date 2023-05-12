@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/12 13:25:37 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/12 15:14:47 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	real_executor(t_executor *ex, t_data *data)
 	f.i = -1;
 	while (++f.i < ex->jobs_amount)
 	{
-		f.result = job_handle_redirs(ex->jobs_array[f.i], data);
+		f.result = executor_check_if_to_fork(&f, ex, data);
 		if (f.result == 0)
 		{
 			f.pid = fork();
@@ -215,13 +215,8 @@ void	executor_exec_cmd(t_job *job, t_data *data)
 		dup2(job->fd_out, STDOUT_FILENO);
 	child_process_close_all_fds(&data->executor);
 	cmd_token = job_get_cmd_token(job);
-	if (cmd_token)
-	{
-		job->cmd_path = find_cmd_path(cmd_token->string, data->envs);
-		if (!job->cmd_path)
-			exit(executor_error_msg(cmd_token->string, 4));
+	if (job->cmd_path)
 		if (execve(job->cmd_path, cmd_token->args, data->envs) < 0)
 			exit(executor_error_msg(NULL, 3));
-	}
 	exit(0);
 }
