@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/12 16:05:01 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/12 16:35:11 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,14 +88,14 @@ int	real_executor(t_executor *ex, t_data *data)
 		f.result = executor_check_if_to_fork(&f, ex, data);
 		if (f.result == 0)
 		{
-			f.pid_temp[f.i] = fork();
-			if (f.pid_temp[f.i] == 0)
+			f.pid[f.i] = fork();
+			if (f.pid[f.i] == 0)
 			{
 				if (check_for_builtin(ex->jobs_array[f.i]->tokens_array))
 					exit(test_executor_builtin(ex->jobs_array[f.i], data));
 				executor_exec_cmd(ex->jobs_array[f.i], data);
 			}
-			else if (f.pid_temp[f.i] < 0)
+			else if (f.pid[f.i] < 0)
 				return (executor_error_msg(NULL, 1));
 			if (f.i != 0)
 				close_pipe_ends_parent_process(ex->fds_array[f.i - 1]);
