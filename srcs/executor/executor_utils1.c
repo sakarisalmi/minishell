@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:34:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/12 16:10:33 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/12 16:15:39 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,13 @@ int	executor_end(t_executor_function *f, t_executor *ex)
 
 	while (++f->j < ex->jobs_amount)
 		waitpid(f->pid_temp[f->j], &f->result_pid, 0);
+	free(f->pid_temp);
+	f->pid_temp = NULL;
 	if (f->result != 0)
-	{
-		free(f->pid_temp);
 		return (f->result);
-	}
 	else
 	{
 		last_pid_status = executor_get_latest_exit_status(f->result_pid);
-		free(f->pid_temp);
 		return (last_pid_status);
 	}
 }
