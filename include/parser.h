@@ -35,6 +35,13 @@ typedef struct s_token_unpacker
 	int	error_idx;
 }	t_token_unpacker;
 
+typedef struct s_token_unpacker_var
+{
+	char	*var_name;
+	char	*result;
+	int		j;
+}	t_token_unpacker_var;
+
 typedef struct s_rl_split
 {
 	int	i;
@@ -80,11 +87,14 @@ int		token_unpacker(char *rl_part, t_token *token,
 			t_token_unpacker *tunp, t_data *data);
 
 // token_unpacker_get_var.c
-char	*token_unpacker_get_var(char *rl_part, char *token,
+char	*token_unpacker_hit_var(char *rl_part, char *token,
 			t_token_unpacker *tunp, t_data *data);
-char	*token_unpacker_skip_var(char *rl_part, t_token_unpacker *tunp);
 
 // token_unpacker_pipe_and_redir.c
 void	token_unpacker_pipe_and_redir(t_token *token, char *rl_part);
+
+// parser_clean_up.c
+void	tokens_clean_up(t_data *data);
+void	read_line_clean_up(t_data *data);
 
 #endif
