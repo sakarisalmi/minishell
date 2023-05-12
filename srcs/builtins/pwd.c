@@ -18,6 +18,7 @@ int	pwd(void)
 
 	if (getcwd(cwd, 4096) == NULL)
 	{
+		free(cwd);
 		perror("getcwd() error");
 		return (1);
 	}

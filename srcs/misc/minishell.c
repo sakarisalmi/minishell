@@ -32,7 +32,7 @@ int	main(int argc, char **argv, char **envp)
 	printf("calling env func\n");
 	env(&data);
 	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		turnoff_echo(&termios);
@@ -40,9 +40,9 @@ int	main(int argc, char **argv, char **envp)
 		if (read_line == NULL)
 			ctrl_d_handler();
 		turnon_echo(&termios);
-		minishell_parser(read_line, &data);
-		read_line = readline("\033[0;32mprototype_minishell> \033[0;37m");
-		test_minishell_parser(read_line, &data);
+		//minishell_parser(read_line, &data);
+		//read_line = readline("\033[0;32mprototype_minishell> \033[0;37m");
+		//test_minishell_parser(read_line, &data);
 	}
 	return (0);
 }

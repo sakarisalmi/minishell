@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: Sharsune <sharsune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/05 16:32:41 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/05 16:32:43 by ssalmi           ###   ########.fr       */
+/*   Created: 2023/05/11 15:34:55 by Sharsune          #+#    #+#             */
+/*   Updated: 2023/05/11 15:34:56 by Sharsune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/minishell.h"
+
+int	export(char **args)
+{
+
+
+}
