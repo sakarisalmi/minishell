@@ -6,7 +6,7 @@
 #    By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/04 10:03:33 by ssalmi            #+#    #+#              #
-#    Updated: 2023/05/11 12:32:02 by ssalmi           ###   ########.fr        #
+#    Updated: 2023/05/11 15:17:29 by ssalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ TOKENIZER_FILES = tokenizer tokenizer_set_token_args tokenizer_error_msg
 EXECUTOR_DIR = executor/
 EXECUTOR_FILES = executor job_utils1 handle_redirs handle_redirs_utils1 \
 					fds_array_utils1 fds_array_utils2 executor_cmd_utils1 \
-					executor_error_msg executor_clean_up
+					executor_utils1 executor_clean_up
 
 MISC_DIR = misc/
 MISC_FILES = minishell str_array_utils1 signal ft_strncmp_casein \

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 14:04:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/11 14:35:04 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/11 14:58:38 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 
 char		*token_unpacker_hit_var(char *rl_part, char *token,
 				t_token_unpacker *tunp, t_data *data);
-char		*token_unpacker_get_var(char *rl_part, char *token,
+static char	*token_unpacker_get_var(char *rl_part, char *token,
 				t_token_unpacker *tunp, t_data *data);
 static char	*token_unpacker_get_var_from_env(char *var_name, t_data *data);
-char		*token_unpacker_skip_var(char *rl_part, t_token_unpacker *tunp);
 static char	*token_unpacker_get_last_exit(char *rl_part, char *token,
 				t_token_unpacker *tunp, t_data *data);
 
@@ -37,38 +36,33 @@ char	*token_unpacker_hit_var(char *rl_part, char *token,
 	return (NULL);
 }
 
-/*	This function handles the retrieving of shell or environmental variables
+/*	This function handles the retrieving of environmental variables
 	that are preceded by a $-sign. We check for the variable
 	in the environment and if there is no match, we return NULL.*/
-char	*token_unpacker_get_var(char *rl_part, char *token,
+static char	*token_unpacker_get_var(char *rl_part, char *token,
 	t_token_unpacker *tunp, t_data *data)
 {
-	char	*var_name;
-	char	*result;
-	int		j;
+	t_token_unpacker_var	f;
 
 	tunp->i++;
-	j = tunp->i;
-	while (ft_isalnum(rl_part[j]) || rl_part[j] == '_')
-		j++;
-	var_name = ft_calloc(j - tunp->i, sizeof(char));
-	if (!var_name)
+	f.j = tunp->i;
+	while (ft_isalnum(rl_part[f.j]) || rl_part[f.j] == '_')
+		f.j++;
+	f.var_name = ft_calloc(f.j - tunp->i, sizeof(char));
+	if (!f.var_name)
 	{
-		tunp->i = j;
-		ft_putstr_fd("tunp_get_var malloc failure\n", 2);
+		tunp->i = f.j;
+		ft_putendl_fd("tunp_get_var malloc failure", 2);
 		return (token);
 	}
-	ft_strncpy(var_name, rl_part + tunp->i, j - tunp->i);
-	tunp->i = j;
-	if (!var_name || ft_strlen(var_name) == 0)
+	ft_strncpy(f.var_name, rl_part + tunp->i, f.j - tunp->i);
+	tunp->i = f.j;
+	f.result = token_unpacker_get_var_from_env(f.var_name, data);
+	if (!f.result)
 		return (token);
-	result = token_unpacker_get_var_from_env(var_name, data);
-	if (!result)
-		return (token);
-	free (var_name);
-	token = (char *)ft_realloc(token, ft_strlen(rl_part) + ft_strlen(result));
-	ft_strncat(token, result, ft_strlen(result));
-	free (result);
+	token = (char *)ft_realloc(token, ft_strlen(rl_part) + ft_strlen(f.result));
+	ft_strncat(token, f.result, ft_strlen(f.result));
+	free (f.result);
 	return (token);
 }
 
@@ -83,19 +77,13 @@ static char	*token_unpacker_get_var_from_env(char *var_name, t_data *data)
 	{
 		if (ft_strnstr(data->envs[i], var_name, var_name_len)
 			&& data->envs[i][var_name_len] == '=')
+		{
+			free(var_name);
 			return (ft_strdup(data->envs[i] + var_name_len + 1));
+		}
 		i++;
 	}
-	return (NULL);
-}
-
-/*	This function simply skips the variable name, because if the $-sign
-	is preceded by any non whitespace character the variable will be NULL. */
-char	*token_unpacker_skip_var(char *rl_part, t_token_unpacker *tunp)
-{
-	tunp->i++;
-	while (ft_isalnum(rl_part[tunp->i]) || rl_part[tunp->i] == '_')
-		tunp->i++;
+	free(var_name);
 	return (NULL);
 }
 

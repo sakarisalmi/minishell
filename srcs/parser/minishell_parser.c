@@ -6,13 +6,18 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:07:38 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/11 13:13:13 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/12 12:49:35 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/parser.h"
 #include "../../include/tokenizer.h"
+
+int			real_minishell_parser(char *read_line, t_data *data);
+static int	minishell_parser_check_if_empty_rl(char *read_line);
+
+/*----------------------------------------------------------------------------*/
 
 int	test_minishell_parser(char *read_line, t_data *data)
 {
@@ -75,6 +80,8 @@ int	real_minishell_parser(char *read_line, t_data *data)
 	data->parser.rl_parts_lst = NULL;
 	data->parser.token_lst = NULL;
 	data->parser.token_amount = 0;
+	if (minishell_parser_check_if_empty_rl(read_line))
+		return (1);
 	read_line_split(read_line, &data->parser.rl_parts_lst,
 		&data->parser.token_amount);
 	if (tokens_creator(&data->parser, data) != 0)
@@ -88,4 +95,23 @@ int	real_minishell_parser(char *read_line, t_data *data)
 		return (258);
 	}
 	return (0);
+}
+
+
+/*	This function checks if the read line was empty, if so, do not proceed. 
+	returns 1 if the string is empty, else return 0. */
+static int	minishell_parser_check_if_empty_rl(char *read_line)
+{
+	int	i;
+	int	result;
+
+	i = 0;
+	result = 1;
+	while (read_line[i])
+	{
+		if (!ft_isspace(read_line[i]))
+			result = 0;
+		i++;
+	}
+	return (result);
 }

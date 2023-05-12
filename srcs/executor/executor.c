@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/11 12:30:44 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/12 12:45:36 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,12 @@ int	real_executor(t_executor *ex, t_data *data)
 				return (executor_error_msg(NULL, 1));
 			if (f.i != 0)
 				close_pipe_ends_parent_process(ex->fds_array[f.i - 1]);
-			wait(&data->latest_exit_status);
 		}
 	}
-	if (f.result == 0)
-		waitpid(f.pid, &f.result, 0);
-	return (f.result);
+	if (f.result != 0)
+		return (f.result);
+	waitpid(f.pid, &f.result, 0);
+	return (executor_get_latest_exit_status(f.result));
 }
 
 int	test_executor_pre_setup(t_data *data)

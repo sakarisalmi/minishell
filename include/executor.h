@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/11 12:07:19 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/11 18:11:27 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,9 @@ void	child_process_close_all_fds(t_executor *exec);
 t_token	*job_get_cmd_token(t_job *job);
 char	*find_cmd_path(char *cmd, char **env);
 
-// executor_error_msg.c
+// executor_utils1.c
 int		executor_error_msg(char *s, int error_code);
+int		executor_get_latest_exit_status(int lexit);
 
 // executor_clean_up.c
 void	executor_clean_up(t_data *data, int jobs_amount);
