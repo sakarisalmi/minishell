@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:51:24 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/26 16:18:08 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/10 17:52:31 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 char		**str_array_add_str(char **str_array, char *new_str);
 char		**str_array_remove_str_by_index(char **str_array, int index);
 static char	**str_array_rem_helper_func(char **str_array, int *size, int index);
+void		str_array_free_everything(char **str_array);
 
 /*----------------------------------------------------------------------------*/
 
@@ -93,4 +94,14 @@ static char	**str_array_rem_helper_func(char **str_array, int *size,
 		return (NULL);
 	}
 	return (ft_calloc(*size, sizeof(char *)));
+}
+
+void	str_array_free_everything(char **str_array)
+{
+	int	i;
+
+	i = -1;
+	while (str_array[++i])
+		free(str_array[i]);
+	free(str_array);
 }

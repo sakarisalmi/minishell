@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 15:37:49 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/02 14:50:29 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/11 14:48:27 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,8 @@ static int	token_unpacker_outside_quotes(char *rl_part, char *token,
 		}
 		if (rl_part[tunp->i] == '$')
 		{
-			if (ft_isalpha(rl_part[tunp->i + 1]) || rl_part[tunp->i + 1] == '_')
-			{
-				token = token_unpacker_get_var(rl_part, token, tunp, data);
-				token_lst_last(data->parser.token_lst)->string = token;
-			}
-			else
-				token_unpacker_skip_var(rl_part, tunp);
+			token = token_unpacker_hit_var(rl_part, token, tunp, data);
+			token_lst_last(data->parser.token_lst)->string = token;
 			continue ;
 		}
 		if (rl_part[tunp->i] == '\'' || rl_part[tunp->i] == '"')
@@ -103,13 +98,8 @@ static int	token_unpacker_in_quotes(char *rl_part, char *token,
 	{
 		if (rl_part[tunp->i] == '$')
 		{
-			if (tunp->i == 0 || !ft_isalnum(rl_part[tunp->i - 1]))
-			{
-				token = token_unpacker_get_var(rl_part, token, tunp, data);
-				token_lst_last(data->parser.token_lst)->string = token;
-			}
-			else
-				token_unpacker_skip_var(rl_part, tunp);
+			token = token_unpacker_hit_var(rl_part, token, tunp, data);
+			token_lst_last(data->parser.token_lst)->string = token;
 			continue ;
 		}
 		if (rl_part[tunp->i] == '"')

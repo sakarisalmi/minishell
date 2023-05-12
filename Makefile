@@ -6,7 +6,7 @@
 #    By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/04 10:03:33 by ssalmi            #+#    #+#              #
-#    Updated: 2023/05/02 16:59:53 by ssalmi           ###   ########.fr        #
+#    Updated: 2023/05/11 15:17:29 by ssalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,22 +27,25 @@ SRCS_DIR = srcs/
 OBJS_DIR = objs/
 
 BUILTINS_DIR = builtins/
-BUILTINS_FILES = echo pwd env
+BUILTINS_FILES = echo pwd env check_for_builtin
 
 PARSER_DIR = parser/
 PARSER_FILES = ft_funcs minishell_parser read_line_split rl_split_utils1 \
 				rl_split_utils2 tokens_creator token_unpacker \
 				token_unpacker_get_var token_unpacker_error_msg token_lst_utils1 \
-				token_unpacker_pipe_and_redir
+				token_unpacker_pipe_and_redir parser_clean_up
 
 TOKENIZER_DIR = tokenizer/
 TOKENIZER_FILES = tokenizer tokenizer_set_token_args tokenizer_error_msg
 
 EXECUTOR_DIR = executor/
-EXECUTOR_FILES = job_utils1
+EXECUTOR_FILES = executor job_utils1 handle_redirs handle_redirs_utils1 \
+					fds_array_utils1 fds_array_utils2 executor_cmd_utils1 \
+					executor_utils1 executor_clean_up
 
 MISC_DIR = misc/
-MISC_FILES = minishell str_array_utils1 signal
+MISC_FILES = minishell str_array_utils1 signal ft_strncmp_casein \
+			minishell_loop_clean_up
 
 FILES += $(addprefix $(BUILTINS_DIR), $(BUILTINS_FILES))
 FILES += $(addprefix $(PARSER_DIR), $(PARSER_FILES))
