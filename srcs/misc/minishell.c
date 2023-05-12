@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:09 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/12 13:38:43 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/12 14:01:32 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 int			main(int argc, char **argv, char **envp);
 static char	**minishell_env_setup(char **envp);
+static void	minishell_data_set_init_vals(t_data *data);
 static int	minishell_sig_hand_err_msg(t_data *data);
 
 /*----------------------------------------------------------------------------*/
@@ -34,6 +35,7 @@ int	main(int argc, char **argv, char **envp)
 	if (signal(SIGINT, signal_handler) == SIG_ERR || \
 	signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		return (minishell_sig_hand_err_msg(&data));
+	minishell_data_set_init_vals(&data);
 	while (1)
 	{
 		turnoff_echo(&termios);
@@ -78,6 +80,18 @@ static char	**minishell_env_setup(char **envp)
 	}
 	minishell_env[i] = NULL;
 	return (minishell_env);
+}
+
+static void	minishell_data_set_init_vals(t_data *data)
+{
+	data->parser.rl_parts_lst = NULL;
+	data->parser.token_amount = 0;
+	data->parser.token_lst = NULL;
+	data->executor.fds_array = NULL;
+	data->executor.jobs_amount = 0;
+	data->executor.jobs_array = NULL;
+	data->executor.token_amount = 0;
+	data->executor.token_lst = NULL;
 }
 
 static int	minishell_sig_hand_err_msg(t_data *data)
