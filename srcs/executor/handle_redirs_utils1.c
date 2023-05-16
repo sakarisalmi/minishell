@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:16 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/16 14:29:09 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/16 15:46:31 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	handle_redir_lesser(t_token *token)
 int	handle_redir_lesser_lesser(t_token *token, t_data *data)
 {
 	int		process_idx;
-	char	*here_doc_str;
 
 	process_idx = handle_redir_lesser_lesser_get_proc_idx(token, data);
 	if (process_idx == -1)
@@ -75,7 +74,7 @@ int	handle_redir_lesser_lesser(t_token *token, t_data *data)
 	// global bool variable here?
 	dup2(data->executor.here_doc_array[process_idx][T_PIPE_WRITE],
 		STDIN_FILENO);
-	// func here
+	handle_redir_lesser_lesser_here_doc(token, data);
 	dup2(STDIN_FILENO,
 		data->executor.here_doc_array[process_idx][T_PIPE_WRITE]);
 	return (0);

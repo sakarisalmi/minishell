@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:06:06 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/16 15:41:00 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/16 15:44:28 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,11 @@ void	handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data)
 	{
 		here_doc_str = readline("here_doc> ");
 		if (ft_strncmp(here_doc_str, token->args[0],
-				ft_strlen(token->args[0])) == 0)
+				ft_strlen(here_doc_str)) == 0)
 			break ;
 		else
 		{
+			here_doc_str = here_doc_process_line(here_doc_str, data);
 			printf("%s", here_doc_str);
 		}
 	}
@@ -79,6 +80,7 @@ static char	*here_doc_process_line(char *s, t_data *data)
 		else
 			ft_strncat(f.str, s + f.i, 1);
 	}
+	free(s);
 	return (f.str);
 }
 
