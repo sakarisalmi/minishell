@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/12 16:38:25 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/16 15:53:58 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ typedef struct s_executor_function
 }	t_executor_function;
 
 // executor.c
-int		test_executor(t_data *data);
 int		real_executor(t_executor *ex, t_data *data);
-int		test_executor_pre_setup(t_data *data);
 int		real_executor_pre_setup(t_data *data);
 int		test_executor_builtin(t_job *job, t_data *data);
 void	executor_exec_cmd(t_job *job, t_data *data);
