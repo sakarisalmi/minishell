@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/12 16:38:25 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/16 14:48:02 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ enum e_PIPE_ENDS
 	T_PIPE_WRITE
 };
 
+typedef struct s_here_doc_function
+{
+	char	*str1;
+	char	*str2;
+	int		i;
+	int		j;
+}	t_here_doc_function;
+
 typedef struct s_executor_function
 {
 	int	result;
@@ -38,12 +46,8 @@ typedef struct s_executor_function
 }	t_executor_function;
 
 // executor.c
-int		test_executor(t_data *data);
 int		real_executor(t_executor *ex, t_data *data);
-int		test_executor_pre_setup(t_data *data);
 int		real_executor_pre_setup(t_data *data);
-int		test_executor_builtin(t_job *job, t_data *data);
-void	executor_exec_cmd(t_job *job, t_data *data);
 
 // job_utils1.c
 t_job	**create_jobs_from_tokens(t_token *token_lst);
@@ -58,6 +62,11 @@ int		handle_redir_greater_greater(t_token *token);
 int		handle_redir_lesser(t_token *token);
 int		handle_redir_lesser_lesser(t_token *token, t_data *data);
 
+// handle_redirs_utils2.c
+int		handle_redir_lesser_lesser_get_proc_idx(t_token *token,
+			t_data *data);
+void	handle_redir_lesser_lesser_here_doc(t_token *token);
+
 // fds_array_utils1.c
 int		executor_pipe_set_up(t_executor *exec);
 void	close_pipe_ends_parent_process(int *fds);
@@ -65,7 +74,8 @@ int		**fds_array_create_fds_for_piping(int amount_of_jobs);
 void	fds_array_free(int **fds_array, int free_until_idx);
 
 // fds_array_utils2.c
-void	child_process_close_all_fds(t_executor *exec);
+void	close_all_pipe_fds(t_executor *exec);
+int		**executor_set_up_here_doc_array(t_executor *exec);
 
 // executor_cmd_utils1.c
 t_token	*job_get_cmd_token(t_job *job);

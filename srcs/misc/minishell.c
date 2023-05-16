@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:09 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/12 14:01:32 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/15 13:35:57 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ static void	minishell_data_set_init_vals(t_data *data)
 	data->parser.token_amount = 0;
 	data->parser.token_lst = NULL;
 	data->executor.fds_array = NULL;
+	data->executor.here_doc_array = NULL;
 	data->executor.jobs_amount = 0;
 	data->executor.jobs_array = NULL;
 	data->executor.token_amount = 0;

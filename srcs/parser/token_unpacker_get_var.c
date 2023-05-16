@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 14:04:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/11 14:58:38 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/16 15:08:44 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char		*token_unpacker_hit_var(char *rl_part, char *token,
 				t_token_unpacker *tunp, t_data *data);
 static char	*token_unpacker_get_var(char *rl_part, char *token,
 				t_token_unpacker *tunp, t_data *data);
-static char	*token_unpacker_get_var_from_env(char *var_name, t_data *data);
+char		*token_unpacker_get_var_from_env(char *var_name, t_data *data);
 static char	*token_unpacker_get_last_exit(char *rl_part, char *token,
 				t_token_unpacker *tunp, t_data *data);
 
@@ -66,7 +66,7 @@ static char	*token_unpacker_get_var(char *rl_part, char *token,
 	return (token);
 }
 
-static char	*token_unpacker_get_var_from_env(char *var_name, t_data *data)
+char	*token_unpacker_get_var_from_env(char *var_name, t_data *data)
 {
 	int		var_name_len;
 	int		i;

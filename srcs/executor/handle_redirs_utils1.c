@@ -6,17 +6,18 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:16 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/10 13:07:49 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/16 14:29:09 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/tokenizer.h"
+#include "../../include/executor.h"
 
-int	handle_redir_greater(t_token *token);
-int	handle_redir_greater_greater(t_token *token);
-int	handle_redir_lesser(t_token *token);
-int	handle_redir_lesser_lesser(t_token *token, t_data *data);
+int			handle_redir_greater(t_token *token);
+int			handle_redir_greater_greater(t_token *token);
+int			handle_redir_lesser(t_token *token);
+int			handle_redir_lesser_lesser(t_token *token, t_data *data);
 
 /*----------------------------------------------------------------------------*/
 
@@ -24,7 +25,6 @@ int	handle_redir_greater(t_token *token)
 {
 	int	result;
 
-	// check the last part (permissions)!
 	result = open(token->args[0], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (result < 0)
 	{
@@ -39,8 +39,6 @@ int	handle_redir_greater_greater(t_token *token)
 {
 	int	result;
 
-	// check the last part (permissions).
-	// Also check if the options are correct).
 	result = open(token->args[0], O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (result < 0)
 	{
@@ -68,7 +66,17 @@ int	handle_redir_lesser(t_token *token)
 /*	Do later! how do you do the here_doc, check for examples!*/
 int	handle_redir_lesser_lesser(t_token *token, t_data *data)
 {
-	(void)token;
-	(void)data;
+	int		process_idx;
+	char	*here_doc_str;
+
+	process_idx = handle_redir_lesser_lesser_get_proc_idx(token, data);
+	if (process_idx == -1)
+		return (1);
+	// global bool variable here?
+	dup2(data->executor.here_doc_array[process_idx][T_PIPE_WRITE],
+		STDIN_FILENO);
+	// func here
+	dup2(STDIN_FILENO,
+		data->executor.here_doc_array[process_idx][T_PIPE_WRITE]);
 	return (0);
 }

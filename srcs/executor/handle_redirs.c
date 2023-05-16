@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 13:26:18 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/09 13:46:43 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/15 15:40:26 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ static int	job_handle_redirs_lessers(t_job *job, int idx, t_data *data)
 		result = handle_redir_lesser_lesser(job->tokens_array[idx], data);
 	if (result < 0)
 		return (result);
+	if (job->fd_in != STDIN_FILENO && job->fd_in != result)
+		close(job->fd_in);
 	job->fd_in = result;
 	return (0);
 }
@@ -77,6 +79,8 @@ static int	job_handle_redirs_greaters(t_job *job, int idx)
 	}
 	if (result < 0)
 		return (result);
+	if (job->fd_out != STDOUT_FILENO && job->fd_out != result)
+		close(job->fd_out);
 	job->fd_out = result;
 	return (0);
 }

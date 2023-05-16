@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 13:49:03 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/10 16:11:52 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/15 14:23:43 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	set_up_pipes_between_jobs(int *fds, t_job *job_from, t_job *job_to)
 {
 	if (pipe(fds) == -1)
 	{
-		perror("Minishell: Pipe");
+		perror("MINISHELL: Pipe");
 		return (1);
 	}
 	job_from->fd_out = fds[T_PIPE_WRITE];
