@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/16 14:48:02 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/16 15:35:48 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,8 @@ enum e_PIPE_ENDS
 
 typedef struct s_here_doc_function
 {
-	char	*str1;
-	char	*str2;
+	char	*str;
 	int		i;
-	int		j;
 }	t_here_doc_function;
 
 typedef struct s_executor_function
@@ -65,7 +63,7 @@ int		handle_redir_lesser_lesser(t_token *token, t_data *data);
 // handle_redirs_utils2.c
 int		handle_redir_lesser_lesser_get_proc_idx(t_token *token,
 			t_data *data);
-void	handle_redir_lesser_lesser_here_doc(t_token *token);
+void	handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data);
 
 // fds_array_utils1.c
 int		executor_pipe_set_up(t_executor *exec);

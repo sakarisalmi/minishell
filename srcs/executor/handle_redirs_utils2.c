@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:06:06 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/16 15:18:00 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/16 15:41:00 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,17 @@
 #include "../../include/parser.h"
 #include "../../include/tokenizer.h"
 #include "../../include/executor.h"
+
+int			handle_redir_lesser_lesser_get_proc_idx(t_token *token,
+				t_data *data);
+void		handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data);
+static char	*here_doc_process_line(char *s, t_data *data);
+static char	*here_doc_get_env_var(char *s, t_data *data,
+				t_here_doc_function *f);
+static char	*here_doc_get_env_var_2(char *s, t_data *data,
+				t_here_doc_function *f);
+
+/*----------------------------------------------------------------------------*/
 
 int	handle_redir_lesser_lesser_get_proc_idx(t_token *token,
 	t_data *data)
@@ -54,22 +65,21 @@ static char	*here_doc_process_line(char *s, t_data *data)
 {
 	t_here_doc_function	f;
 
-	f.str1 = ft_calloc(ft_strlen(s), sizeof(char));
-	if (!f.str1)
+	f.str = ft_calloc(ft_strlen(s) + 1, sizeof(char));
+	if (!f.str)
 	{
 		ft_putendl_fd("here_doc malloc failure", 2);
 		return (NULL);
 	}
 	f.i = -1;
-	f.j = -1;
 	while (s[++f.i])
 	{
 		if (s[f.i] == '$')
-			f.str1 = here_doc_get_env_var(s, data, &f);
+			f.str = here_doc_get_env_var(s, data, &f);
 		else
-			ft_strncat(f.str1, s + f.i, 1);
+			ft_strncat(f.str, s + f.i, 1);
 	}
-	return (f.str1);
+	return (f.str);
 }
 
 static char	*here_doc_get_env_var(char *s, t_data *data,
@@ -81,13 +91,14 @@ static char	*here_doc_get_env_var(char *s, t_data *data,
 	{
 		f->i += 2;
 		result = ft_itoa(data->latest_exit_status);
-		f->str1 = (char *)ft_realloc(f->str1, ft_strlen(s) + ft_strlen(result));
-		ft_strncat(f->str1, result, ft_strlen(result));
+		f->str = (char *)ft_realloc(f->str, ft_strlen(s)
+				+ 1 + ft_strlen(result));
+		ft_strncat(f->str, result, ft_strlen(result));
 		free(result);
 	}
 	else
-		f->str1 = here_doc_get_env_var_2(s, data, f);
-	return (f->str1);
+		f->str = here_doc_get_env_var_2(s, data, f);
+	return (f->str);
 }
 
 static char	*here_doc_get_env_var_2(char *s, t_data *data,
@@ -101,20 +112,21 @@ static char	*here_doc_get_env_var_2(char *s, t_data *data,
 	j = f->i;
 	while (ft_isalnum(s[j]) || s[j] == '_')
 		j++;
-	var_name = ft_calloc(j - f->i, sizeof(char));
+	var_name = ft_calloc(j - f->i + 1, sizeof(char));
 	if (!var_name)
 	{
 		f->i = j;
 		ft_putendl_fd("here_doc_get_var malloc failure", 2);
-		return (f->str1);
+		return (f->str);
 	}
 	ft_strncpy(var_name, s + f->i, j - f->i);
 	f->i = j;
 	result = token_unpacker_get_var_from_env(var_name, data);
 	if (!result)
-		return (f->str1);
-	f->str1 = (char *)ft_realloc(f->str1, ft_strlen(s) + ft_strlen(result));
-	ft_strncat(f->str1, result, ft_strlen(result));
+		return (f->str);
+	f->str = (char *)ft_realloc(f->str, ft_strlen(s)
+			+ 1 + ft_strlen(result));
+	ft_strncat(f->str, result, ft_strlen(result));
 	free(result);
-	return (f->str1);
+	return (f->str);
 }
