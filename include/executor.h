@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/16 15:35:48 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 13:30:16 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,13 @@ int		job_handle_redirs(t_job *job, t_data *data);
 int		handle_redir_greater(t_token *token);
 int		handle_redir_greater_greater(t_token *token);
 int		handle_redir_lesser(t_token *token);
-int		handle_redir_lesser_lesser(t_token *token, t_data *data);
+int		handle_redir_lesser_lesser(t_token *token, t_job *job,
+			t_data *data);
 
 // handle_redirs_utils2.c
-int		handle_redir_lesser_lesser_get_proc_idx(t_token *token,
-			t_data *data);
-void	handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data);
+int		get_proc_idx(t_job *job, t_data *data);
+int		handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data,
+			int process_idx);
 
 // fds_array_utils1.c
 int		executor_pipe_set_up(t_executor *exec);
@@ -74,6 +75,7 @@ void	fds_array_free(int **fds_array, int free_until_idx);
 // fds_array_utils2.c
 void	close_all_pipe_fds(t_executor *exec);
 int		**executor_set_up_here_doc_array(t_executor *exec);
+int		executor_set_up_here_doc_pipe(t_executor *exec, int idx);
 
 // executor_cmd_utils1.c
 t_token	*job_get_cmd_token(t_job *job);

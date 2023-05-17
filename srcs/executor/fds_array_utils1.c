@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 13:49:03 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/15 14:23:43 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 13:33:57 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,11 @@ static int	set_up_pipes_between_jobs(int *fds, t_job *job_from, t_job *job_to)
 
 void	close_pipe_ends_parent_process(int *fds)
 {
-	close(fds[0]);
-	close(fds[1]);
+	if (fds)
+	{
+		close(fds[0]);
+		close(fds[1]);
+	}
 }
 
 int	**fds_array_create_fds_for_piping(int amount_of_jobs)
@@ -86,7 +89,8 @@ void	fds_array_free(int **fds_array, int free_until_idx)
 	i = 0;
 	while (i < free_until_idx)
 	{
-		free(fds_array[i]);
+		if (fds_array[i])
+			free(fds_array[i]);
 		i++;
 	}
 	free(fds_array);

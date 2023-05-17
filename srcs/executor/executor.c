@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/16 14:25:38 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 13:48:43 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 
 int		real_executor(t_executor *ex, t_data *data);
 int		real_executor_pre_setup(t_data *data);
-int		executor_single_builtin_process(t_data *data);
-int		executor_exec_builtin(t_job *job, t_data *data);
+int		test_executor_builtin(t_job *job, t_data *data);
 void	executor_exec_cmd(t_job *job, t_data *data);
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +35,7 @@ int	real_executor(t_executor *ex, t_data *data)
 			if (f.pid[f.i] == 0)
 			{
 				if (check_for_builtin(ex->jobs_array[f.i]->tokens_array))
-					exit(executor_exec_builtin(ex->jobs_array[f.i], data));
+					exit(test_executor_builtin(ex->jobs_array[f.i], data));
 				executor_exec_cmd(ex->jobs_array[f.i], data);
 			}
 			else if (f.pid[f.i] < 0)
@@ -56,15 +55,15 @@ int	real_executor_pre_setup(t_data *data)
 	data->executor.token_lst = data->parser.token_lst;
 	data->executor.jobs_array = create_jobs_from_tokens(
 			data->executor.token_lst);
-	data->executor.here_doc_array = \
-		executor_set_up_here_doc_array(&data->executor);
 	i = 0;
 	while (data->executor.jobs_array[i])
 		i++;
 	data->executor.jobs_amount = i;
+	data->executor.here_doc_array = \
+		executor_set_up_here_doc_array(&data->executor);
 	if (data->executor.jobs_amount == 1
 		&& check_for_builtin(data->executor.jobs_array[0]->tokens_array))
-		return (executor_single_builtin_process(data));
+		return (test_executor_builtin(data->executor.jobs_array[0], data));
 	else
 	{
 		if (data->executor.jobs_amount > 1)
@@ -77,21 +76,11 @@ int	real_executor_pre_setup(t_data *data)
 	return (0);
 }
 
-int	executor_single_builtin_process(t_data *data)
-{
-	int	result;
-
-	result = job_handle_redirs(data->executor.jobs_array[0], data);
-	if (result != 0)
-		return (result);
-	return (executor_exec_builtin(data->executor.jobs_array[0], data));
-}
-
 
 /*	This function handles the execution of the read_line when there is only
 	a single job and the command in it is a built-in. We do this to not to
 	fork, which happens otherwise in the normal execution of commands	.*/
-int	executor_exec_builtin(t_job *job, t_data *data)
+int	test_executor_builtin(t_job *job, t_data *data)
 {
 	if (job->fd_in != STDIN_FILENO)
 		dup2(job->fd_in, STDIN_FILENO);
@@ -121,7 +110,9 @@ void	executor_exec_cmd(t_job *job, t_data *data)
 	close_all_pipe_fds(&data->executor);
 	cmd_token = job_get_cmd_token(job);
 	if (job->cmd_path)
+	{
 		if (execve(job->cmd_path, cmd_token->args, data->envs) < 0)
 			exit(executor_error_msg(NULL, 3));
+	}
 	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:16 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/16 15:46:31 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 13:48:16 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 int			handle_redir_greater(t_token *token);
 int			handle_redir_greater_greater(t_token *token);
 int			handle_redir_lesser(t_token *token);
-int			handle_redir_lesser_lesser(t_token *token, t_data *data);
+int			handle_redir_lesser_lesser(t_token *token, t_job *job,
+				t_data *data);
 
 /*----------------------------------------------------------------------------*/
 
@@ -64,18 +65,20 @@ int	handle_redir_lesser(t_token *token)
 }
 
 /*	Do later! how do you do the here_doc, check for examples!*/
-int	handle_redir_lesser_lesser(t_token *token, t_data *data)
+int	handle_redir_lesser_lesser(t_token *token, t_job *job, t_data *data)
 {
 	int		process_idx;
+	int		result;
 
-	process_idx = handle_redir_lesser_lesser_get_proc_idx(token, data);
+	process_idx = get_proc_idx(job, data);
 	if (process_idx == -1)
-		return (1);
+		return (-1);
 	// global bool variable here?
-	dup2(data->executor.here_doc_array[process_idx][T_PIPE_WRITE],
-		STDIN_FILENO);
-	handle_redir_lesser_lesser_here_doc(token, data);
-	dup2(STDIN_FILENO,
-		data->executor.here_doc_array[process_idx][T_PIPE_WRITE]);
-	return (0);
+	result = handle_redir_lesser_lesser_here_doc(token, data, process_idx);
+	// the result value will tell if the user pressed ctrl-D or ctrl-C
+	// and will return the value
+	// if (result == SOME_CERTAIN_VALUE)
+	// 		blaa
+	// else
+	return (data->executor.here_doc_array[process_idx][T_PIPE_READ]);
 }

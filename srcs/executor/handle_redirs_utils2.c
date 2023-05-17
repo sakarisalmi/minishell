@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:06:06 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/16 15:44:28 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 12:18:02 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include "../../include/tokenizer.h"
 #include "../../include/executor.h"
 
-int			handle_redir_lesser_lesser_get_proc_idx(t_token *token,
-				t_data *data);
-void		handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data);
+int			get_proc_idx(t_job *job, t_data *data);
+int			handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data,
+				int process_idx);
 static char	*here_doc_process_line(char *s, t_data *data);
 static char	*here_doc_get_env_var(char *s, t_data *data,
 				t_here_doc_function *f);
@@ -26,25 +26,22 @@ static char	*here_doc_get_env_var_2(char *s, t_data *data,
 
 /*----------------------------------------------------------------------------*/
 
-int	handle_redir_lesser_lesser_get_proc_idx(t_token *token,
-	t_data *data)
+int	get_proc_idx(t_job *job, t_data *data)
 {
-	int	idx;
 	int	i;
 
-	idx = -1;
-	while (++idx < data->executor.jobs_amount)
+	i = -1;
+	while (++i < data->executor.jobs_amount)
 	{
-		i = -1;
-		while (data->executor.jobs_array[idx]->tokens_array[++i])
-			if (token == data->executor.jobs_array[idx]->tokens_array[i])
-				return (idx);
+		if (data->executor.jobs_array[i] == job)
+			return (i);
 	}
 	return (-1);
 }
 
 /*	have to implement correct signals for the here_doc. Check how to do it. */
-void	handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data)
+int	handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data,
+	int process_idx)
 {
 	char	*here_doc_str;
 
@@ -57,9 +54,11 @@ void	handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data)
 		else
 		{
 			here_doc_str = here_doc_process_line(here_doc_str, data);
-			printf("%s", here_doc_str);
+			ft_putendl_fd(here_doc_str, data->executor.here_doc_array
+			[process_idx][T_PIPE_WRITE]);
 		}
 	}
+	return (0);
 }
 
 static char	*here_doc_process_line(char *s, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/15 13:35:00 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 11:47:16 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_job
 	t_token	**tokens_array;
 	int		fd_in;
 	int		fd_out;
-	int		append_mode;
+	int		here_doc_bool;
 	char	*cmd_path;
 }	t_job;
 
