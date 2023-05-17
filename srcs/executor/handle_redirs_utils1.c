@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:16 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/17 13:48:16 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 14:13:14 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 int			handle_redir_greater(t_token *token);
 int			handle_redir_greater_greater(t_token *token);
 int			handle_redir_lesser(t_token *token);
-int			handle_redir_lesser_lesser(t_token *token, t_job *job,
+int			handle_redir_lesser_lesser(t_token *token, t_process *proc,
 				t_data *data);
 
 /*----------------------------------------------------------------------------*/
@@ -65,12 +65,12 @@ int	handle_redir_lesser(t_token *token)
 }
 
 /*	Do later! how do you do the here_doc, check for examples!*/
-int	handle_redir_lesser_lesser(t_token *token, t_job *job, t_data *data)
+int	handle_redir_lesser_lesser(t_token *token, t_process *proc, t_data *data)
 {
 	int		process_idx;
 	int		result;
 
-	process_idx = get_proc_idx(job, data);
+	process_idx = get_process_idx(proc, data);
 	if (process_idx == -1)
 		return (-1);
 	// global bool variable here?

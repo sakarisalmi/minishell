@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:06:06 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/17 12:18:02 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 14:12:40 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../../include/tokenizer.h"
 #include "../../include/executor.h"
 
-int			get_proc_idx(t_job *job, t_data *data);
+int			get_process_idx(t_process *proc, t_data *data);
 int			handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data,
 				int process_idx);
 static char	*here_doc_process_line(char *s, t_data *data);
@@ -26,14 +26,14 @@ static char	*here_doc_get_env_var_2(char *s, t_data *data,
 
 /*----------------------------------------------------------------------------*/
 
-int	get_proc_idx(t_job *job, t_data *data)
+int	get_process_idx(t_process *proc, t_data *data)
 {
 	int	i;
 
 	i = -1;
-	while (++i < data->executor.jobs_amount)
+	while (++i < data->executor.process_amount)
 	{
-		if (data->executor.jobs_array[i] == job)
+		if (data->executor.process_array[i] == proc)
 			return (i);
 	}
 	return (-1);
