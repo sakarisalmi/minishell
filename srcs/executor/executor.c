@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/17 16:39:49 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 17:08:02 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 #include "../../include/executor.h"
 #include "../../include/tokenizer.h"
 
-int		real_executor(t_executor *ex, t_data *data);
-int		real_executor_pre_setup(t_data *data);
-int		test_executor_builtin(t_process *proc, t_data *data);
-void	executor_exec_cmd(t_process *proc, t_data *data);
+static int		executor(t_executor *ex, t_data *data);
+int				executor_pre_setup(t_data *data);
+static int		executor_single_builtin_process(t_executor *ex, t_data *data);
+static int		executor_builtin_func(t_process *proc, t_data *data);
+static void		executor_exec_cmd(t_process *proc, t_data *data);
 
 /*----------------------------------------------------------------------------*/
 
-int	real_executor(t_executor *ex, t_data *data)
+static int	executor(t_executor *ex, t_data *data)
 {
 	t_executor_function	f;
 
@@ -35,7 +36,7 @@ int	real_executor(t_executor *ex, t_data *data)
 			if (f.pid[f.i] == 0)
 			{
 				if (check_for_builtin(ex->process_array[f.i]->tokens_array))
-					exit(test_executor_builtin(ex->process_array[f.i], data));
+					exit(executor_builtin_func(ex->process_array[f.i], data));
 				executor_exec_cmd(ex->process_array[f.i], data);
 			}
 			else if (f.pid[f.i] < 0)
@@ -48,7 +49,7 @@ int	real_executor(t_executor *ex, t_data *data)
 	return (executor_end(&f, ex));
 }
 
-int	real_executor_pre_setup(t_data *data)
+int	executor_pre_setup(t_data *data)
 {
 	int	i;
 
@@ -63,7 +64,7 @@ int	real_executor_pre_setup(t_data *data)
 		executor_set_up_here_doc_array(&data->executor);
 	if (data->executor.process_amount == 1
 		&& check_for_builtin(data->executor.process_array[0]->tokens_array))
-		return (test_executor_builtin(data->executor.process_array[0], data));
+		return (executor_single_builtin_process(&data->executor, data));
 	else
 	{
 		if (data->executor.process_amount > 1)
@@ -71,16 +72,25 @@ int	real_executor_pre_setup(t_data *data)
 			if (executor_pipe_set_up(&data->executor) != 0)
 				return (executor_error_msg(NULL, 2));
 		}
-		return (real_executor(&data->executor, data));
+		return (executor(&data->executor, data));
 	}
 	return (0);
 }
 
+static int	executor_single_builtin_process(t_executor *ex, t_data *data)
+{
+	int	result;
+
+	result = process_handle_redirs(ex->process_array[0], data);
+	if (result != 0)
+		return (result);
+	return (executor_builtin_func(ex->process_array[0], data));
+}
 
 /*	This function handles the execution of the read_line when there is only
 	a single proc and the command in it is a built-in. We do this to not to
 	fork, which happens otherwise in the normal execution of commands	.*/
-int	test_executor_builtin(t_process *proc, t_data *data)
+static int	executor_builtin_func(t_process *proc, t_data *data)
 {
 	if (proc->fd_in != STDIN_FILENO)
 		dup2(proc->fd_in, STDIN_FILENO);
@@ -99,7 +109,7 @@ int	test_executor_builtin(t_process *proc, t_data *data)
 	we will exit the process with zero. 
 	HUOM: what to do about built-ins? will prob have to go in another func
 	(this functions line amount is close to the limit)*/
-void	executor_exec_cmd(t_process *proc, t_data *data)
+static void	executor_exec_cmd(t_process *proc, t_data *data)
 {
 	t_token	*cmd_token;
 
