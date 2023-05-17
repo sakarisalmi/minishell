@@ -6,7 +6,7 @@
 #    By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/04 10:03:33 by ssalmi            #+#    #+#              #
-#    Updated: 2023/05/17 13:59:09 by ssalmi           ###   ########.fr        #
+#    Updated: 2023/05/17 16:13:20 by ssalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,7 @@ $(NAME): $(OBJS)
 		cp $(LIBFT)libft.a .
 		mv libft.a $(LIBRARY)
 		$(AR) $(LIBRARY) $(OBJS)
-		$(CC) $(CFLAGS) -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -L. $(LIBRARY) $(SRCS) -o $(NAME)
+		$(CC) $(CFLAGS) -L $(HOME)/.brew/Cellar/readline/8.2.1/lib -lreadline -L. -g $(LIBRARY) $(SRCS) -o $(NAME)
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJSF)
 		@$(CC) $(CFLAGS) -I $(INCLUDES) -c $< -o $@

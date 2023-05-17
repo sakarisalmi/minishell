@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 14:04:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/16 15:08:44 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 16:35:25 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static char	*token_unpacker_get_var(char *rl_part, char *token,
 char		*token_unpacker_get_var_from_env(char *var_name, t_data *data);
 static char	*token_unpacker_get_last_exit(char *rl_part, char *token,
 				t_token_unpacker *tunp, t_data *data);
+static void	set_token_unpacker_var_struct_vals(t_token_unpacker_var *f);
 
 /*----------------------------------------------------------------------------*/
 
@@ -44,11 +45,12 @@ static char	*token_unpacker_get_var(char *rl_part, char *token,
 {
 	t_token_unpacker_var	f;
 
+	set_token_unpacker_var_struct_vals(&f);
 	tunp->i++;
 	f.j = tunp->i;
 	while (ft_isalnum(rl_part[f.j]) || rl_part[f.j] == '_')
 		f.j++;
-	f.var_name = ft_calloc(f.j - tunp->i, sizeof(char));
+	f.var_name = ft_calloc(f.j - tunp->i + 1, sizeof(char));
 	if (!f.var_name)
 	{
 		tunp->i = f.j;
@@ -60,7 +62,8 @@ static char	*token_unpacker_get_var(char *rl_part, char *token,
 	f.result = token_unpacker_get_var_from_env(f.var_name, data);
 	if (!f.result)
 		return (token);
-	token = (char *)ft_realloc(token, ft_strlen(rl_part) + ft_strlen(f.result));
+	tunp->token_length += ft_strlen(f.result);
+	token = (char *)ft_realloc(token, tunp->token_length);
 	ft_strncat(token, f.result, ft_strlen(f.result));
 	free (f.result);
 	return (token);
@@ -78,11 +81,13 @@ char	*token_unpacker_get_var_from_env(char *var_name, t_data *data)
 		if (ft_strnstr(data->envs[i], var_name, var_name_len)
 			&& data->envs[i][var_name_len] == '=')
 		{
+			ft_bzero(var_name, ft_strlen(var_name));
 			free(var_name);
 			return (ft_strdup(data->envs[i] + var_name_len + 1));
 		}
 		i++;
 	}
+	ft_bzero(var_name, ft_strlen(var_name));
 	free(var_name);
 	return (NULL);
 }
@@ -94,10 +99,19 @@ static char	*token_unpacker_get_last_exit(char *rl_part, char *token,
 {
 	char	*result;
 
+	(void)rl_part;
 	tunp->i += 2;
 	result = ft_itoa(data->latest_exit_status);
-	token = (char *)ft_realloc(token, ft_strlen(rl_part) + ft_strlen(result));
+	tunp->token_length += ft_strlen(result);
+	token = (char *)ft_realloc(token, tunp->token_length);
 	ft_strncat(token, result, ft_strlen(result));
 	free(result);
 	return (token);
+}
+
+static void	set_token_unpacker_var_struct_vals(t_token_unpacker_var *f)
+{
+	f->j = 0;
+	f->result = NULL;
+	f->var_name = NULL;
 }
