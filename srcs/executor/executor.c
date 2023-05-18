@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/16 15:53:29 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/18 13:01:29 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	real_executor(t_executor *ex, t_data *data)
 			}
 			else if (f.pid[f.i] < 0)
 				return (executor_error_msg(NULL, 1));
+			close_pipe_ends_parent_process(ex->here_doc_array[f.i]);
 			if (f.i != 0)
 				close_pipe_ends_parent_process(ex->fds_array[f.i - 1]);
 		}
@@ -58,6 +59,8 @@ int	real_executor_pre_setup(t_data *data)
 	while (data->executor.jobs_array[i])
 		i++;
 	data->executor.jobs_amount = i;
+	data->executor.here_doc_array = \
+		executor_set_up_here_doc_array(&data->executor);
 	if (data->executor.jobs_amount == 1
 		&& check_for_builtin(data->executor.jobs_array[0]->tokens_array))
 		return (test_executor_builtin(data->executor.jobs_array[0], data));
@@ -83,7 +86,7 @@ int	test_executor_builtin(t_job *job, t_data *data)
 		dup2(job->fd_in, STDIN_FILENO);
 	if (job->fd_out != STDOUT_FILENO)
 		dup2(job->fd_out, STDOUT_FILENO);
-	child_process_close_all_fds(&data->executor);
+	close_all_pipe_fds(&data->executor);
 	printf("IN TEST_EXECUTOR_BUILTIN; feature coming soon!\n");
 	(void)data;
 	return (0);
@@ -104,10 +107,12 @@ void	executor_exec_cmd(t_job *job, t_data *data)
 		dup2(job->fd_in, STDIN_FILENO);
 	if (job->fd_out != STDOUT_FILENO)
 		dup2(job->fd_out, STDOUT_FILENO);
-	child_process_close_all_fds(&data->executor);
+	close_all_pipe_fds(&data->executor);
 	cmd_token = job_get_cmd_token(job);
 	if (job->cmd_path)
+	{
 		if (execve(job->cmd_path, cmd_token->args, data->envs) < 0)
 			exit(executor_error_msg(NULL, 3));
+	}
 	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 13:26:18 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/09 13:46:43 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 13:31:49 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,27 @@ int	job_handle_redirs(t_job *job, t_data *data)
 static int	job_handle_redirs_lessers(t_job *job, int idx, t_data *data)
 {
 	int	result;
+	int	old_here_doc_bool;
 
+	old_here_doc_bool = job->here_doc_bool;
 	if (ft_strncmp(job->tokens_array[idx]->string, "<", 2) == 0)
+	{
 		result = handle_redir_lesser(job->tokens_array[idx]);
+		job->here_doc_bool = 0;
+	}
 	else
-		result = handle_redir_lesser_lesser(job->tokens_array[idx], data);
+	{
+		if (executor_set_up_here_doc_pipe(&data->executor, get_proc_idx(job,
+					data)) != 0)
+			return (-1);
+		result = handle_redir_lesser_lesser(job->tokens_array[idx], job, data);
+		job->here_doc_bool = 1;
+	}
 	if (result < 0)
 		return (result);
+	if (job->fd_in != STDIN_FILENO && job->fd_in != result
+		&& !old_here_doc_bool)
+		close(job->fd_in);
 	job->fd_in = result;
 	return (0);
 }
@@ -66,17 +80,13 @@ static int	job_handle_redirs_greaters(t_job *job, int idx)
 	int	result;
 
 	if (ft_strncmp(job->tokens_array[idx]->string, ">", 2) == 0)
-	{
 		result = handle_redir_greater(job->tokens_array[idx]);
-		job->append_mode = 0;
-	}
 	else
-	{
 		result = handle_redir_greater_greater(job->tokens_array[idx]);
-		job->append_mode = 1;
-	}
 	if (result < 0)
 		return (result);
+	if (job->fd_out != STDOUT_FILENO && job->fd_out != result)
+		close(job->fd_out);
 	job->fd_out = result;
 	return (0);
 }
