@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:32:58 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/17 13:34:28 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 14:21:27 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ void	close_all_pipe_fds(t_executor *exec)
 	i = -1;
 	if (exec->fds_array)
 	{
-		while (++i < exec->jobs_amount - 1)
+		while (++i < exec->process_amount - 1)
 		{
 			close(exec->fds_array[i][0]);
 			close(exec->fds_array[i][1]);
 		}
 	}
 	i = -1;
-	while (++i < exec->jobs_amount)
+	while (++i < exec->process_amount)
 	{
 		if (exec->here_doc_array[i])
 		{
@@ -59,14 +59,14 @@ static int	**executor_create_here_doc_array(t_executor *exec)
 	int	**here_doc_array;
 	int	i;
 
-	here_doc_array = ft_calloc(exec->jobs_amount, sizeof(int *));
+	here_doc_array = ft_calloc(exec->process_amount, sizeof(int *));
 	if (!here_doc_array)
 	{
 		ft_putendl_fd("MINISHELL: error: here_doc_array alloc failure", 2);
 		return (NULL);
 	}
 	i = -1;
-	while (++i < exec->jobs_amount)
+	while (++i < exec->process_amount)
 		here_doc_array[i] = NULL;
 	return (here_doc_array);
 }

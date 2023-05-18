@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:06:06 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/17 12:18:02 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 14:49:37 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../../include/tokenizer.h"
 #include "../../include/executor.h"
 
-int			get_proc_idx(t_job *job, t_data *data);
+int			get_process_idx(t_process *proc, t_data *data);
 int			handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data,
 				int process_idx);
 static char	*here_doc_process_line(char *s, t_data *data);
@@ -26,14 +26,14 @@ static char	*here_doc_get_env_var_2(char *s, t_data *data,
 
 /*----------------------------------------------------------------------------*/
 
-int	get_proc_idx(t_job *job, t_data *data)
+int	get_process_idx(t_process *proc, t_data *data)
 {
 	int	i;
 
 	i = -1;
-	while (++i < data->executor.jobs_amount)
+	while (++i < data->executor.process_amount)
 	{
-		if (data->executor.jobs_array[i] == job)
+		if (data->executor.process_array[i] == proc)
 			return (i);
 	}
 	return (-1);
@@ -90,7 +90,7 @@ static char	*here_doc_get_env_var(char *s, t_data *data,
 
 	if (s[f->i + 1] == '?')
 	{
-		f->i += 2;
+		f->i += 1;
 		result = ft_itoa(data->latest_exit_status);
 		f->str = (char *)ft_realloc(f->str, ft_strlen(s)
 				+ 1 + ft_strlen(result));
@@ -121,7 +121,7 @@ static char	*here_doc_get_env_var_2(char *s, t_data *data,
 		return (f->str);
 	}
 	ft_strncpy(var_name, s + f->i, j - f->i);
-	f->i = j;
+	f->i = j - 1;
 	result = token_unpacker_get_var_from_env(var_name, data);
 	if (!result)
 		return (f->str);

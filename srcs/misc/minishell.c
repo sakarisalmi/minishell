@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:09 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/16 17:20:12 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 17:10:48 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ int	main(int argc, char **argv, char **envp)
 		if (read_line == NULL)
 			ctrl_d_handler();
 		turnon_echo(&termios);
-		if (real_minishell_parser(read_line, &data) != 0)
+		if (minishell_parser(read_line, &data) != 0)
 		{
 			read_line_clean_up(&data);
 			tokens_clean_up(&data);
 			continue ;
 		}
 		read_line_clean_up(&data);
-		data.latest_exit_status = real_executor_pre_setup(&data);
+		data.latest_exit_status = executor_pre_setup(&data);
 		minishell_loop_clean_up(&data);
 	}
 	return (0);
@@ -89,8 +89,8 @@ static void	minishell_data_set_init_vals(t_data *data)
 	data->parser.token_lst = NULL;
 	data->executor.fds_array = NULL;
 	data->executor.here_doc_array = NULL;
-	data->executor.jobs_amount = 0;
-	data->executor.jobs_array = NULL;
+	data->executor.process_amount = 0;
+	data->executor.process_array = NULL;
 	data->executor.token_amount = 0;
 	data->executor.token_lst = NULL;
 }

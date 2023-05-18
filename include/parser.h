@@ -29,6 +29,7 @@ typedef struct s_token_unpacker
 	int	i;
 	int	j;
 	int	k;
+	int	token_length;
 	int	in_quotes;
 	int	in_single_quotes;
 	int	error_code;

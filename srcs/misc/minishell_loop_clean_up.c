@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 12:20:19 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/12 14:03:47 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 14:01:35 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,5 @@
 void	minishell_loop_clean_up(t_data *data)
 {
 	tokens_clean_up(data);
-	executor_clean_up(data, data->executor.jobs_amount);
+	executor_clean_up(data, data->executor.process_amount);
 }

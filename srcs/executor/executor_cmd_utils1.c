@@ -6,27 +6,27 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 15:58:45 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/08 16:28:38 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/17 14:01:23 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/tokenizer.h"
 
-t_token	*job_get_cmd_token(t_job *job);
+t_token	*process_get_cmd_token(t_process *proc);
 char	*find_cmd_path(char *cmd, char **env);
 
 /*----------------------------------------------------------------------------*/
 
-t_token	*job_get_cmd_token(t_job *job)
+t_token	*process_get_cmd_token(t_process *proc)
 {
 	int		i;
 
 	i = 0;
-	while (job->tokens_array[i])
+	while (proc->tokens_array[i])
 	{
-		if (job->tokens_array[i]->type == T_COMMAND)
-			return (job->tokens_array[i]);
+		if (proc->tokens_array[i]->type == T_COMMAND)
+			return (proc->tokens_array[i]);
 		i++;
 	}
 	return (NULL);
