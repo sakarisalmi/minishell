@@ -89,6 +89,7 @@ int		token_unpacker(char *rl_part, t_token *token,
 // token_unpacker_get_var.c
 char	*token_unpacker_hit_var(char *rl_part, char *token,
 			t_token_unpacker *tunp, t_data *data);
+char	*token_unpacker_get_var_from_env(char *var_name, t_data *data);
 
 // token_unpacker_pipe_and_redir.c
 void	token_unpacker_pipe_and_redir(t_token *token, char *rl_part);
