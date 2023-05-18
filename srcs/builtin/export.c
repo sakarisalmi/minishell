@@ -6,11 +6,15 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 15:34:55 by Sharsune          #+#    #+#             */
-/*   Updated: 2023/05/18 14:40:15 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/18 16:36:55 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+int			export(char **args, t_data *data);
+static void	export_print(t_data *data);
+static int	export_find_match(char *str, t_data *data);
 
 /*----------------------------------------------------------------------------*/
 
@@ -20,9 +24,10 @@ int	export(char **args, t_data *data)
 	{
 		export_print(data);
 		return (0);
+		export_find_match(args[0], data);
 	}
 	
-
+	return (0);
 }
 
 static void	export_print(t_data *data)
@@ -37,10 +42,10 @@ static void	export_print(t_data *data)
 	}
 }
 
-static int	export_find_match(char str, t_data *data)
+static int	export_find_match(char *str, t_data *data)
 {
-	char	*var_name;
-
+	(void)str;
+	(void)data;
 
 
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/18 15:58:51 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/18 16:25:54 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,9 @@ int	executor_pre_setup(t_data *data)
 	return (0);
 }
 
+/*	This function handles the execution of the read_line when there is only
+	a single proc and the command in it is a built-in. We do this to not to
+	fork, which happens otherwise in the normal execution of commands	.*/
 static int	executor_single_builtin_process(t_executor *ex, t_data *data)
 {
 	int	result;
@@ -88,9 +91,6 @@ static int	executor_single_builtin_process(t_executor *ex, t_data *data)
 	return (executor_builtin_func(ex->process_array[0], data));
 }
 
-/*	This function handles the execution of the read_line when there is only
-	a single proc and the command in it is a built-in. We do this to not to
-	fork, which happens otherwise in the normal execution of commands	.*/
 static int	executor_builtin_func(t_process *proc, t_data *data)
 {
 	t_token	*builtin_token;

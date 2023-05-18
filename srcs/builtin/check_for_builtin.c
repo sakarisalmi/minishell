@@ -6,12 +6,13 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 17:29:37 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/09 14:08:56 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/18 16:21:26 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/tokenizer.h"
+#include "../../include/builtin.h"
 
 /*	This function checks if there is a command in the tokens array and if that
 	command is a built-in.	Returns 1 if there is an built-in, otherwise

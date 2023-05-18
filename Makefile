@@ -6,7 +6,7 @@
 #    By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/04 10:03:33 by ssalmi            #+#    #+#              #
-#    Updated: 2023/05/17 17:12:38 by ssalmi           ###   ########.fr        #
+#    Updated: 2023/05/18 16:33:17 by ssalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,8 @@ AR = ar rcs
 SRCS_DIR = srcs/
 OBJS_DIR = objs/
 
-BUILTINS_DIR = builtins/
-BUILTINS_FILES = echo pwd env check_for_builtin
+BUILTIN_DIR = builtin/
+BUILTIN_FILES = check_for_builtin echo pwd env cd exit export unset
 
 PARSER_DIR = parser/
 PARSER_FILES = ft_funcs minishell_parser read_line_split rl_split_utils1 \
@@ -47,7 +47,7 @@ MISC_DIR = misc/
 MISC_FILES = minishell str_array_utils1 signal ft_strncmp_casein \
 			minishell_loop_clean_up
 
-FILES += $(addprefix $(BUILTINS_DIR), $(BUILTINS_FILES))
+FILES += $(addprefix $(BUILTIN_DIR), $(BUILTIN_FILES))
 FILES += $(addprefix $(PARSER_DIR), $(PARSER_FILES))
 FILES += $(addprefix $(TOKENIZER_DIR), $(TOKENIZER_FILES))
 FILES += $(addprefix $(EXECUTOR_DIR), $(EXECUTOR_FILES))
@@ -74,7 +74,7 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJSF)
 
 $(OBJSF):
 		@mkdir -p $(OBJS_DIR)
-		@mkdir -p $(OBJS_DIR)$(BUILTINS_DIR)
+		@mkdir -p $(OBJS_DIR)$(BUILTIN_DIR)
 		@mkdir -p $(OBJS_DIR)$(PARSER_DIR)
 		@mkdir -p $(OBJS_DIR)$(TOKENIZER_DIR)
 		@mkdir -p $(OBJS_DIR)$(EXECUTOR_DIR)
