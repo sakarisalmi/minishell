@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 13:31:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/04 15:10:32 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/18 13:35:08 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ int	pwd(void)
 
 	if (getcwd(cwd, 4096) == NULL)
 	{
-		free(cwd);
 		perror("getcwd() error");
 		return (1);
 	}
 	else
 	{
 		ft_printf("%s\n", cwd);
+		free(cwd);
 		return (0);
 	}
 }

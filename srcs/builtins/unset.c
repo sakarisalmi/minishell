@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Sharsune <sharsune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:43:03 by Sharsune          #+#    #+#             */
-/*   Updated: 2023/05/11 14:43:05 by Sharsune         ###   ########.fr       */
+/*   Updated: 2023/05/18 16:04:03 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	unset(char **args)
+int	unset(char **args, t_data *data)
 {
 	int	i;
 	int	j;
 
-	i = 0;
+	i = 1;
 	j = 0;
 	while (args[i++])
 	{

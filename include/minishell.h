@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/18 12:52:29 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/18 13:31:47 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,6 @@ void	ctrl_d_handler(void);
 void	turnoff_echo(struct termios *termios);
 void	turnon_echo(struct termios *termios);
 void	signal_handler(int signum);
-
-// pwd.c
-int		pwd(void);
-
-// env.c
-int		env(t_data *data);
-
-// check_for_builtin.c
-int		check_for_builtin(t_token **tokens_array);
 
 // ft_funcs.c
 int		ft_isspace(char c);

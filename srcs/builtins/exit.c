@@ -6,7 +6,13 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:33:38 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/05 16:34:02 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/18 15:58:14 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/minishell.h"
+
+int	minishell_exit(t_data *data)
+{
+	
+}

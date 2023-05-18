@@ -6,13 +6,14 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:16 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/17 14:13:14 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/18 15:02:17 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/tokenizer.h"
 #include "../../include/executor.h"
+#include "../../include/builtin.h"
 
 int			handle_redir_greater(t_token *token);
 int			handle_redir_greater_greater(t_token *token);

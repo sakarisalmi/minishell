@@ -6,13 +6,14 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:34:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/17 14:23:18 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/18 15:42:05 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/executor.h"
 #include "../../include/tokenizer.h"
+#include "../../include/builtin.h"
 
 void	executor_start(t_executor_function *f, t_executor *ex);
 int		executor_end(t_executor_function *f, t_executor *ex);
@@ -69,6 +70,8 @@ int	executor_check_if_to_fork(t_executor_function *f, t_executor *ex,
 	cmd_token = process_get_cmd_token(ex->process_array[f->i]);
 	if (cmd_token)
 	{
+		if (cmd_token->string[0] == '\0')
+			return (executor_error_msg(cmd_token->string, 4));
 		ex->process_array[f->i]->cmd_path = find_cmd_path(cmd_token->string,
 				data->envs);
 		if (!ex->process_array[f->i]->cmd_path)

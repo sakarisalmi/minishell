@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 14:04:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/17 16:35:25 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/18 15:37:52 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,17 @@ static void	set_token_unpacker_var_struct_vals(t_token_unpacker_var *f);
 char	*token_unpacker_hit_var(char *rl_part, char *token,
 	t_token_unpacker *tunp, t_data *data)
 {
-	if (rl_part[tunp->i + 1] == '?')
+	if (ft_isspace(rl_part[tunp->i + 1]) || rl_part[tunp->i + 1] == '\0'
+		|| (tunp->in_quotes && (rl_part[tunp->i + 1] == '"'
+				|| rl_part[tunp->i + 1] == '\'')))
+	{
+		tunp->token_length++;
+		token = ft_realloc(token, tunp->token_length);
+		ft_strncat(token, "$", 1);
+		tunp->i++;
+		return (token);
+	}
+	else if (rl_part[tunp->i + 1] == '?')
 		return (token_unpacker_get_last_exit(rl_part, token, tunp, data));
 	else
 		return (token_unpacker_get_var(rl_part, token, tunp, data));

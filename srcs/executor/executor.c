@@ -6,13 +6,14 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/18 13:07:15 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/18 15:58:51 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/executor.h"
 #include "../../include/tokenizer.h"
+#include "../../include/builtin.h"
 
 static int		executor(t_executor *ex, t_data *data);
 int				executor_pre_setup(t_data *data);
@@ -92,13 +93,28 @@ static int	executor_single_builtin_process(t_executor *ex, t_data *data)
 	fork, which happens otherwise in the normal execution of commands	.*/
 static int	executor_builtin_func(t_process *proc, t_data *data)
 {
+	t_token	*builtin_token;
+
 	if (proc->fd_in != STDIN_FILENO)
 		dup2(proc->fd_in, STDIN_FILENO);
 	if (proc->fd_out != STDOUT_FILENO)
 		dup2(proc->fd_out, STDOUT_FILENO);
 	close_all_pipe_fds(&data->executor);
-	printf("IN TEST_EXECUTOR_BUILTIN; feature coming soon!\n");
-	(void)data;
+	builtin_token = process_get_cmd_token(proc);
+	if (ft_strncmp_casein(builtin_token->string, "cd", 3))
+		return (cd(builtin_token->args, data));
+	if (ft_strncmp_casein(builtin_token->string, "echo", 5))
+		return (echo(builtin_token->args));
+	if (ft_strncmp_casein(builtin_token->string, "pwd", 4))
+		return (pwd());
+	if (ft_strncmp_casein(builtin_token->string, "export", 7))
+		return (export(builtin_token->args, data));
+	if (ft_strncmp_casein(builtin_token->string, "unset", 6))
+		return (unset(builtin_token->args));
+	if (ft_strncmp_casein(builtin_token->string, "env", 4))
+		return (env(data));
+	if (ft_strncmp_casein(builtin_token->string, "exit", 5))
+		return (minishell_exit(data));
 	return (0);
 }
 
