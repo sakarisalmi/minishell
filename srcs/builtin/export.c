@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 15:34:55 by Sharsune          #+#    #+#             */
-/*   Updated: 2023/05/19 15:36:10 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/19 16:24:29 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,30 @@ int	export(char **args, t_data *data)
 
 static void	export_print(t_data *data)
 {
-	int	i;
+	char	*str_print;
+	int		i;
+	int		j;
 
 	i = -1;
 	while (data->envs[++i])
 	{
 		printf("declare -x ");
-		printf("%s\n", data->envs[i]);
+		j = 0;
+		while (data->envs[i][j] != '=' && data->envs[i][j] != '\0')
+			j++;
+		if (!data->envs[i][j])
+			printf("%s\n", data->envs[i]);
+		else
+		{
+			str_print = ft_calloc(ft_strlen(data->envs[i]) + 3, sizeof(char));
+			ft_strncat(str_print, data->envs[i], ++j);
+			ft_strncat(str_print, "\"", 1);
+			ft_strncat(str_print, data->envs[i] + j,
+				ft_strlen(data->envs[i] + j));
+			ft_strncat(str_print, "\"", 1);
+			printf("%s\n", str_print);
+			free(str_print);
+		}
 	}
 }
 
@@ -81,7 +98,7 @@ static char	**export_find_match(char *new_str, char **envs)
 		}
 	}
 	if (found_match == 0)
-		envs = str_array_add_str(envs, export_create_new_var(new_str));
+		envs = str_array_add_str(envs, ft_strdup(new_str));
 	return (envs);
 }
 
@@ -90,18 +107,14 @@ static char	*export_replace_match(char *new_str, char *env_str)
 	int		i;
 	char	*new_env_str;
 
-	printf("in export replace match\n");
 	i = 0;
 	while (new_str[i] && new_str[i] != '=')
 		i++;
 	if (new_str[i] == '=')
 	{
 		free(env_str);
-		new_env_str = ft_calloc(ft_strlen(new_str) + 3, sizeof(char));
-		ft_strncat(new_env_str, new_str, ++i);
-		ft_strncat(new_env_str, "\"", 1);
-		ft_strncat(new_env_str, new_str + i, ft_strlen(new_str + i));
-		ft_strncat(new_env_str, "\"", 1);
+		new_env_str = ft_calloc(ft_strlen(new_str) + 1, sizeof(char));
+		ft_strncat(new_env_str, new_str, ft_strlen(new_str));
 		return (new_env_str);
 	}
 	return (env_str);

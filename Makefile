@@ -6,7 +6,7 @@
 #    By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/04 10:03:33 by ssalmi            #+#    #+#              #
-#    Updated: 2023/05/19 15:09:45 by ssalmi           ###   ########.fr        #
+#    Updated: 2023/05/19 16:04:35 by ssalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRCS_DIR = srcs/
 OBJS_DIR = objs/
 
 BUILTIN_DIR = builtin/
-BUILTIN_FILES = check_for_builtin echo pwd env cd exit export export_utils1 \
+BUILTIN_FILES = check_for_builtin echo pwd env cd exit export \
 				unset
 
 PARSER_DIR = parser/

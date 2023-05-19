@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 13:27:37 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/19 15:07:31 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/19 16:04:46 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@ int		unset(char **args);
 
 // export.c
 int		export(char **args, t_data *data);
-
-// export_utils1.c
-char	*export_create_new_var(char *str);
 
 // exit.c
 int		minishell_exit(t_data *data);
