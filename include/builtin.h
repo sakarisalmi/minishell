@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 13:27:37 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/19 16:04:46 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/19 17:52:34 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int		env(t_data *data);
 int		echo(char **args);
 
 // unset.c
-int		unset(char **args);
+int		unset(char **args, t_data *data);
+void	export_and_unset_error_msg(char *func_name, char *arg);
 
 // export.c
 int		export(char **args, t_data *data);

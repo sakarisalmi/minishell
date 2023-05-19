@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 15:34:55 by Sharsune          #+#    #+#             */
-/*   Updated: 2023/05/19 16:24:29 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/19 17:53:27 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,7 @@ int	export(char **args, t_data *data)
 	{
 		if (export_check_if_invalid(args[i]))
 		{
-			ft_putstr_fd("MINISHELL: export: `", 2);
-			ft_putstr_fd(args[i], 2);
-			ft_putendl_fd("\': not a valid identifier", 2);
+			export_and_unset_error_msg("export", args[i]);
 			result = 1;
 		}
 		else

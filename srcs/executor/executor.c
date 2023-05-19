@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/18 16:51:20 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/19 17:33:25 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ static int	executor_builtin_func(t_process *proc, t_data *data)
 	if (!ft_strncmp_casein(builtin_token->string, "export", 7))
 		return (export(builtin_token->args, data));
 	if (!ft_strncmp_casein(builtin_token->string, "unset", 6))
-		return (unset(builtin_token->args));
+		return (unset(builtin_token->args, data));
 	if (!ft_strncmp_casein(builtin_token->string, "env", 4))
 		return (env(data));
 	if (!ft_strncmp_casein(builtin_token->string, "exit", 5))
