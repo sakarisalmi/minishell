@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/18 16:25:54 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/18 16:51:20 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,19 +101,19 @@ static int	executor_builtin_func(t_process *proc, t_data *data)
 		dup2(proc->fd_out, STDOUT_FILENO);
 	close_all_pipe_fds(&data->executor);
 	builtin_token = process_get_cmd_token(proc);
-	if (ft_strncmp_casein(builtin_token->string, "cd", 3))
+	if (!ft_strncmp_casein(builtin_token->string, "cd", 3))
 		return (cd(builtin_token->args, data));
-	if (ft_strncmp_casein(builtin_token->string, "echo", 5))
+	if (!ft_strncmp_casein(builtin_token->string, "echo", 5))
 		return (echo(builtin_token->args));
-	if (ft_strncmp_casein(builtin_token->string, "pwd", 4))
+	if (!ft_strncmp_casein(builtin_token->string, "pwd", 4))
 		return (pwd());
-	if (ft_strncmp_casein(builtin_token->string, "export", 7))
+	if (!ft_strncmp_casein(builtin_token->string, "export", 7))
 		return (export(builtin_token->args, data));
-	if (ft_strncmp_casein(builtin_token->string, "unset", 6))
+	if (!ft_strncmp_casein(builtin_token->string, "unset", 6))
 		return (unset(builtin_token->args));
-	if (ft_strncmp_casein(builtin_token->string, "env", 4))
+	if (!ft_strncmp_casein(builtin_token->string, "env", 4))
 		return (env(data));
-	if (ft_strncmp_casein(builtin_token->string, "exit", 5))
+	if (!ft_strncmp_casein(builtin_token->string, "exit", 5))
 		return (minishell_exit(data));
 	return (0);
 }
