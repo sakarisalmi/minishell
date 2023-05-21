@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:33:38 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/18 16:43:20 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/21 14:20:52 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	minishell_exit(t_data *data)
 {
-	(void)data;
-	printf("in exit func!\n");
-	return (0);
+	printf("exit\n");
+	minishell_loop_clean_up(data);
+	str_array_free_everything(data->envs);
+	exit(0);
 }
