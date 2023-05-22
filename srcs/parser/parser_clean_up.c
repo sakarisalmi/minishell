@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 16:18:41 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/21 15:36:44 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/22 17:24:18 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,12 @@ void	tokens_clean_up(t_data *data)
 	while (tmp1)
 	{
 		tmp2 = tmp1->next;
-		tmp1->prev = NULL;
 		if (tmp1->string)
 			free(tmp1->string);
 		if (tmp1->args)
 			free(tmp1->args);
 		tmp1->type = T_UNIDENTIFIED;
-		tmp1->next = NULL;
+		free(tmp1);
 		tmp1 = tmp2;
 	}
 	data->parser.token_amount = 0;

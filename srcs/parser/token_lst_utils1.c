@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:28:19 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/11 13:23:03 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/22 16:47:38 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ void	token_lst_addback(t_token **token_lst, t_token *new_node)
 	t_token	*tmp;
 
 	tmp = *token_lst;
+	if (!new_node)
+	{
+		ft_putendl_fd("token_lst_addback, no new_node", 2);
+		return ;
+	}
 	if (!*token_lst)
 		*token_lst = new_node;
 	else

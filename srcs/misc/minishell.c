@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:09 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/21 16:16:41 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/22 15:16:01 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static char	**minishell_env_setup(char **envp)
 {
 	char	**minishell_env;
 	int		shlvl_int;
+	char	*shlvl_str;
 	int		i;
 
 	i = 0;
@@ -73,7 +74,9 @@ static char	**minishell_env_setup(char **envp)
 		{
 			shlvl_int = ft_atoi(envp[i] + 6);
 			shlvl_int++;
-			minishell_env[i] = ft_strjoin("SHLVL=", ft_itoa(shlvl_int));
+			shlvl_str = ft_itoa(shlvl_int);
+			minishell_env[i] = ft_strjoin("SHLVL=", shlvl_str);
+			free(shlvl_str);
 		}
 		else
 		minishell_env[i] = ft_strdup(envp[i]);
