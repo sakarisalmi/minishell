@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:34:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/18 15:42:05 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/22 14:51:46 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 #include "../../include/tokenizer.h"
 #include "../../include/builtin.h"
 
-void	executor_start(t_executor_function *f, t_executor *ex);
-int		executor_end(t_executor_function *f, t_executor *ex);
-int		executor_check_if_to_fork(t_executor_function *f, t_executor *ex,
-			t_data *data);
-int		executor_error_msg(char *s, int error_code);
+void		executor_start(t_executor_function *f, t_executor *ex);
+int			executor_end(t_executor_function *f, t_executor *ex);
+int			executor_check_if_to_fork(t_executor_function *f, t_executor *ex,
+				t_data *data);
+static int	executor_check_if_path_is_dir(t_token *token_cmd);
+int			executor_error_msg(char *s, int error_code);
 
 /*----------------------------------------------------------------------------*/
 
@@ -77,10 +78,35 @@ int	executor_check_if_to_fork(t_executor_function *f, t_executor *ex,
 		if (!ex->process_array[f->i]->cmd_path)
 			return (executor_error_msg(cmd_token->string, 4));
 		else
-			return (0);
+			return (executor_check_if_path_is_dir(cmd_token));
 	}
 	else
 		return (0);
+}
+
+static int	executor_check_if_path_is_dir(t_token *cmd_token)
+{
+	char	current_dir[4096];
+	char	error_msg[4096];
+
+	ft_bzero(current_dir, 4096);
+	ft_bzero(error_msg, 4096);
+	if (getcwd(current_dir, 4096) == NULL)
+	{
+		perror("getcwd() error");
+		return (1);
+	}
+	if (chdir(cmd_token->string) == 0)
+	{
+		chdir(current_dir);
+		ft_strncat(error_msg, "MINISHELL: ", ft_strlen("MINISHELL: "));
+		ft_strncat(error_msg, cmd_token->string, ft_strlen(cmd_token->string));
+		ft_strncat(error_msg, ": is a directory",
+			ft_strlen(": is a directory"));
+		ft_putendl_fd(error_msg, 2);
+		return (126);
+	}
+	return (0);
 }
 
 /*	This function handle's printing out the error message that happen in
