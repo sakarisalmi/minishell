@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:06:06 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/17 14:49:37 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/23 18:21:49 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,16 @@
 int			get_process_idx(t_process *proc, t_data *data);
 int			handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data,
 				int process_idx);
-static char	*here_doc_process_line(char *s, t_data *data);
+char		*here_doc_process_line(char *s, t_data *data);
 static char	*here_doc_get_env_var(char *s, t_data *data,
 				t_here_doc_function *f);
 static char	*here_doc_get_env_var_2(char *s, t_data *data,
 				t_here_doc_function *f);
 
 /*----------------------------------------------------------------------------*/
+
+// the global variable used for signals
+extern int	g_in_here_doc;
 
 int	get_process_idx(t_process *proc, t_data *data)
 {
@@ -58,20 +61,19 @@ int	handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data,
 			break ;
 		if (ft_strncmp(here_doc_str, token->args[0],
 				ft_strlen(here_doc_str)) == 0)
-			break ;
-		else
 		{
-			here_doc_str = here_doc_process_line(here_doc_str, data);
-			ft_putendl_fd(here_doc_str, data->executor.here_doc_array
-			[process_idx][T_PIPE_WRITE]);
+			free(here_doc_str);
+			break ;
 		}
+		else
+			here_doc_send_str_to_pipe(data, process_idx, here_doc_str);
 	}
 	if (g_in_here_doc == 0)
 		return (1);
 	return (0);
 }
 
-static char	*here_doc_process_line(char *s, t_data *data)
+char	*here_doc_process_line(char *s, t_data *data)
 {
 	t_here_doc_function	f;
 

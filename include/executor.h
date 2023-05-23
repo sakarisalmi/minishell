@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/18 13:07:17 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/23 18:21:14 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,13 @@ typedef struct s_here_doc_function
 
 typedef struct s_executor_function
 {
-	int	result;
-	int	result_pid;
-	int	*pid;
-	int	i;
-	int	j;
+	char	**redir_errs;
+	int		result;
+	int		*result_new;
+	int		result_pid;
+	int		*pid;
+	int		i;
+	int		j;
 }	t_executor_function;
 
 // executor.c
@@ -51,12 +53,14 @@ t_process	**create_processes_from_tokens(t_token *token_lst);
 void		process_free_process(t_process *proc);
 
 // handle_redirs.c
-int			process_handle_redirs(t_process *proc, t_data *data);
+int			process_handle_redirs(t_process *proc, t_data *data,
+				t_executor_function *f);
 
 // handle_redirs_utils1.c
-int			handle_redir_greater(t_token *token);
-int			handle_redir_greater_greater(t_token *token);
-int			handle_redir_lesser(t_token *token);
+int			handle_redir_greater(t_token *token, t_executor_function *f);
+int			handle_redir_greater_greater(t_token *token,
+				t_executor_function *f);
+int			handle_redir_lesser(t_token *token, t_executor_function *f);
 int			handle_redir_lesser_lesser(t_token *token, t_process *proc,
 				t_data *data);
 
@@ -64,6 +68,10 @@ int			handle_redir_lesser_lesser(t_token *token, t_process *proc,
 int			get_process_idx(t_process *proc, t_data *data);
 int			handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data,
 				int process_idx);
+char		*here_doc_process_line(char *s, t_data *data);
+
+// handle_redirs_utils3.c
+void		here_doc_send_str_to_pipe(t_data *data, int process_idx, char *str);
 
 // fds_array_utils1.c
 int			executor_pipe_set_up(t_executor *exec);
@@ -81,11 +89,18 @@ t_token		*process_get_cmd_token(t_process *proc);
 char		*find_cmd_path(char *cmd, char **env);
 
 // executor_utils1.c
-void		executor_start(t_executor_function *f, t_executor *ex);
+int			executor_start(t_executor_function *f, t_executor *ex,
+				t_data *data);
 int			executor_end(t_executor_function *f, t_executor *ex);
 int			executor_check_if_to_fork(t_executor_function *f,
 				t_executor *ex, t_data *data);
 int			executor_error_msg(char *s, int error_code);
+
+// executor_utils2.c
+int			executor_end_here_doc_ctrl_c(t_executor_function *f,
+				t_executor *ex);
+void		executor_start_allocation_failure_free(t_executor_function *f);
+void		executor_start_print_redir_err_msgs(t_executor_function *f);
 
 // executor_clean_up.c
 void		executor_clean_up(t_data *data, int process_amount);

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/23 13:08:04 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/23 17:47:54 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ static int	executor(t_executor *ex, t_data *data)
 {
 	t_executor_function	f;
 
-	executor_start(&f, ex);
+	if (executor_start(&f, ex, data) != 0)
+		return (executor_end_here_doc_ctrl_c(&f, ex));
 	while (++f.i < ex->process_amount)
 	{
-		f.result = executor_check_if_to_fork(&f, ex, data);
-		if (f.result == 0)
+		if (f.result_new[f.i] == 0)
 		{
 			f.pid[f.i] = fork();
 			if (f.pid[f.i] == 0)
@@ -42,12 +42,10 @@ static int	executor(t_executor *ex, t_data *data)
 			}
 			else if (f.pid[f.i] < 0)
 				return (executor_error_msg(NULL, 1));
-			close_pipe_ends_parent_process(ex->here_doc_array[f.i]);
-			if (f.i != 0)
-				close_pipe_ends_parent_process(ex->fds_array[f.i - 1]);
 		}
-		else
-			break ;
+		close_pipe_ends_parent_process(ex->here_doc_array[f.i]);
+		if (f.i != 0)
+			close_pipe_ends_parent_process(ex->fds_array[f.i - 1]);
 	}
 	return (executor_end(&f, ex));
 }
@@ -85,11 +83,26 @@ int	executor_pre_setup(t_data *data)
 	fork, which happens otherwise in the normal execution of commands	.*/
 static int	executor_single_builtin_process(t_executor *ex, t_data *data)
 {
-	int	result;
+	int					result;
+	t_executor_function	f;
 
-	result = process_handle_redirs(ex->process_array[0], data);
+	f.redir_errs = ft_calloc(1, sizeof(char *));
+	if (!f.redir_errs)
+	{
+		ft_putendl_fd("MINISHELL: executor malloc failure", 1);
+		return (-1);
+	}
+	f.redir_errs[0] = NULL;
+	result = process_handle_redirs(ex->process_array[0], data, &f);
+	if (result == -42)
+	{
+		str_array_free_everything(f.redir_errs);
+		return (result);
+	}
+	executor_start_print_redir_err_msgs(&f);
 	if (result != 0)
 		return (result);
+	str_array_free_everything(f.redir_errs);
 	return (executor_builtin_func(ex->process_array[0], data));
 }
 

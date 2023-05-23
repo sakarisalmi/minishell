@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sharsune <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 17:02:58 by sharsune          #+#    #+#             */
-/*   Updated: 2023/04/27 17:03:00 by sharsune         ###   ########.fr       */
+/*   Updated: 2023/05/23 13:39:42 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	turnoff_echo(struct termios *termios);
+void	turnon_echo(struct termios *termios);
+void	signal_handler(int signum);
+void	ctrl_d_handler(void);
+void	here_doc_signal(int signum);
+
+/*----------------------------------------------------------------------------*/
+
+// the global variable used for signals
+extern int	g_in_here_doc;
 
 void	turnoff_echo(struct termios *termios)
 {

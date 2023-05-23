@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/23 12:46:25 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/23 14:05:49 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_process
 	t_token	**tokens_array;
 	int		fd_in;
 	int		fd_out;
-	int		here_doc_bool;
 	char	*cmd_path;
 }	t_process;
 
@@ -72,7 +71,7 @@ typedef struct s_data
 /*----------------------------------------------------------------------------*/
 
 // the global variable for signals (especially here_doc)
-extern int		g_in_here_doc;
+int		g_in_here_doc;
 
 // signal.c
 void	signal_handler(int signum);
