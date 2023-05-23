@@ -40,6 +40,14 @@ void	ctrl_d_handler(void)
 	exit(1);
 }
 
+int	get_signals(t_data *data)
+{
+	if (signal(SIGINT, signal_handler) == SIG_ERR || \
+	signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		return (minishell_sig_hand_err_msg(data));
+	return (0);
+}
+
 void	here_doc_signal(int signum)
 {
 	g_in_here_doc = 0;

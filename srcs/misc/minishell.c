@@ -18,8 +18,8 @@
 int			main(int argc, char **argv, char **envp);
 static char	**minishell_env_setup(char **envp);
 static void	minishell_data_set_init_vals(t_data *data);
-static int	minishell_sig_hand_err_msg(t_data *data);
-int		g_in_here_doc;
+int			minishell_sig_hand_err_msg(t_data *data);
+int			g_in_here_doc;
 /*----------------------------------------------------------------------------*/
 
 int	main(int argc, char **argv, char **envp)
@@ -35,9 +35,7 @@ int	main(int argc, char **argv, char **envp)
 	minishell_data_set_init_vals(&data);
 	while (1)
 	{
-		if (signal(SIGINT, signal_handler) == SIG_ERR || \
-		signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-			return (minishell_sig_hand_err_msg(&data));
+		get_signals(&data);
 		turnoff_echo(&termios);
 		read_line = readline("\033[0;32mprototype_minishell> \033[0;37m");
 		turnon_echo(&termios);
@@ -99,7 +97,7 @@ static void	minishell_data_set_init_vals(t_data *data)
 	g_in_here_doc = 0;
 }
 
-static int	minishell_sig_hand_err_msg(t_data *data)
+int	minishell_sig_hand_err_msg(t_data *data)
 {
 	ft_putendl_fd("MINISHELL: Error installing signal handler", 2);
 	str_array_free_everything(data->envs);
