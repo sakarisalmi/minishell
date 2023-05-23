@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/18 13:31:47 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/23 12:46:25 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ typedef struct s_data
 }	t_data;
 
 /*----------------------------------------------------------------------------*/
+
+// the global variable for signals (especially here_doc)
 extern int		g_in_here_doc;
+
 // signal.c
 void	signal_handler(int signum);
 void	ctrl_d_handler(void);

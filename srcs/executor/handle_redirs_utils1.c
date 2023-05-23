@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:16 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/18 15:02:17 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/23 12:49:26 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	handle_redir_lesser_lesser(t_token *token, t_process *proc, t_data *data)
 	// the result value will tell if the user pressed ctrl-D or ctrl-C
 	// and will return the value
 	 if (result == 1)
-		return (-1);
+		return (-42);
 	// else
 	return (data->executor.here_doc_array[process_idx][T_PIPE_READ]);
 }
