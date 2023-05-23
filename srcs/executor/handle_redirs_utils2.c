@@ -43,11 +43,19 @@ int	get_process_idx(t_process *proc, t_data *data)
 int	handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data,
 	int process_idx)
 {
-	char	*here_doc_str;
+	char			*here_doc_str;
+	struct termios	termios;
 
-	while (1)
+	tcgetattr(STDIN_FILENO, &termios);
+	g_in_here_doc = 1;
+	while (1 && g_in_here_doc == 1)
 	{
+		signal(SIGINT, here_doc_signal);
+		turnoff_echo(&termios);
 		here_doc_str = readline("here_doc> ");
+		turnon_echo(&termios);
+		if (here_doc_str == NULL)
+			break ;
 		if (ft_strncmp(here_doc_str, token->args[0],
 				ft_strlen(here_doc_str)) == 0)
 			break ;
@@ -58,6 +66,8 @@ int	handle_redir_lesser_lesser_here_doc(t_token *token, t_data *data,
 			[process_idx][T_PIPE_WRITE]);
 		}
 	}
+	if (g_in_here_doc == 0)
+		return (1);
 	return (0);
 }
 
