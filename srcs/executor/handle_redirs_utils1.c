@@ -78,8 +78,8 @@ int	handle_redir_lesser_lesser(t_token *token, t_process *proc, t_data *data)
 	result = handle_redir_lesser_lesser_here_doc(token, data, process_idx);
 	// the result value will tell if the user pressed ctrl-D or ctrl-C
 	// and will return the value
-	// if (result == SOME_CERTAIN_VALUE)
-	// 		blaa
+	 if (result == 1)
+		return (-1);
 	// else
 	return (data->executor.here_doc_array[process_idx][T_PIPE_READ]);
 }

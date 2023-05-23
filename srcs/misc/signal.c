@@ -36,6 +36,13 @@ void	signal_handler(int signum)
 
 void	ctrl_d_handler(void)
 {
-	printf("exit\n");
+	write(1, "exit\n", 5);
 	exit(1);
+}
+
+void	here_doc_signal(int signum)
+{
+	g_in_here_doc = 0;
+	(void) signum;
+	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }

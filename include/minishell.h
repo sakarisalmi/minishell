@@ -70,13 +70,13 @@ typedef struct s_data
 }	t_data;
 
 /*----------------------------------------------------------------------------*/
-
+extern int		g_in_here_doc;
 // signal.c
 void	signal_handler(int signum);
 void	ctrl_d_handler(void);
 void	turnoff_echo(struct termios *termios);
 void	turnon_echo(struct termios *termios);
-void	signal_handler(int signum);
+void	here_doc_signal(int signum);
 
 // ft_funcs.c
 int		ft_isspace(char c);

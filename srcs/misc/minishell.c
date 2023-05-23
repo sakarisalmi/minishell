@@ -19,7 +19,7 @@ int			main(int argc, char **argv, char **envp);
 static char	**minishell_env_setup(char **envp);
 static void	minishell_data_set_init_vals(t_data *data);
 static int	minishell_sig_hand_err_msg(t_data *data);
-
+int		g_in_here_doc;
 /*----------------------------------------------------------------------------*/
 
 int	main(int argc, char **argv, char **envp)
@@ -32,17 +32,17 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	tcgetattr(STDIN_FILENO, &termios);
 	data.envs = minishell_env_setup(envp);
-	if (signal(SIGINT, signal_handler) == SIG_ERR || \
-	signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-		return (minishell_sig_hand_err_msg(&data));
 	minishell_data_set_init_vals(&data);
 	while (1)
 	{
+		if (signal(SIGINT, signal_handler) == SIG_ERR || \
+		signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+			return (minishell_sig_hand_err_msg(&data));
 		turnoff_echo(&termios);
 		read_line = readline("\033[0;32mprototype_minishell> \033[0;37m");
+		turnon_echo(&termios);
 		if (read_line == NULL)
 			ctrl_d_handler();
-		turnon_echo(&termios);
 		if (minishell_parser(read_line, &data) != 0)
 		{
 			read_line_clean_up(&data);
@@ -61,6 +61,7 @@ static char	**minishell_env_setup(char **envp)
 	char	**minishell_env;
 	int		shlvl_int;
 	int		i;
+	char	*tmp;
 
 	i = 0;
 	while (envp[i])
@@ -73,7 +74,9 @@ static char	**minishell_env_setup(char **envp)
 		{
 			shlvl_int = ft_atoi(envp[i] + 6);
 			shlvl_int++;
-			minishell_env[i] = ft_strjoin("SHLVL=", ft_itoa(shlvl_int));
+			tmp = ft_itoa(shlvl_int);
+			minishell_env[i] = ft_strjoin("SHLVL=", tmp);
+			free (tmp);
 		}
 		else
 		minishell_env[i] = ft_strdup(envp[i]);
@@ -93,6 +96,7 @@ static void	minishell_data_set_init_vals(t_data *data)
 	data->executor.process_array = NULL;
 	data->executor.token_amount = 0;
 	data->executor.token_lst = NULL;
+	g_in_here_doc = 0;
 }
 
 static int	minishell_sig_hand_err_msg(t_data *data)
