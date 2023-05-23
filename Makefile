@@ -6,7 +6,7 @@
 #    By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/04 10:03:33 by ssalmi            #+#    #+#              #
-#    Updated: 2023/05/18 16:33:17 by ssalmi           ###   ########.fr        #
+#    Updated: 2023/05/22 15:31:55 by ssalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ SRCS_DIR = srcs/
 OBJS_DIR = objs/
 
 BUILTIN_DIR = builtin/
-BUILTIN_FILES = check_for_builtin echo pwd env cd exit export unset
+BUILTIN_FILES = check_for_builtin echo pwd env cd exit export \
+				unset
 
 PARSER_DIR = parser/
 PARSER_FILES = ft_funcs minishell_parser read_line_split rl_split_utils1 \

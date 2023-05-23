@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:40:47 by Sharsune          #+#    #+#             */
-/*   Updated: 2023/05/18 14:22:11 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/19 15:58:28 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	cd(char **args, t_data *data)
 	char	**export_pwd;
 	char	*dir;
 
-	export_pwd = cd_get_export("OLD_PWD=");
+	export_pwd = cd_get_export("OLDPWD=");
 	if (!args[1])
 		dir = getenv("HOME");
 	else if (args[1])
@@ -34,16 +34,16 @@ int	cd(char **args, t_data *data)
 	if (result == -1)
 	{
 		perror("MINISHELL: cd");
-		free(export_pwd);
+		str_array_free_everything(export_pwd);
 		return (1);
 	}
 	else
 	{
 		export(export_pwd, data);
-		free(export_pwd);
+		str_array_free_everything(export_pwd);
 		export_pwd = cd_get_export("PWD=");
 		export(export_pwd, data);
-		free(export_pwd);
+		str_array_free_everything(export_pwd);
 	}
 	return (result);
 }
