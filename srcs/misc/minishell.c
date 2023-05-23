@@ -62,7 +62,6 @@ static char	**minishell_env_setup(char **envp)
 	int		shlvl_int;
 	char	*shlvl_str;
 	int		i;
-	char	*tmp;
 
 	i = 0;
 	while (envp[i])

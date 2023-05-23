@@ -34,6 +34,7 @@ int	echo(char **args)
 		ft_strcmp(args[i], "-n") == 0)
 			continue ;
 		printf("%s", args[i]);
+		printf(" ");
 	}
 	if (newline)
 		printf("\n");

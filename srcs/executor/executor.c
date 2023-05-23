@@ -46,8 +46,6 @@ static int	executor(t_executor *ex, t_data *data)
 			if (f.i != 0)
 				close_pipe_ends_parent_process(ex->fds_array[f.i - 1]);
 		}
-		else
-			break ;
 	}
 	return (executor_end(&f, ex));
 }

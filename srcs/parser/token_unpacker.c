@@ -13,7 +13,6 @@
 #include "../../include/minishell.h"
 #include "../../include/parser.h"
 
-#define FORBIDDEN_SYMBOLS "\\;&"
 
 int				token_unpacker(char *rl_part, t_token *token,
 					t_token_unpacker *tunp, t_data *data);
@@ -68,12 +67,6 @@ static int	token_unpacker_outside_quotes(char *rl_part, char *token,
 {
 	while (rl_part[tunp->i])
 	{
-		if (ft_strchr(FORBIDDEN_SYMBOLS, rl_part[tunp->i]))
-		{
-			tunp->error_code = T_FORBIDDEN_SYMBOL;
-			tunp->error_idx = tunp->i;
-			return (2);
-		}
 		if (rl_part[tunp->i] == '$')
 		{
 			token = token_unpacker_hit_var(rl_part, token, tunp, data);
