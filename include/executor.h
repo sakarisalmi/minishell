@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/23 18:21:14 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/24 13:09:21 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ typedef struct s_here_doc_function
 typedef struct s_executor_function
 {
 	char	**redir_errs;
-	int		result;
-	int		*result_new;
+	int		*result_redirs;
+	int		*result_fork;
 	int		result_pid;
 	int		*pid;
 	int		i;
@@ -53,8 +53,7 @@ t_process	**create_processes_from_tokens(t_token *token_lst);
 void		process_free_process(t_process *proc);
 
 // handle_redirs.c
-int			process_handle_redirs(t_process *proc, t_data *data,
-				t_executor_function *f);
+int			job_handle_redirs(t_data *data, t_executor_function *f);
 
 // handle_redirs_utils1.c
 int			handle_redir_greater(t_token *token, t_executor_function *f);
@@ -101,6 +100,8 @@ int			executor_end_here_doc_ctrl_c(t_executor_function *f,
 				t_executor *ex);
 void		executor_start_allocation_failure_free(t_executor_function *f);
 void		executor_start_print_redir_err_msgs(t_executor_function *f);
+int			executor_start_malloc_f_vars(t_executor_function *f,
+				int process_amount);
 
 // executor_clean_up.c
 void		executor_clean_up(t_data *data, int process_amount);

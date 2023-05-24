@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/23 17:47:54 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/24 13:42:42 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	executor(t_executor *ex, t_data *data)
 		return (executor_end_here_doc_ctrl_c(&f, ex));
 	while (++f.i < ex->process_amount)
 	{
-		if (f.result_new[f.i] == 0)
+		if (f.result_fork[f.i] == 0)
 		{
 			f.pid[f.i] = fork();
 			if (f.pid[f.i] == 0)
@@ -86,23 +86,14 @@ static int	executor_single_builtin_process(t_executor *ex, t_data *data)
 	int					result;
 	t_executor_function	f;
 
-	f.redir_errs = ft_calloc(1, sizeof(char *));
-	if (!f.redir_errs)
-	{
-		ft_putendl_fd("MINISHELL: executor malloc failure", 1);
-		return (-1);
-	}
-	f.redir_errs[0] = NULL;
-	result = process_handle_redirs(ex->process_array[0], data, &f);
-	if (result == -42)
-	{
-		str_array_free_everything(f.redir_errs);
-		return (result);
-	}
-	executor_start_print_redir_err_msgs(&f);
+	if (executor_start(&f, ex, data) != 0)
+		return (executor_end_here_doc_ctrl_c(&f, ex));
+	result = f.result_fork[0];
+	free(f.pid);
+	free(f.result_fork);
+	free(f.result_redirs);
 	if (result != 0)
 		return (result);
-	str_array_free_everything(f.redir_errs);
 	return (executor_builtin_func(ex->process_array[0], data));
 }
 

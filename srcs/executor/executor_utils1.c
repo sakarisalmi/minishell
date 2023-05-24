@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:34:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/23 18:23:21 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/24 13:24:30 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,32 +27,41 @@ int			executor_error_msg(char *s, int error_code);
 
 int	executor_start(t_executor_function *f, t_executor *ex, t_data *data)
 {
+	int	redirs_result;
+
 	f->i = -1;
 	f->j = -1;
-	f->pid = NULL;
-	f->redir_errs = ft_calloc(1, sizeof(char *));
-	f->pid = ft_calloc(ex->process_amount, sizeof(int));
-	f->result_new = ft_calloc(ex->process_amount, sizeof(int));
-	if (!f->pid || !f->result_new || !f->redir_errs)
-	{
-		ft_putendl_fd("MINISHELL: executor: allocation failure", 2);
-		executor_start_allocation_failure_free(f);
-		return (2);
-	}
-	f->redir_errs[0] = NULL;
-	while (++f->i < ex->process_amount)
-	{
-		f->result_new[f->i] = executor_check_if_to_fork(f, ex, data);
-		if (f->result_new[f->i] == -42)
-		{
-			str_array_free_everything(f->redir_errs);
-			return (1);
-		}
-	}
+	if (executor_start_malloc_f_vars(f, ex->process_amount) != 0)
+		return (-1);
+	redirs_result = job_handle_redirs(data, f);
 	executor_start_print_redir_err_msgs(f);
+	if (redirs_result == -42)
+		return (1);
+	while (++f->i < ex->process_amount)
+		f->result_fork[f->i] = executor_check_if_to_fork(f, ex, data);
 	f->i = -1;
 	return (0);
 }
+
+// int	executor_start(t_executor_function *f, t_executor *ex, t_data *data)
+// {
+// 	f->i = -1;
+// 	f->j = -1;
+// 	if (executor_start_malloc_f_vars(f, ex->process_amount) != 0)
+// 		return (-1);
+// 	while (++f->i < ex->process_amount)
+// 	{
+// 		f->result_fork[f->i] = executor_check_if_to_fork(f, ex, data);
+// 		if (f->result_fork[f->i] == -42)
+// 		{
+// 			str_array_free_everything(f->redir_errs);
+// 			return (1);
+// 		}
+// 	}
+// 	executor_start_print_redir_err_msgs(f);
+// 	f->i = -1;
+// 	return (0);
+// }
 
 int	executor_end(t_executor_function *f, t_executor *ex)
 {
@@ -62,8 +71,9 @@ int	executor_end(t_executor_function *f, t_executor *ex)
 		waitpid(f->pid[f->j], &f->result_pid, 0);
 	free(f->pid);
 	f->pid = NULL;
-	latest_result = f->result_new[ex->process_amount - 1];
-	free(f->result_new);
+	latest_result = f->result_fork[ex->process_amount - 1];
+	free(f->result_redirs);
+	free(f->result_fork);
 	if (latest_result != 0)
 		return (latest_result);
 	else
@@ -81,12 +91,9 @@ int	executor_check_if_to_fork(t_executor_function *f, t_executor *ex,
 	t_data *data)
 {
 	t_token	*cmd_token;
-	int		result;
 
-	result = 0;
-	result = process_handle_redirs(ex->process_array[f->i], data, f);
-	if (result != 0)
-		return (result);
+	if (f->result_redirs[f->i] != 0)
+		return (f->result_redirs[f->i]);
 	if (check_for_builtin(ex->process_array[f->i]->tokens_array))
 		return (0);
 	cmd_token = process_get_cmd_token(ex->process_array[f->i]);

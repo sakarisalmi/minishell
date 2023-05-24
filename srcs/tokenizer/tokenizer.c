@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:28:06 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/26 13:52:27 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/24 14:16:52 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ static int	tok_pipe(t_token *token)
 
 static int	tok_redir(t_token *token)
 {
+	if (token->next == NULL)
+		return (tok_error_msg('\0'));
 	if (token->next->type == T_PIPE)
 		return (tok_error_msg('|'));
 	if (token->next->type == T_REDIR)
 		return (tok_error_msg(token->next->string[0]));
-	if (token->next == NULL)
-		return (tok_error_msg('\0'));
 	tok_set_token_args(token);
 	return (0);
 }
