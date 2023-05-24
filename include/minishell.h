@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/24 14:35:43 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/24 17:41:16 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int		real_executor_pre_setup(t_data *data);
 void	minishell_loop_clean_up(t_data *data);
 
 // minishell.c
-//int		main(int argc, char **argv, char **envp);
+// int		main(int argc, char **argv, char **envp);
 int		minishell_sig_hand_err_msg(t_data *data);
 
 #endif

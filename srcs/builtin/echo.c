@@ -3,40 +3,81 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Sharsune <sharsune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:41:20 by Sharsune          #+#    #+#             */
-/*   Updated: 2023/05/11 14:41:22 by Sharsune         ###   ########.fr       */
+/*   Updated: 2023/05/24 17:44:36 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+int			echo(char **args);
+static int	echo_check_for_options(char **args, int *idx);
+static int	echo_check_if_arg_is_option(char *arg);
+
+/*----------------------------------------------------------------------------*/
+
 int	echo(char **args)
 {
 	int	i;
-	int	newline;
+	int	no_newline;
 
 	i = -1;
-	newline = 1;
-	while (args[++i])
+	no_newline = echo_check_for_options(args, &i);
+	while (args[i])
 	{
-		if (ft_strcmp(args[i], "-n") == 0)
-		{
-			newline = 0;
-			break ;
-		}
-	}
-	i = -1;
-	while (args[++i])
-	{
-		if (ft_strcmp(args[i], "echo") == 0 || \
-		ft_strcmp(args[i], "-n") == 0)
-			continue ;
 		printf("%s", args[i]);
-		printf(" ");
+		if (args[i + 1])
+			printf(" ");
+		i++;
 	}
-	if (newline)
+	if (!no_newline)
 		printf("\n");
 	return (0);
+}
+
+/*	This function checks if there are any options for echo;
+	it sets the int pointer to the argument where the possible
+	options end. The function returns 0 if there is no options. */
+static int	echo_check_for_options(char **args, int *idx)
+{
+	int	result;
+	int	i;
+
+	result = 0;
+	i = 0;
+	while (args[++i])
+	{
+		if (!echo_check_if_arg_is_option(args[i]))
+		{
+			*idx = i;
+			return (result);
+		}
+		result = 1;
+	}
+	*idx = i;
+	return (result);
+}
+
+/*	This function checks if the given argument is an option. */
+static int	echo_check_if_arg_is_option(char *arg)
+{
+	int	i;
+
+	i = -1;
+	while (arg[++i])
+	{
+		if (i == 0)
+		{
+			if (arg[i] != '-')
+				return (0);
+		}
+		else
+		{
+			if (arg[i] != 'n')
+				return (0);
+		}
+	}
+	return (1);
 }
