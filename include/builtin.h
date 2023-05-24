@@ -38,6 +38,6 @@ void	export_and_unset_error_msg(char *func_name, char *arg);
 int		export(char **args, t_data *data);
 
 // exit.c
-int		minishell_exit(t_data *data);
+int		minishell_exit(char **args, t_data *data);
 
 #endif
