@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:38:36 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/17 14:04:52 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/23 14:10:54 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ static t_process	*process_init_new_process(void)
 	new_process->tokens_array[0] = NULL;
 	new_process->fd_in = STDIN_FILENO;
 	new_process->fd_out = STDOUT_FILENO;
-	new_process->here_doc_bool = 0;
 	new_process->cmd_path = NULL;
 	return (new_process);
 }

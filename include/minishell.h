@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/18 13:31:47 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/24 14:35:43 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_process
 	t_token	**tokens_array;
 	int		fd_in;
 	int		fd_out;
-	int		here_doc_bool;
 	char	*cmd_path;
 }	t_process;
 
@@ -70,7 +69,10 @@ typedef struct s_data
 }	t_data;
 
 /*----------------------------------------------------------------------------*/
-extern int		g_in_here_doc;
+
+// the global variable for signals (especially here_doc)
+int		g_in_here_doc;
+
 // signal.c
 void	signal_handler(int signum);
 void	ctrl_d_handler(void);
@@ -78,6 +80,7 @@ void	turnoff_echo(struct termios *termios);
 void	turnon_echo(struct termios *termios);
 void	here_doc_signal(int signum);
 int		get_signals(t_data *data);
+
 // ft_funcs.c
 int		ft_isspace(char c);
 char	*ft_strcpy(char *dest, const char *src);
@@ -104,7 +107,10 @@ int		test_executor_pre_setup(t_data *data);
 int		real_executor_pre_setup(t_data *data);
 
 // minishell_loop_clean_up.c
-int		minishell_sig_hand_err_msg(t_data *data);
 void	minishell_loop_clean_up(t_data *data);
+
+// minishell.c
+int		main(int argc, char **argv, char **envp);
+int		minishell_sig_hand_err_msg(t_data *data);
 
 #endif

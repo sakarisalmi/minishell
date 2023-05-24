@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_loop_clean_up.c                          :+:      :+:    :+:   */
+/*   handle_redirs_utils3.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 12:20:19 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/23 16:56:44 by ssalmi           ###   ########.fr       */
+/*   Created: 2023/05/23 18:16:20 by ssalmi            #+#    #+#             */
+/*   Updated: 2023/05/23 18:20:42 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/parser.h"
+#include "../../include/tokenizer.h"
 #include "../../include/executor.h"
 
-/*	This function is called after the successfull executor call. */
-void	minishell_loop_clean_up(t_data *data)
+void	here_doc_send_str_to_pipe(t_data *data, int process_idx, char *str)
 {
-	tokens_clean_up(data);
-	executor_clean_up(data, data->executor.process_amount);
+	str = here_doc_process_line(str, data);
+	write(data->executor.here_doc_array[process_idx][T_PIPE_WRITE],
+		str, ft_strlen(str));
+	write(data->executor.here_doc_array[process_idx][T_PIPE_WRITE],
+		"\n", 1);
+	free(str);
 }

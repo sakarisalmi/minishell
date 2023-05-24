@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:09 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/23 12:29:31 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/24 14:35:46 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ int			main(int argc, char **argv, char **envp);
 static char	**minishell_env_setup(char **envp);
 static void	minishell_data_set_init_vals(t_data *data);
 int			minishell_sig_hand_err_msg(t_data *data);
-int			g_in_here_doc;
+
 /*----------------------------------------------------------------------------*/
+
+// the global variable used for signals
+extern int	g_in_here_doc;
 
 int	main(int argc, char **argv, char **envp)
 {
