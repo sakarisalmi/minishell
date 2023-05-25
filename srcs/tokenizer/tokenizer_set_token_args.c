@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 16:44:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/11 13:25:42 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/25 15:13:17 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	tok_set_token_args(t_token *token)
 	else if (token->type == T_COMMAND)
 	{
 		token->args = ft_calloc(1, sizeof(char *));
-		token->args[0] = NULL;
 		token->args = str_array_add_str(token->args, token->string);
 		tmp_token = token->next;
 		while (tmp_token && tmp_token->type != T_PIPE)

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 13:49:03 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/23 13:09:53 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/25 15:09:49 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,6 @@ static int	set_up_pipes_between_processes(int *fds, t_process *proc_from,
 	proc_from->fd_out = fds[T_PIPE_WRITE];
 	proc_to->fd_in = fds[T_PIPE_READ];
 	return (0);
-}
-
-void	close_pipe_ends_2(int **fds_array, int **here_doc_array, int proc_idx)
-{
-	if (proc_idx != 0)
-	{
-		close(fds_array[proc_idx][0]);
-		close(fds_array[proc_idx][1]);
-	}
-	close(here_doc_array[proc_idx][0]);
-	close(here_doc_array[proc_idx][1]);
 }
 
 void	close_pipe_ends_parent_process(int *fds)

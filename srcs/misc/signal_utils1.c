@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   signal_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 17:02:58 by sharsune          #+#    #+#             */
-/*   Updated: 2023/05/23 13:39:42 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/25 15:30:06 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,9 @@ void	turnoff_echo(struct termios *termios);
 void	turnon_echo(struct termios *termios);
 void	signal_handler(int signum);
 void	ctrl_d_handler(void);
-void	here_doc_signal(int signum);
+int		get_signals(t_data *data);
 
 /*----------------------------------------------------------------------------*/
-
-// the global variable used for signals
-extern int	g_in_here_doc;
 
 void	turnoff_echo(struct termios *termios)
 {
@@ -57,11 +54,4 @@ int	get_signals(t_data *data)
 	signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		return (minishell_sig_hand_err_msg(data));
 	return (0);
-}
-
-void	here_doc_signal(int signum)
-{
-	g_in_here_doc = 0;
-	(void) signum;
-	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }

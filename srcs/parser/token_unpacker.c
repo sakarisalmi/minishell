@@ -6,13 +6,12 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 15:37:49 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/18 15:49:16 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/25 15:10:36 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/parser.h"
-
 
 int				token_unpacker(char *rl_part, t_token *token,
 					t_token_unpacker *tunp, t_data *data);
