@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:41:20 by Sharsune          #+#    #+#             */
-/*   Updated: 2023/05/24 17:44:36 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/25 16:22:50 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ static int	echo_check_if_arg_is_option(char *arg)
 	int	i;
 
 	i = -1;
+	if (arg[0] == '\0')
+		return (0);
 	while (arg[++i])
 	{
 		if (i == 0)
