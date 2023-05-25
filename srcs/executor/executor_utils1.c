@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:34:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/24 13:24:30 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/25 13:23:06 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ int	executor_error_msg(char *s, int error_code)
 	if (error_code == 3)
 	{
 		perror("MINISHELL: execve");
-		exit(-1);
+		exit(126);
 	}
 	if (error_code == 4)
 	{

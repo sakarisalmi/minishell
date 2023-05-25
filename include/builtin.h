@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 13:27:37 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/19 17:52:34 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/25 12:39:08 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		cd(char **args, t_data *data);
 int		pwd(void);
 
 // env.c
-int		env(t_data *data);
+int		env(char **args, t_data *data);
 
 // echo.c
 int		echo(char **args);

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 17:29:37 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/18 16:21:26 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/25 13:13:57 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../../include/builtin.h"
 
 /*	This function checks if there is a command in the tokens array and if that
-	command is a built-in.	Returns 1 if there is an built-in, otherwise
+	command is a builtin. Returns 1 if there is an built-in, otherwise
 	returns 0.	*/
 int	check_for_builtin(t_token **tokens_array)
 {

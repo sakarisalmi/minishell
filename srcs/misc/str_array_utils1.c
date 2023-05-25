@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:51:24 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/10 17:52:31 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/25 12:47:08 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ char	**str_array_remove_str_by_index(char **str_array, int index)
 		i++;
 	}
 	new_str_array[j] = NULL;
+	free(str_array);
 	return (new_str_array);
 }
 

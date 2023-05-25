@@ -6,22 +6,30 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 14:52:34 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/19 16:21:57 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/25 12:37:54 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	env(t_data *data)
+int	env(char **args, t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (data->envs[i])
+	if (args[1])
 	{
-		if (ft_strchr(data->envs[i], '='))
-			printf("%s\n", data->envs[i]);
-		i++;
+		ft_putendl_fd("MINISHELL: env: give no arguments or options", 2);
+		return (127);
 	}
-	return (0);
+	else
+	{
+		while (data->envs[i])
+		{
+			if (ft_strchr(data->envs[i], '='))
+				printf("%s\n", data->envs[i]);
+			i++;
+		}
+		return (0);
+	}
 }
