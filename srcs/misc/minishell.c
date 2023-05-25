@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:09 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/25 15:25:52 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/25 16:30:02 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		get_signals(&data);
 		turnoff_echo(&termios);
-		read_line = readline("\033[0;32mprototype_minishell> \033[0;37m");
+		read_line = readline("\033[0;32mMINISHELL> \033[0;37m");
 		turnon_echo(&termios);
 		if (read_line == NULL)
 			ctrl_d_handler();
