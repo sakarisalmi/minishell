@@ -102,4 +102,10 @@ void	token_unpacker_pipe_and_redir(t_token *token, char *rl_part);
 // parser_clean_up.c
 void	tokens_clean_up(t_data *data);
 void	read_line_clean_up(t_data *data, char *read_line);
+
+// REMOVE LATER
+// test_parser.c
+void	print_rl_parts(t_data *data);
+void	print_tunp(t_data *data);
+
 #endif
