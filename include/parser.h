@@ -51,12 +51,13 @@ typedef struct s_rl_split
 	int	in_quotes;
 	int	in_single_quotes;
 	int	in_token;
+	int	failure;
 }	t_rl_split;
 
 /*----------------------------------------------------------------------------*/
 
 // read_line_split.c
-void	read_line_split(char *line, t_list **rl_parts_ls, int *rl_parts_num);
+int		read_line_split(char *line, t_list **rl_parts_ls, int *token_amount);
 
 // rl_split_utils1.c
 void	rl_s_handle_quotes(char *line, t_list **rl_parts_ls, t_rl_split *t);
@@ -69,6 +70,9 @@ void	rl_s_handle_redir_pipe(char *line, t_list **rl_parts_ls, t_rl_split *t);
 
 // rl_split_utils2.c
 void	rl_s_handle_whitespace(char *line, t_list **rl_parts_ls, t_rl_split *t);
+int		rl_s_add_to_list(char *line, t_list **rl_parts_ls, t_rl_split *t);
+int		rl_s_add_redir_or_pipe_to_list(t_list **rl_parts_ls, int size,
+			t_rl_split *t);
 
 // token_lst_utils1.c
 t_token	*token_lst_init_new_node(char *token_string);

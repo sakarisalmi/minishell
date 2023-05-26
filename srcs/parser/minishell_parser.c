@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:07:38 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/24 14:12:55 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/26 11:50:53 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,12 @@ int	minishell_parser(char *read_line, t_data *data)
 	if (minishell_parser_check_if_empty_rl(read_line))
 		return (1);
 	add_history(read_line);
-	read_line_split(read_line, &data->parser.rl_parts_lst,
-		&data->parser.token_amount);
+	if (read_line_split(read_line, &data->parser.rl_parts_lst,
+			&data->parser.token_amount) != 0)
+	{
+		data->latest_exit_status = -42;
+		return (-42);
+	}
 	if (tokens_creator(&data->parser, data) != 0)
 	{
 		data->latest_exit_status = 258;
