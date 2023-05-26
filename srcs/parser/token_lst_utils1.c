@@ -6,17 +6,30 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:28:19 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/22 16:47:38 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/26 15:42:05 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/parser.h"
 
-t_token	*token_lst_init_new_node(char *token_string)
+t_token	*token_lst_init_new_node(char *token_string, t_data *data);
+void	token_lst_addback(t_token **token_lst, t_token *new_node);
+t_token	*token_lst_last(t_token *token_lst);
+void	token_lst_del_node(t_token *token_node);
+void	token_lst_clear_lst(t_token **token_lst);
+
+/*----------------------------------------------------------------------------*/
+
+t_token	*token_lst_init_new_node(char *token_string, t_data *data)
 {
 	t_token	*new_node;
 
+	if (!token_string)
+	{
+		ft_putendl_fd("MINISHELL: TUNP malloc failure; FATAL ERROR", 2);
+		return (NULL);
+	}
 	new_node = ft_calloc(1, sizeof(t_token));
 	if (!new_node)
 		return (NULL);

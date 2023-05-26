@@ -75,7 +75,7 @@ int		rl_s_add_redir_or_pipe_to_list(t_list **rl_parts_ls, int size,
 			t_rl_split *t);
 
 // token_lst_utils1.c
-t_token	*token_lst_init_new_node(char *token_string);
+t_token	*token_lst_init_new_node(char *token_string, t_data *data);
 void	token_lst_addback(t_token **token_lst, t_token *new_node);
 t_token	*token_lst_last(t_token *token_lst);
 void	token_lst_del_node(t_token *token_node);
