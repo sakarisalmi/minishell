@@ -6,14 +6,14 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 16:44:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/25 15:13:17 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/26 17:29:13 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/tokenizer.h"
 
-void			tok_set_token_args(t_token *token);
+void			tok_set_token_args(t_token *token, t_data *data);
 static t_token	*tok_skip_redir_and_file(t_token *token);
 
 /*----------------------------------------------------------------------------*/
@@ -29,19 +29,19 @@ static t_token	*tok_skip_redir_and_file(t_token *token);
 	string in it.
 	If the token is T_COMMAND, we set the arguments' strings in an array of
 	strings that ends in a NULL pointer. */
-void	tok_set_token_args(t_token *token)
+void	tok_set_token_args(t_token *token, t_data *data)
 {
 	t_token	*tmp_token;
 
 	if (token->type == T_REDIR)
 	{
 		token->next->type = T_ARG;
-		token->args = ft_calloc(1, sizeof(char *));
+		token->args = ms_calloc(1, sizeof(char *), data);
 		token->args[0] = token->next->string;
 	}
 	else if (token->type == T_COMMAND)
 	{
-		token->args = ft_calloc(1, sizeof(char *));
+		token->args = ms_calloc(1, sizeof(char *), data);
 		token->args = str_array_add_str(token->args, token->string);
 		tmp_token = token->next;
 		while (tmp_token && tmp_token->type != T_PIPE)

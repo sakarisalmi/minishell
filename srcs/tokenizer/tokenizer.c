@@ -6,18 +6,18 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:28:06 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/24 14:16:52 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/26 17:32:08 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/tokenizer.h"
 
-int			tokenizer(t_token *token_lst);
-static int	tok_handle_cmd(t_token *token_lst);
+int			tokenizer(t_token *token_lst, t_data *data);
+static int	tok_handle_cmd(t_token *token_lst, t_data *data);
 static int	tok_pipe(t_token *token);
-static int	tok_redir(t_token *token);
-static int	tok_handle_pipes_and_redirs(t_token *token_lst);
+static int	tok_redir(t_token *token, t_data *data);
+static int	tok_handle_pipes_and_redirs(t_token *token_lst, t_data *data);
 
 /*----------------------------------------------------------------------------*/
 
@@ -32,18 +32,18 @@ static int	tok_handle_pipes_and_redirs(t_token *token_lst);
 	unidentified tokens as commands, and the following unidentified tokens
 	as the commands arguments. If we hit a pipe we know that the command has
 	no other arguments*/
-int	tokenizer(t_token *token_lst)
+int	tokenizer(t_token *token_lst, t_data *data)
 {
 	int	result;
 
-	result = tok_handle_pipes_and_redirs(token_lst);
+	result = tok_handle_pipes_and_redirs(token_lst, data);
 	if (result != 0)
 		return (result);
-	tok_handle_cmd(token_lst);
+	tok_handle_cmd(token_lst, data);
 	return (0);
 }
 
-static int	tok_handle_cmd(t_token *token_lst)
+static int	tok_handle_cmd(t_token *token_lst, t_data *data)
 {
 	t_token	*tmp_token;
 
@@ -53,7 +53,7 @@ static int	tok_handle_cmd(t_token *token_lst)
 		if (tmp_token->type == T_UNIDENTIFIED)
 		{
 			tmp_token->type = T_COMMAND;
-			tok_set_token_args(tmp_token);
+			tok_set_token_args(tmp_token, data);
 		}
 		tmp_token = tmp_token->next;
 	}
@@ -72,7 +72,7 @@ static int	tok_pipe(t_token *token)
 	return (0);
 }
 
-static int	tok_redir(t_token *token)
+static int	tok_redir(t_token *token, t_data *data)
 {
 	if (token->next == NULL)
 		return (tok_error_msg('\0'));
@@ -80,11 +80,11 @@ static int	tok_redir(t_token *token)
 		return (tok_error_msg('|'));
 	if (token->next->type == T_REDIR)
 		return (tok_error_msg(token->next->string[0]));
-	tok_set_token_args(token);
+	tok_set_token_args(token, data);
 	return (0);
 }
 
-static int	tok_handle_pipes_and_redirs(t_token *token_lst)
+static int	tok_handle_pipes_and_redirs(t_token *token_lst, t_data *data)
 {
 	t_token	*tmp_token;
 	int		result;
@@ -100,7 +100,7 @@ static int	tok_handle_pipes_and_redirs(t_token *token_lst)
 		}
 		if (tmp_token->type == T_REDIR)
 		{
-			result = tok_redir(tmp_token);
+			result = tok_redir(tmp_token, data);
 			if (result != 0)
 				return (result);
 		}

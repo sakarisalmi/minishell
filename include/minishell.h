@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/25 15:21:01 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/26 17:16:30 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,10 @@ void	minishell_loop_clean_up(t_data *data);
 
 // minishell.c
 int		minishell_sig_hand_err_msg(t_data *data);
+
+// ms_funcs.c
+void	*ms_calloc(size_t count, size_t size, t_data *data);
+void	*ms_realloc(void *ptr, size_t size, t_data *data);
+void	minishell_fatal_error_exit(t_data *data);
 
 #endif

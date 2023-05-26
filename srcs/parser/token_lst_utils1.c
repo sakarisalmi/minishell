@@ -6,12 +6,13 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:28:19 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/26 15:42:05 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/26 16:30:51 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/parser.h"
+#include "../../include/builtin.h"
 
 t_token	*token_lst_init_new_node(char *token_string, t_data *data);
 void	token_lst_addback(t_token **token_lst, t_token *new_node);
@@ -25,14 +26,18 @@ t_token	*token_lst_init_new_node(char *token_string, t_data *data)
 {
 	t_token	*new_node;
 
-	if (!token_string)
-	{
-		ft_putendl_fd("MINISHELL: TUNP malloc failure; FATAL ERROR", 2);
-		return (NULL);
-	}
 	new_node = ft_calloc(1, sizeof(t_token));
-	if (!new_node)
-		return (NULL);
+	if (!new_node || !token_string)
+	{
+		ft_putendl_fd("tokens_creator; malloc failure; FATAL ERROR", 2);
+		if (new_node)
+			free(new_node);
+		if (token_string)
+			free(token_string);
+		read_line_parts_clean_up(data);
+		minishell_loop_clean_up(data);
+		exit (-1);
+	}
 	new_node->type = 0;
 	new_node->string = token_string;
 	new_node->args = NULL;

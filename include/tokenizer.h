@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 14:25:32 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/04/26 13:52:39 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/26 17:26:45 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ enum e_token_type
 /*----------------------------------------------------------------------------*/
 
 // tokenizer.c
-int		tokenizer(t_token *token_lst);
+int		tokenizer(t_token *token_lst, t_data *data);
 
 // tokenizer_error_msg.c
 int		tok_error_msg(char c);
 
 // tokenizer_set_token_args.c
-void	tok_set_token_args(t_token *token);
+void	tok_set_token_args(t_token *token, t_data *data);
 
 #endif

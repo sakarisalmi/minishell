@@ -69,7 +69,8 @@ void	rl_s_handle_lesser_redir(char *line, t_list **rl_parts_ls,
 void	rl_s_handle_redir_pipe(char *line, t_list **rl_parts_ls, t_rl_split *t);
 
 // rl_split_utils2.c
-void	rl_s_handle_whitespace(char *line, t_list **rl_parts_ls, t_rl_split *t);
+void	rl_s_handle_whitespace(char *line, t_list **rl_parts_lst,
+			t_rl_split *t);
 int		rl_s_add_to_list(char *line, t_list **rl_parts_ls, t_rl_split *t);
 int		rl_s_add_redir_or_pipe_to_list(t_list **rl_parts_ls, int size,
 			t_rl_split *t);
@@ -101,7 +102,7 @@ void	token_unpacker_pipe_and_redir(t_token *token, char *rl_part);
 
 // parser_clean_up.c
 void	tokens_clean_up(t_data *data);
-void	read_line_clean_up(t_data *data, char *read_line);
+void	read_line_parts_clean_up(t_data *data);
 
 // REMOVE LATER
 // test_parser.c
