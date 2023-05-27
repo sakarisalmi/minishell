@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/25 12:38:50 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/27 13:08:36 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,23 @@ int	executor_pre_setup(t_data *data)
 
 	data->executor.token_lst = data->parser.token_lst;
 	data->executor.process_array = create_processes_from_tokens(
-			data->executor.token_lst);
+			data->executor.token_lst, data);
 	i = 0;
 	while (data->executor.process_array[i])
 		i++;
 	data->executor.process_amount = i;
 	data->executor.here_doc_array = \
 		executor_set_up_here_doc_array(&data->executor);
+	if (!data->executor.here_doc_array)
+		minishell_fatal_error_exit(data);
 	if (data->executor.process_amount == 1
 		&& check_for_builtin(data->executor.process_array[0]->tokens_array))
 		return (executor_single_builtin_process(&data->executor, data));
 	else
 	{
 		if (data->executor.process_amount > 1)
-		{
 			if (executor_pipe_set_up(&data->executor) != 0)
 				return (executor_error_msg(NULL, 2));
-		}
 		return (executor(&data->executor, data));
 	}
 	return (0);

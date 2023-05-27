@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 13:27:37 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/25 12:39:08 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/27 13:55:13 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ void	export_and_unset_error_msg(char *func_name, char *arg);
 
 // export.c
 int		export(char **args, t_data *data);
+
+// export_utils1.c
+char	**export_add_new_var(char *new_str, char **envs, t_data *data);
 
 // exit.c
 int		minishell_exit(char **args, t_data *data);

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/24 13:09:21 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/27 13:03:33 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ typedef struct s_executor_function
 int			executor_pre_setup(t_data *data);
 
 // process_utils1.c
-t_process	**create_processes_from_tokens(t_token *token_lst);
+t_process	**create_processes_from_tokens(t_token *token_lst,
+				t_data *data);
 void		process_free_process(t_process *proc);
 
 // handle_redirs.c

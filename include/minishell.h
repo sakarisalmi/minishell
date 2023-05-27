@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/26 17:16:30 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/27 13:21:10 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@
 # include "../libft/libft.h"
 
 /*----------------------------minishell structs-------------------------------*/
+
+typedef struct s_envs_set_up_func
+{
+	char	**minishell_env;
+	int		shlvl_int;
+	char	*shlvl_str;
+	int		i;
+}	t_envs_set_up_func;
 
 typedef struct s_token
 {

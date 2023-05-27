@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 17:12:59 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/26 17:23:16 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/27 12:47:37 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,6 @@ void	minishell_fatal_error_exit(t_data *data)
 	ft_putendl_fd("MINISHELL: malloc failure; FATAL ERROR", 2);
 	read_line_parts_clean_up(data);
 	minishell_loop_clean_up(data);
+	str_array_free_everything(data->envs);
 	exit (-1);
 }

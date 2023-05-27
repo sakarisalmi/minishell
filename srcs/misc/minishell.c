@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:09 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/26 16:15:49 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/27 13:26:02 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,31 +62,31 @@ static void	minishell_set_up(t_data *data, char **envp, int argc, char **argv)
 
 static char	**minishell_env_setup(char **envp)
 {
-	char	**minishell_env;
-	int		shlvl_int;
-	char	*shlvl_str;
-	int		i;
+	t_envs_set_up_func	f;
 
-	i = 0;
-	while (envp[i])
-		i++;
-	minishell_env = malloc((i + 1) * sizeof(char *));
-	i = -1;
-	while (envp[++i])
+	f.i = 0;
+	while (envp[f.i])
+		f.i++;
+	f.minishell_env = malloc((f.i + 1) * sizeof(char *));
+	if (!f.minishell_env)
+		exit(-1);
+	f.i = -1;
+	while (envp[++f.i])
 	{
-		if (ft_strnstr(envp[i], "SHLVL", 5))
+		if (ft_strnstr(envp[f.i], "SHLVL", 5))
 		{
-			shlvl_int = ft_atoi(envp[i] + 6);
-			shlvl_int++;
-			shlvl_str = ft_itoa(shlvl_int);
-			minishell_env[i] = ft_strjoin("SHLVL=", shlvl_str);
-			free(shlvl_str);
+			f.shlvl_int = ft_atoi(envp[f.i] + 6);
+			f.shlvl_int++;
+			f.shlvl_str = ft_itoa(f.shlvl_int);
+			f.minishell_env[f.i] = ft_strjoin("SHLVL=", f.shlvl_str);
+			if (f.shlvl_str)
+				free(f.shlvl_str);
 		}
 		else
-		minishell_env[i] = ft_strdup(envp[i]);
+			f.minishell_env[f.i] = ft_strdup(envp[f.i]);
 	}
-	minishell_env[i] = NULL;
-	return (minishell_env);
+	f.minishell_env[f.i] = NULL;
+	return (f.minishell_env);
 }
 
 static void	minishell_data_set_init_vals(t_data *data)
