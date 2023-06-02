@@ -81,7 +81,12 @@ int	executor_end(t_executor_function *f, t_executor *ex)
 		if (WIFEXITED(f->result_pid))
 			return (WEXITSTATUS(f->result_pid));
 		if (WIFSIGNALED(f->result_pid))
-			return (WTERMSIG(f->result_pid));
+		{
+			if (WTERMSIG(f->result_pid) == SIGQUIT)
+				write(1, "Quit: 3", 8);
+			write(1, "\n", 1);
+			return (WTERMSIG(f->result_pid) + 128);
+		}
 		return (0);
 	}
 }

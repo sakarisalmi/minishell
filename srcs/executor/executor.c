@@ -27,6 +27,7 @@ static int	executor(t_executor *ex, t_data *data)
 {
 	t_executor_function	f;
 
+	signal(SIGINT, SIG_IGN);
 	if (executor_start(&f, ex, data) != 0)
 		return (executor_end_here_doc_ctrl_c(&f, ex));
 	while (++f.i < ex->process_amount)
@@ -135,6 +136,8 @@ static void	executor_exec_cmd(t_process *proc, t_data *data)
 {
 	t_token	*cmd_token;
 
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
 	if (proc->fd_in != STDIN_FILENO)
 		dup2(proc->fd_in, STDIN_FILENO);
 	if (proc->fd_out != STDOUT_FILENO)
