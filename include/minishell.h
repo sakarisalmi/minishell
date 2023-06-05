@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/27 13:21:10 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/05 16:13:03 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,14 @@ typedef struct s_envs_set_up_func
 	char	*shlvl_str;
 	int		i;
 }	t_envs_set_up_func;
+
+typedef struct s_envs_set_up_shlvl_func
+{
+	int		shlvl_int;
+	char	*shlvl_str;
+	char	*str_to_return;
+	int		i;
+}	t_envs_set_up_shlvl_func;
 
 typedef struct s_token
 {
@@ -122,6 +130,9 @@ void	minishell_loop_clean_up(t_data *data);
 
 // minishell.c
 int		minishell_sig_hand_err_msg(t_data *data);
+
+// minishell_env_setup.c
+char	**minishell_env_setup(char **envp);
 
 // ms_funcs.c
 void	*ms_calloc(size_t count, size_t size, t_data *data);
