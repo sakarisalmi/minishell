@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/27 13:08:36 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/05 15:03:08 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,13 @@ int	executor_pre_setup(t_data *data)
 static int	executor_single_builtin_process(t_executor *ex, t_data *data)
 {
 	int					result;
+	int					builtin_result;
+	int					orig_std_in;
+	int					orig_std_out;
 	t_executor_function	f;
 
+	orig_std_in = dup(STDIN_FILENO);
+	orig_std_out = dup(STDOUT_FILENO);
 	if (executor_start(&f, ex, data) != 0)
 		return (executor_end_here_doc_ctrl_c(&f, ex));
 	result = f.result_fork[0];
@@ -94,7 +99,14 @@ static int	executor_single_builtin_process(t_executor *ex, t_data *data)
 	free(f.result_redirs);
 	if (result != 0)
 		return (result);
-	return (executor_builtin_func(ex->process_array[0], data));
+	builtin_result = executor_builtin_func(ex->process_array[0], data);
+	if (ex->process_array[0]->fd_in != STDIN_FILENO)
+		executor_single_builtin_proc_change_std_fd_back(
+			ex->process_array[0]->fd_in, orig_std_in, STDIN_FILENO);
+	if (ex->process_array[0]->fd_out != STDOUT_FILENO)
+		executor_single_builtin_proc_change_std_fd_back(
+			ex->process_array[0]->fd_out, orig_std_out, STDOUT_FILENO);
+	return (builtin_result);
 }
 
 static int	executor_builtin_func(t_process *proc, t_data *data)

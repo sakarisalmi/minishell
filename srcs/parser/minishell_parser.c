@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 16:07:38 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/26 17:33:00 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/05 15:09:16 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,11 @@ int	minishell_parser(char *read_line, t_data *data)
 		return (-42);
 	}
 	free(read_line);
-	print_rl_parts(data);
 	if (tokens_creator(&data->parser, data) != 0)
 	{
 		data->latest_exit_status = 258;
 		return (258);
 	}
-	print_tunp(data);
 	if (tokenizer(data->parser.token_lst, data) != 0)
 	{
 		data->latest_exit_status = 258;
