@@ -85,20 +85,18 @@ void	token_lst_clear_lst(t_token **token_lst);
 // tokens.creator.c
 int		tokens_creator(t_parser *parser, t_data *data);
 
-// parser_error_msg.c
+// token_unpacker_utils1.c
 int		tunp_error_msg(int error_code, char error_char);
+void	token_unpacker_end(t_token *token, char *rl_part);
 
 // token_unpacker.c
 int		token_unpacker(char *rl_part, t_token *token,
-			t_token_unpacker *tunp, t_data *data);
+			t_token_unpacker *f, t_data *data);
 
 // token_unpacker_get_var.c
 char	*token_unpacker_hit_var(char *rl_part, char *token,
-			t_token_unpacker *tunp, t_data *data);
+			t_token_unpacker *f, t_data *data);
 char	*token_unpacker_get_var_from_env(char *var_name, t_data *data);
-
-// token_unpacker_pipe_and_redir.c
-void	token_unpacker_pipe_and_redir(t_token *token, char *rl_part);
 
 // parser_clean_up.c
 void	tokens_clean_up(t_data *data);

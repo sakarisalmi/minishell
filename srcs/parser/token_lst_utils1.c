@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:28:19 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/26 16:30:51 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/07 15:18:54 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_token	*token_lst_init_new_node(char *token_string, t_data *data)
 	}
 	new_node->type = 0;
 	new_node->string = token_string;
+	new_node->rl_part_string = NULL;
 	new_node->args = NULL;
 	new_node->next = NULL;
 	new_node->prev = NULL;

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 16:44:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/26 17:29:13 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/07 16:33:04 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../include/tokenizer.h"
 
 void			tok_set_token_args(t_token *token, t_data *data);
-static t_token	*tok_skip_redir_and_file(t_token *token);
+static t_token	*tok_skip_redir_and_ingore(t_token *token);
 
 /*----------------------------------------------------------------------------*/
 
@@ -46,8 +46,8 @@ void	tok_set_token_args(t_token *token, t_data *data)
 		tmp_token = token->next;
 		while (tmp_token && tmp_token->type != T_PIPE)
 		{
-			if (tmp_token->type == T_REDIR)
-				tmp_token = tok_skip_redir_and_file(tmp_token);
+			if (tmp_token->type == T_REDIR || tmp_token->type == T_IGNORE)
+				tmp_token = tok_skip_redir_and_ingore(tmp_token);
 			else
 			{
 				tmp_token->type = T_ARG;
@@ -58,10 +58,12 @@ void	tok_set_token_args(t_token *token, t_data *data)
 	}
 }
 
-static t_token	*tok_skip_redir_and_file(t_token *token)
+static t_token	*tok_skip_redir_and_ingore(t_token *token)
 {
 	t_token	*tmp;
 
+	if (token->type == T_IGNORE)
+		return (token->next);
 	tmp = token->next;
 	if (!tmp)
 		return (tmp);

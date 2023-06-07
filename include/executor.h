@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/05 15:00:47 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/07 16:11:31 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,7 @@ void		executor_single_builtin_proc_change_std_fd_back(int fd_to_close,
 
 // executor_clean_up.c
 void		executor_clean_up(t_data *data, int process_amount);
+int			handle_redirs_check_for_empty_filename(t_token *token,
+				t_executor_function *f);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 16:18:41 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/26 17:14:06 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/07 15:18:14 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	tokens_clean_up(t_data *data)
 		tmp2 = tmp1->next;
 		if (tmp1->string)
 			free(tmp1->string);
+		if (tmp1->rl_part_string)
+			free(tmp1->rl_part_string);
 		if (tmp1->args)
 			free(tmp1->args);
 		tmp1->type = T_UNIDENTIFIED;

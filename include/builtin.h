@@ -6,12 +6,21 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 13:27:37 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/27 13:55:13 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/07 16:52:04 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTIN_H
 # define BUILTIN_H
+
+typedef struct s_cd_func
+{
+	int		result;
+	char	**export_pwd;
+	char	*dir;
+}	t_cd_func;
+
+/*----------------------------------------------------------------------------*/
 
 # include "minishell.h"
 

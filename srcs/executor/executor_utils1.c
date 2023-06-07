@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:34:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/27 13:09:31 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/07 12:54:46 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	executor_check_if_to_fork(t_executor_function *f, t_executor *ex,
 	t_token	*cmd_token;
 
 	if (f->result_redirs[f->i] != 0)
-		return (f->result_redirs[f->i]);
+		return (1);
 	if (check_for_builtin(ex->process_array[f->i]->tokens_array))
 		return (0);
 	cmd_token = process_get_cmd_token(ex->process_array[f->i]);

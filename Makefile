@@ -6,7 +6,7 @@
 #    By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/04 10:03:33 by ssalmi            #+#    #+#              #
-#    Updated: 2023/06/05 16:13:22 by ssalmi           ###   ########.fr        #
+#    Updated: 2023/06/07 14:53:26 by ssalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,8 +33,8 @@ BUILTIN_FILES = check_for_builtin echo pwd env cd exit export export_utils1 \
 PARSER_DIR = parser/
 PARSER_FILES = ft_funcs minishell_parser read_line_split rl_split_utils1 \
 				rl_split_utils2 tokens_creator token_unpacker \
-				token_unpacker_get_var token_unpacker_error_msg token_lst_utils1 \
-				token_unpacker_pipe_and_redir parser_clean_up
+				token_unpacker_get_var token_unpacker_utils1 token_lst_utils1 \
+				parser_clean_up
 
 TOKENIZER_DIR = tokenizer/
 TOKENIZER_FILES = tokenizer tokenizer_set_token_args tokenizer_error_msg

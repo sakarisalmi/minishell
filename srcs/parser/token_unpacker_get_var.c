@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 14:04:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/26 17:22:37 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/07 15:14:35 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,22 @@ static void	set_token_unpacker_var_struct_vals(t_token_unpacker_var *f);
 	dollar-sign is found. This function was made to save space in
 	tunp_outside_quotes and tunp_in_quotes. */
 char	*token_unpacker_hit_var(char *rl_part, char *token,
-	t_token_unpacker *tunp, t_data *data)
+	t_token_unpacker *f, t_data *data)
 {
-	if (ft_isspace(rl_part[tunp->i + 1]) || rl_part[tunp->i + 1] == '\0'
-		|| (tunp->in_quotes && (rl_part[tunp->i + 1] == '"'
-				|| rl_part[tunp->i + 1] == '\'')))
+	if (ft_isspace(rl_part[f->i + 1]) || rl_part[f->i + 1] == '\0'
+		|| (f->in_quotes && (rl_part[f->i + 1] == '"'
+				|| rl_part[f->i + 1] == '\'')))
 	{
-		tunp->token_length++;
-		token = ms_realloc(token, tunp->token_length, data);
+		f->token_length++;
+		token = ms_realloc(token, f->token_length, data);
 		ft_strncat(token, "$", 1);
-		tunp->i++;
+		f->i++;
 		return (token);
 	}
-	else if (rl_part[tunp->i + 1] == '?')
-		return (token_unpacker_get_last_exit(rl_part, token, tunp, data));
+	else if (rl_part[f->i + 1] == '?')
+		return (token_unpacker_get_last_exit(rl_part, token, f, data));
 	else
-		return (token_unpacker_get_var(rl_part, token, tunp, data));
+		return (token_unpacker_get_var(rl_part, token, f, data));
 	return (NULL);
 }
 

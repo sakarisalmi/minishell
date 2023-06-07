@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/05 16:13:03 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/07 15:20:52 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_token
 {
 	int				type;
 	char			*string;
+	char			*rl_part_string;
 	char			**args;
 	struct s_token	*next;
 	struct s_token	*prev;
