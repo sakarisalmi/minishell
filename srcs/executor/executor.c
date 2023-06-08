@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/08 17:09:56 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/08 18:52:09 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 #include "../../include/executor.h"
 #include "../../include/tokenizer.h"
 #include "../../include/builtin.h"
+
+//remove later
+#include <fcntl.h>
+
+
 
 static int		executor(t_executor *ex, t_data *data);
 int				executor_pre_setup(t_data *data);
@@ -43,6 +48,7 @@ static int	executor(t_executor *ex, t_data *data)
 			else if (f.pid[f.i] < 0)
 				return (executor_error_msg(NULL, 1));
 		}
+		executor_close_proc_fds(ex->process_array[f.i]);
 		close_pipe_ends_parent_process(ex->here_doc_array[f.i]);
 		if (f.i != 0)
 			close_pipe_ends_parent_process(ex->fds_array[f.i - 1]);
@@ -106,6 +112,7 @@ static int	executor_single_builtin_process(t_executor *ex, t_data *data)
 	if (ex->process_array[0]->fd_out != STDOUT_FILENO)
 		executor_single_builtin_proc_change_std_fd_back(
 			ex->process_array[0]->fd_out, orig_std_out, STDOUT_FILENO);
+	executor_close_proc_fds(ex->process_array[0]);
 	return (builtin_result);
 }
 
@@ -143,6 +150,12 @@ static int	executor_builtin_func(t_process *proc, t_data *data)
 	we will exit the process with zero. 
 	HUOM: what to do about built-ins? will prob have to go in another func
 	(this functions line amount is close to the limit)*/
+
+int isFileDescriptorOpen(int fd) {
+    int flags = fcntl(fd, F_GETFL);
+    return (flags != -1);
+}
+
 static void	executor_exec_cmd(t_process *proc, t_data *data)
 {
 	t_token	*cmd_token;
@@ -151,6 +164,11 @@ static void	executor_exec_cmd(t_process *proc, t_data *data)
 
 	proc_idx = get_process_idx(proc, data);
 	dprintf(2, "EXECUTOR proc[%d] fd_in: %d\n", proc_idx, proc->fd_in);
+	if (isFileDescriptorOpen(proc->fd_in)) {
+        printf("fd_in is open.\n");
+    } else {
+        printf("fd_in is not open.\n");
+    }
 	dprintf(2, "EXECUTOR proc[%d] fd_out: %d\n", proc_idx, proc->fd_out);
 	if (proc->fd_in != STDIN_FILENO)
 	{
@@ -158,7 +176,8 @@ static void	executor_exec_cmd(t_process *proc, t_data *data)
 		dup_result = dup2(proc->fd_in, STDIN_FILENO);
 		dprintf(2, "proc[%d] result of fd_in dup: %d\n", proc_idx, dup_result);
 		if (dup_result == -1)
-			perror("\t\tdup failure reason");
+			perror("\t\t\033[0;31mdup failure reason\033[0;37m");
+		close(proc->fd_in);
 	}
 	if (proc->fd_out != STDOUT_FILENO)
 	{
@@ -166,7 +185,8 @@ static void	executor_exec_cmd(t_process *proc, t_data *data)
 		dup_result = dup2(proc->fd_out, STDOUT_FILENO);
 		dprintf(2, "proc[%d] result of fd_out dup: %d\n", proc_idx, dup_result);
 		if (dup_result == -1)
-			perror("\t\tdup failure reason");
+			perror("\t\t\033[0;31mdup failure reason\033[0;37m");
+		close(proc->fd_out);
 	}
 	close_all_pipe_fds(&data->executor);
 	cmd_token = process_get_cmd_token(proc);

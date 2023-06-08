@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:32:58 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/08 16:21:31 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/08 18:00:58 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	close_all_pipe_fds(t_executor *exec)
 			close(exec->here_doc_array[i][1]);
 		}
 	}
+	dprintf(2, "\tend of close all pipe fds\n");
 }
 
 int	**executor_set_up_here_doc_array(t_executor *exec)
@@ -77,7 +78,7 @@ static int	**executor_create_here_doc_array(t_executor *exec)
 int	executor_set_up_here_doc_pipe(t_executor *exec,
 	int idx)
 {
-	printf("in executor_set_up_here_doc_pipe: idx: %d\n", idx);
+	printf("\nin executor_set_up_here_doc_pipe: idx: %d\n", idx);
 	if (exec->here_doc_array[idx])
 	{
 		printf("closing prev here_doc\n");

@@ -6,7 +6,7 @@
 #    By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/04 10:03:33 by ssalmi            #+#    #+#              #
-#    Updated: 2023/06/07 14:53:26 by ssalmi           ###   ########.fr        #
+#    Updated: 2023/06/08 18:47:21 by ssalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ EXECUTOR_DIR = executor/
 EXECUTOR_FILES = executor process_utils1 handle_redirs handle_redirs_utils1 \
 				handle_redirs_utils2 handle_redirs_utils3 fds_array_utils1 \
 				fds_array_utils2 executor_cmd_utils1 executor_utils1 \
-				executor_utils2 executor_clean_up
+				executor_utils2 executor_utils3 executor_clean_up
 
 MISC_DIR = misc/
 MISC_FILES = minishell minishell_env_setup str_array_utils1 ft_strncmp_casein \

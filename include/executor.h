@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/07 16:11:31 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/08 18:47:44 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@ int			executor_start_malloc_f_vars(t_executor_function *f,
 				int process_amount);
 void		executor_single_builtin_proc_change_std_fd_back(int fd_to_close,
 				int orig_std, int std_to_dup2);
+
+// executor_utils3.c
+void		executor_close_proc_fds(t_process *proc);
 
 // executor_clean_up.c
 void		executor_clean_up(t_data *data, int process_amount);

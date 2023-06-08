@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 13:26:18 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/07 17:25:56 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/08 18:15:38 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ static int	process_handle_redirs_first_loop(t_process *proc, t_data *data)
 					proc->tokens_array[i], proc, data);
 			if (latest_result < 0)
 				return (latest_result);
-			if (proc->fd_in != STDIN_FILENO && proc->fd_in != latest_result)
-				close(proc->fd_in);
+			// if (proc->fd_in != STDIN_FILENO && proc->fd_in != latest_result)
+			// 	close(proc->fd_in);
 			proc->fd_in = latest_result;
 		}
 	}
