@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 13:49:03 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/25 15:09:49 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/08 16:47:08 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,20 @@ int	executor_pipe_set_up(t_executor *exec)
 {
 	int	i;
 
+	printf("\nexecutor_pipe_set_up\n");
 	exec->fds_array = fds_array_create_fds_for_piping(exec->process_amount);
 	if (!exec->fds_array)
 		return (1);
 	i = 0;
 	while (i < exec->process_amount - 1)
 	{
+		printf("setting pipe between proc[%d] and proc[%d]; fds_array[%d]\n", i, i + 1, i);
 		if (set_up_pipes_between_processes(exec->fds_array[i],
 				exec->process_array[i], exec->process_array[i + 1]) != 0)
 			return (2);
 		i++;
 	}
+	printf("end of executor_pipe_set_up\n\n");
 	return (0);
 }
 
@@ -48,6 +51,7 @@ static int	set_up_pipes_between_processes(int *fds, t_process *proc_from,
 		perror("MINISHELL: Pipe");
 		return (1);
 	}
+	printf("\tproc_from fd_out: %d; proc_to fd_in: %d\n", fds[T_PIPE_WRITE], fds[T_PIPE_READ]);
 	proc_from->fd_out = fds[T_PIPE_WRITE];
 	proc_to->fd_in = fds[T_PIPE_READ];
 	return (0);

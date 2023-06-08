@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:34:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/07 12:54:46 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/07 17:41:06 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,12 @@ int	executor_end(t_executor_function *f, t_executor *ex)
 {
 	int	latest_result;
 
+	printf("in executor_end\n");
 	while (++f->j < ex->process_amount)
+	{
+		printf("waiting proc %d\n", f->j);
 		waitpid(f->pid[f->j], &f->result_pid, 0);
+	}
 	free(f->pid);
 	f->pid = NULL;
 	latest_result = f->result_fork[ex->process_amount - 1];

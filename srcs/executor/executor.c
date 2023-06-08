@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/05 15:03:08 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/08 17:09:56 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,11 +146,28 @@ static int	executor_builtin_func(t_process *proc, t_data *data)
 static void	executor_exec_cmd(t_process *proc, t_data *data)
 {
 	t_token	*cmd_token;
+	int		proc_idx;
+	int		dup_result;
 
+	proc_idx = get_process_idx(proc, data);
+	dprintf(2, "EXECUTOR proc[%d] fd_in: %d\n", proc_idx, proc->fd_in);
+	dprintf(2, "EXECUTOR proc[%d] fd_out: %d\n", proc_idx, proc->fd_out);
 	if (proc->fd_in != STDIN_FILENO)
-		dup2(proc->fd_in, STDIN_FILENO);
+	{
+		dprintf(2, "proc[%d] dupping fd_in: %d\n", proc_idx, proc->fd_in);
+		dup_result = dup2(proc->fd_in, STDIN_FILENO);
+		dprintf(2, "proc[%d] result of fd_in dup: %d\n", proc_idx, dup_result);
+		if (dup_result == -1)
+			perror("\t\tdup failure reason");
+	}
 	if (proc->fd_out != STDOUT_FILENO)
-		dup2(proc->fd_out, STDOUT_FILENO);
+	{
+		dprintf(2, "proc[%d] dupping fd_out: %d\n", proc_idx, proc->fd_out);
+		dup_result = dup2(proc->fd_out, STDOUT_FILENO);
+		dprintf(2, "proc[%d] result of fd_out dup: %d\n", proc_idx, dup_result);
+		if (dup_result == -1)
+			perror("\t\tdup failure reason");
+	}
 	close_all_pipe_fds(&data->executor);
 	cmd_token = process_get_cmd_token(proc);
 	if (proc->cmd_path)

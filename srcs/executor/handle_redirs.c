@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 13:26:18 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/24 13:55:37 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/07 17:25:56 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	job_handle_redirs(t_data *data, t_executor_function *f)
 	f->i = -1;
 	while (++f->i < data->executor.process_amount)
 	{
+		printf("in job_handle_redirs; proc: %d\n", f->i);
 		result = process_handle_redirs_first_loop(ex->process_array[f->i],
 				data);
 		if (result == -42)

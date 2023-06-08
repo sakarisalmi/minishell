@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:16 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/07 16:13:13 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/08 14:45:03 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	handle_redir_greater(t_token *token, t_executor_function *f)
 			ft_strlen(": failed to find or create file"));
 		f->redir_errs = str_array_add_str(f->redir_errs, err_msg);
 	}
+	printf("in handle_redir_greater: file: %s, fd: %d\n", token->args[0], result);
 	return (result);
 }
 
@@ -105,6 +106,7 @@ int	handle_redir_lesser_lesser(t_token *token, t_process *proc, t_data *data)
 	process_idx = get_process_idx(proc, data);
 	if (process_idx == -1)
 		return (-1);
+	printf("in handle_redir_lesser_lesser: proc[%d]: write_end: %d; read_end: %d\n", process_idx, data->executor.here_doc_array[process_idx][T_PIPE_WRITE], data->executor.here_doc_array[process_idx][T_PIPE_READ]);
 	result = handle_redir_lesser_lesser_here_doc(token, data, process_idx);
 	if (result == 1)
 		return (-42);
