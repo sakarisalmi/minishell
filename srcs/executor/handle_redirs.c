@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 13:26:18 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/08 18:15:38 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/13 13:42:04 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 int			job_handle_redirs(t_data *data, t_executor_function *f);
 static int	process_handle_redirs_first_loop(t_process *proc, t_data *data);
 static int	process_handle_redirs_second_loop(t_process *proc,
-				t_executor_function *f);
+				t_executor_function *f, t_data *data);
 static int	process_handle_redirs_just_lesser(t_process *proc, int idx,
 				t_executor_function *f);
 static int	process_handle_redirs_greaters(t_process *proc, int idx,
-				t_executor_function *f);
+				t_executor_function *f, t_data *data);
 
 /*----------------------------------------------------------------------------*/
 
@@ -49,7 +49,7 @@ int	job_handle_redirs(t_data *data, t_executor_function *f)
 	f->i = -1;
 	while (++f->i < data->executor.process_amount)
 	{
-		result = process_handle_redirs_second_loop(ex->process_array[f->i], f);
+		result = process_handle_redirs_second_loop(ex->process_array[f->i], f, data);
 		if (result < 0)
 		{
 			f->result_redirs[f->i] = result;
@@ -81,8 +81,8 @@ static int	process_handle_redirs_first_loop(t_process *proc, t_data *data)
 					proc->tokens_array[i], proc, data);
 			if (latest_result < 0)
 				return (latest_result);
-			// if (proc->fd_in != STDIN_FILENO && proc->fd_in != latest_result)
-			// 	close(proc->fd_in);
+			proc->last_here_doc = process_get_token_idx_in_proc(proc,
+					proc->tokens_array[i]);
 			proc->fd_in = latest_result;
 		}
 	}
@@ -97,7 +97,7 @@ static int	process_handle_redirs_first_loop(t_process *proc, t_data *data)
 	function will return a value under zero, after which stop the proc
 	and set exit status */
 static int	process_handle_redirs_second_loop(t_process *proc,
-	t_executor_function *f)
+	t_executor_function *f, t_data *data)
 {
 	int	result;
 	int	i;
@@ -113,7 +113,7 @@ static int	process_handle_redirs_second_loop(t_process *proc,
 				result = process_handle_redirs_just_lesser(
 						proc, i, f);
 			else
-				result = process_handle_redirs_greaters(proc, i, f);
+				result = process_handle_redirs_greaters(proc, i, f, data);
 		}
 		if (result < 0)
 			return (result);
@@ -129,25 +129,54 @@ static int	process_handle_redirs_just_lesser(t_process *proc, int idx,
 	result = handle_redir_lesser(proc->tokens_array[idx], f);
 	if (result < 0)
 		return (result);
-	if (proc->fd_in != STDIN_FILENO && proc->fd_in != result)
-		close(proc->fd_in);
-	proc->fd_in = result;
+	if (idx > proc->last_here_doc)
+	{
+		if (proc->fd_in != STDIN_FILENO && proc->fd_in != result)
+			close(proc->fd_in);
+		proc->fd_in = result;
+	}
+	else
+		close(result);
 	return (0);
 }
 
+int isFileDescriptorOpen2(int fd) {
+    int flags = fcntl(fd, F_GETFL);
+    return (flags != -1);
+}
+
 static int	process_handle_redirs_greaters(t_process *proc, int idx,
-	t_executor_function *f)
+	t_executor_function *f, t_data *data)
 {
 	int	result;
 
+	result = -42;
+	printf("\t\tin process_handle_redirs_greaters; proc[%d]\n", get_process_idx(proc, data));
 	if (ft_strncmp(proc->tokens_array[idx]->string, ">", 2) == 0)
 		result = handle_redir_greater(proc->tokens_array[idx], f);
 	else
 		result = handle_redir_greater_greater(proc->tokens_array[idx], f);
+	printf("\t\tgreaters; proc[%d]: result: %d\n", get_process_idx(proc, data), result);
 	if (result < 0)
 		return (result);
-	if (proc->fd_out != STDOUT_FILENO && proc->fd_out != result)
+	if (handle_redirs_should_fd_be_closed(proc->fd_out, &data->executor))
+	{
+		printf("proc[%d]: handle_redirs_should_fd_be_closed; closing old fd_out (%d)\n", get_process_idx(proc, data), proc->fd_out);
 		close(proc->fd_out);
+	}
+	else
+		printf("proc[%d]: handle_redirs_should_fd_be_closed; NOT closing old fd_out (%d)\n", get_process_idx(proc, data), proc->fd_out);
+	// if (proc->fd_out != STDOUT_FILENO && proc->fd_out != result)
+	// {
+	// 	printf("\t\tgreaters; proc[%d] closing old fd_out: num: %d\n", get_process_idx(proc, data), proc->fd_out);
+	// 	close(proc->fd_out);
+	// }
+	// else
+	// 	printf("\t\tgreaters; proc[%d] did not close old fd_out!\n", get_process_idx(proc, data));
 	proc->fd_out = result;
+	// if (isFileDescriptorOpen2(proc->fd_out))
+	// 	printf("\t\t\tproc[%d] FD_OUT IS OPEN!\n", get_process_idx(proc, data));
+	// else
+	// 	printf("\t\t\tproc[%d] FD_OUT IS NOT OPEN!\n", get_process_idx(proc, data));
 	return (0);
 }

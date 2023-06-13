@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 15:34:58 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/05 16:15:03 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/12 15:41:07 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static char	*minishell_env_setup_strdup(char *str, int idx,
 				char **minishell_env);
 static char	*minishell_env_setup_copy_shlvl(char *str, int idx,
 				char **minishell_env);
+static char	**minishell_env_check_shlvl(char **envs);
 
 /*----------------------------------------------------------------------------*/
 
@@ -41,6 +42,7 @@ char	**minishell_env_setup(char **envp)
 					f.i, f.minishell_env);
 	}
 	f.minishell_env[f.i] = NULL;
+	f.minishell_env = minishell_env_check_shlvl(f.minishell_env);
 	return (f.minishell_env);
 }
 
@@ -91,4 +93,27 @@ static char	*minishell_env_setup_copy_shlvl(char *str, int idx,
 		exit (-1);
 	}
 	return (f.str_to_return);
+}
+
+/*	this function checks if there is no shlvl in the copied environment values.
+	If there is a shlvl, do nothing. Otherwise create shlvl (set it to 1). */
+static char	**minishell_env_check_shlvl(char **envs)
+{
+	char	*shlvl_str;
+	int		i;
+
+	i = -1;
+	while (envs[++i])
+	{
+		if (ft_strnstr(envs[i], "SHLVL=", 6))
+			return (envs);
+	}
+	shlvl_str = ft_strdup("SHLVL=1");
+	if (!shlvl_str)
+	{
+		ft_putendl_fd("MINISHELL: failed to malloc shlvl", 2);
+		return (envs);
+	}
+	envs = str_array_add_str(envs, shlvl_str);
+	return (envs);
 }

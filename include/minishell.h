@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 10:01:20 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/07 15:20:52 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/12 14:58:31 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_process
 	int		fd_in;
 	int		fd_out;
 	char	*cmd_path;
+	int		last_here_doc;
 }	t_process;
 
 typedef struct s_executor

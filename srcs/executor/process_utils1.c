@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:38:36 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/27 13:06:09 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/12 15:01:28 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ static t_process	*process_init_new_process(t_data *data)
 	new_process->fd_in = STDIN_FILENO;
 	new_process->fd_out = STDOUT_FILENO;
 	new_process->cmd_path = NULL;
+	new_process->last_here_doc = -1;
 	return (new_process);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/08 18:52:09 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/12 19:05:48 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,57 +90,47 @@ int	executor_pre_setup(t_data *data)
 static int	executor_single_builtin_process(t_executor *ex, t_data *data)
 {
 	int					result;
-	int					builtin_result;
-	int					orig_std_in;
-	int					orig_std_out;
 	t_executor_function	f;
 
-	orig_std_in = dup(STDIN_FILENO);
-	orig_std_out = dup(STDOUT_FILENO);
+	printf("in executor_single_builtint_process\n");
 	if (executor_start(&f, ex, data) != 0)
 		return (executor_end_here_doc_ctrl_c(&f, ex));
+	printf("executor_single_builtint_process; stage 1\n");
 	result = f.result_fork[0];
 	free(f.pid);
 	free(f.result_fork);
 	free(f.result_redirs);
+	printf("executor_single_builtint_process; stage 2\n");
 	if (result != 0)
 		return (result);
-	builtin_result = executor_builtin_func(ex->process_array[0], data);
-	if (ex->process_array[0]->fd_in != STDIN_FILENO)
-		executor_single_builtin_proc_change_std_fd_back(
-			ex->process_array[0]->fd_in, orig_std_in, STDIN_FILENO);
-	if (ex->process_array[0]->fd_out != STDOUT_FILENO)
-		executor_single_builtin_proc_change_std_fd_back(
-			ex->process_array[0]->fd_out, orig_std_out, STDOUT_FILENO);
-	executor_close_proc_fds(ex->process_array[0]);
-	return (builtin_result);
+	else
+		return (executor_exec_single_builtin_proc(ex->process_array[0], data));
 }
 
+/*	This function is used when there is more than one process to execute. That
+	means this process was forked. If there is just one process in a job and that
+	process is a builtin, we use the function executor_single_builtin_process.*/
 static int	executor_builtin_func(t_process *proc, t_data *data)
 {
-	t_token	*builtin_token;
+	int	dup_result;
 
+	printf("\tproc[%d] executor_builtin_func\n", get_process_idx(proc, data));
 	if (proc->fd_in != STDIN_FILENO)
-		dup2(proc->fd_in, STDIN_FILENO);
+	{
+		printf("\tproc[%d] fd_in: %d\n", get_process_idx(proc, data), proc->fd_in);
+		dup_result = dup2(proc->fd_in, STDIN_FILENO);
+		printf("\tproc[%d] executor_builtin_func; dup2 fd_in result: %d\n", get_process_idx(proc, data), dup_result);
+		close(proc->fd_in);
+	}
 	if (proc->fd_out != STDOUT_FILENO)
-		dup2(proc->fd_out, STDOUT_FILENO);
+	{
+		printf("\tproc[%d] fd_out: %d\n", get_process_idx(proc, data), proc->fd_out);
+		dup_result = dup2(proc->fd_out, STDOUT_FILENO);
+		printf("\tproc[%d] executor_builtin_func; dup2 fd_out result: %d\n", get_process_idx(proc, data), dup_result);
+		close(proc->fd_out);
+	}
 	close_all_pipe_fds(&data->executor);
-	builtin_token = process_get_cmd_token(proc);
-	if (!ft_strncmp_casein(builtin_token->string, "cd", 3))
-		return (cd(builtin_token->args, data));
-	if (!ft_strncmp_casein(builtin_token->string, "echo", 5))
-		return (echo(builtin_token->args));
-	if (!ft_strncmp_casein(builtin_token->string, "pwd", 4))
-		return (pwd());
-	if (!ft_strncmp_casein(builtin_token->string, "export", 7))
-		return (export(builtin_token->args, data));
-	if (!ft_strncmp_casein(builtin_token->string, "unset", 6))
-		return (unset(builtin_token->args, data));
-	if (!ft_strncmp_casein(builtin_token->string, "env", 4))
-		return (env(builtin_token->args, data));
-	if (!ft_strncmp_casein(builtin_token->string, "exit", 5))
-		return (minishell_exit(builtin_token->args, data));
-	return (0);
+	return (executor_find_and_exec_builtin(proc, data));
 }
 
 /*	this is the function the child process will go into to execute the proc.
@@ -165,9 +155,14 @@ static void	executor_exec_cmd(t_process *proc, t_data *data)
 	proc_idx = get_process_idx(proc, data);
 	dprintf(2, "EXECUTOR proc[%d] fd_in: %d\n", proc_idx, proc->fd_in);
 	if (isFileDescriptorOpen(proc->fd_in)) {
-        printf("fd_in is open.\n");
+        printf("proc[%d]: fd_in is open.\n", proc_idx);
     } else {
-        printf("fd_in is not open.\n");
+        printf("proc[%d]fd_in is not open.\n", proc_idx);
+    }
+	if (isFileDescriptorOpen(proc->fd_out)) {
+        printf("proc[%d]; fd_out is open.\n", proc_idx);
+    } else {
+        printf("proc[%d]; fd_out is not open.\n", proc_idx);
     }
 	dprintf(2, "EXECUTOR proc[%d] fd_out: %d\n", proc_idx, proc->fd_out);
 	if (proc->fd_in != STDIN_FILENO)
