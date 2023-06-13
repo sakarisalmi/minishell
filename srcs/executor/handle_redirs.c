@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 13:26:18 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/24 13:55:37 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/13 14:06:52 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 int			job_handle_redirs(t_data *data, t_executor_function *f);
 static int	process_handle_redirs_first_loop(t_process *proc, t_data *data);
 static int	process_handle_redirs_second_loop(t_process *proc,
-				t_executor_function *f);
+				t_executor_function *f, t_data *data);
 static int	process_handle_redirs_just_lesser(t_process *proc, int idx,
-				t_executor_function *f);
+				t_executor_function *f, t_data *data);
 static int	process_handle_redirs_greaters(t_process *proc, int idx,
-				t_executor_function *f);
+				t_executor_function *f, t_data *data);
 
 /*----------------------------------------------------------------------------*/
 
@@ -48,7 +48,8 @@ int	job_handle_redirs(t_data *data, t_executor_function *f)
 	f->i = -1;
 	while (++f->i < data->executor.process_amount)
 	{
-		result = process_handle_redirs_second_loop(ex->process_array[f->i], f);
+		result = process_handle_redirs_second_loop(
+				ex->process_array[f->i], f, data);
 		if (result < 0)
 		{
 			f->result_redirs[f->i] = result;
@@ -80,8 +81,8 @@ static int	process_handle_redirs_first_loop(t_process *proc, t_data *data)
 					proc->tokens_array[i], proc, data);
 			if (latest_result < 0)
 				return (latest_result);
-			if (proc->fd_in != STDIN_FILENO && proc->fd_in != latest_result)
-				close(proc->fd_in);
+			proc->last_here_doc = process_get_token_idx_in_proc(proc,
+					proc->tokens_array[i]);
 			proc->fd_in = latest_result;
 		}
 	}
@@ -96,7 +97,7 @@ static int	process_handle_redirs_first_loop(t_process *proc, t_data *data)
 	function will return a value under zero, after which stop the proc
 	and set exit status */
 static int	process_handle_redirs_second_loop(t_process *proc,
-	t_executor_function *f)
+	t_executor_function *f, t_data *data)
 {
 	int	result;
 	int	i;
@@ -110,9 +111,9 @@ static int	process_handle_redirs_second_loop(t_process *proc,
 		{
 			if (proc->tokens_array[i]->string[0] == '<')
 				result = process_handle_redirs_just_lesser(
-						proc, i, f);
+						proc, i, f, data);
 			else
-				result = process_handle_redirs_greaters(proc, i, f);
+				result = process_handle_redirs_greaters(proc, i, f, data);
 		}
 		if (result < 0)
 			return (result);
@@ -121,31 +122,37 @@ static int	process_handle_redirs_second_loop(t_process *proc,
 }
 
 static int	process_handle_redirs_just_lesser(t_process *proc, int idx,
-	t_executor_function *f)
+	t_executor_function *f, t_data *data)
 {
 	int	result;
 
 	result = handle_redir_lesser(proc->tokens_array[idx], f);
 	if (result < 0)
 		return (result);
-	if (proc->fd_in != STDIN_FILENO && proc->fd_in != result)
-		close(proc->fd_in);
-	proc->fd_in = result;
+	if (idx > proc->last_here_doc)
+	{
+		if (handle_redirs_should_fd_be_closed(proc->fd_in, &data->executor))
+			close(proc->fd_in);
+		proc->fd_in = result;
+	}
+	else
+		close(result);
 	return (0);
 }
 
 static int	process_handle_redirs_greaters(t_process *proc, int idx,
-	t_executor_function *f)
+	t_executor_function *f, t_data *data)
 {
 	int	result;
 
+	result = -42;
 	if (ft_strncmp(proc->tokens_array[idx]->string, ">", 2) == 0)
 		result = handle_redir_greater(proc->tokens_array[idx], f);
 	else
 		result = handle_redir_greater_greater(proc->tokens_array[idx], f);
 	if (result < 0)
 		return (result);
-	if (proc->fd_out != STDOUT_FILENO && proc->fd_out != result)
+	if (handle_redirs_should_fd_be_closed(proc->fd_out, &data->executor))
 		close(proc->fd_out);
 	proc->fd_out = result;
 	return (0);

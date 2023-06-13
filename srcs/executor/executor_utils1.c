@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 10:34:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/25 13:23:06 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/13 13:49:50 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,26 +43,6 @@ int	executor_start(t_executor_function *f, t_executor *ex, t_data *data)
 	return (0);
 }
 
-// int	executor_start(t_executor_function *f, t_executor *ex, t_data *data)
-// {
-// 	f->i = -1;
-// 	f->j = -1;
-// 	if (executor_start_malloc_f_vars(f, ex->process_amount) != 0)
-// 		return (-1);
-// 	while (++f->i < ex->process_amount)
-// 	{
-// 		f->result_fork[f->i] = executor_check_if_to_fork(f, ex, data);
-// 		if (f->result_fork[f->i] == -42)
-// 		{
-// 			str_array_free_everything(f->redir_errs);
-// 			return (1);
-// 		}
-// 	}
-// 	executor_start_print_redir_err_msgs(f);
-// 	f->i = -1;
-// 	return (0);
-// }
-
 int	executor_end(t_executor_function *f, t_executor *ex)
 {
 	int	latest_result;
@@ -98,7 +78,7 @@ int	executor_check_if_to_fork(t_executor_function *f, t_executor *ex,
 	t_token	*cmd_token;
 
 	if (f->result_redirs[f->i] != 0)
-		return (f->result_redirs[f->i]);
+		return (1);
 	if (check_for_builtin(ex->process_array[f->i]->tokens_array))
 		return (0);
 	cmd_token = process_get_cmd_token(ex->process_array[f->i]);

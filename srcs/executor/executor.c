@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/25 12:38:50 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/13 13:49:36 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static int	executor(t_executor *ex, t_data *data)
 			else if (f.pid[f.i] < 0)
 				return (executor_error_msg(NULL, 1));
 		}
+		executor_close_proc_fds(ex->process_array[f.i]);
 		close_pipe_ends_parent_process(ex->here_doc_array[f.i]);
 		if (f.i != 0)
 			close_pipe_ends_parent_process(ex->fds_array[f.i - 1]);
@@ -57,23 +58,23 @@ int	executor_pre_setup(t_data *data)
 
 	data->executor.token_lst = data->parser.token_lst;
 	data->executor.process_array = create_processes_from_tokens(
-			data->executor.token_lst);
+			data->executor.token_lst, data);
 	i = 0;
 	while (data->executor.process_array[i])
 		i++;
 	data->executor.process_amount = i;
 	data->executor.here_doc_array = \
 		executor_set_up_here_doc_array(&data->executor);
+	if (!data->executor.here_doc_array)
+		minishell_fatal_error_exit(data);
 	if (data->executor.process_amount == 1
 		&& check_for_builtin(data->executor.process_array[0]->tokens_array))
 		return (executor_single_builtin_process(&data->executor, data));
 	else
 	{
 		if (data->executor.process_amount > 1)
-		{
 			if (executor_pipe_set_up(&data->executor) != 0)
 				return (executor_error_msg(NULL, 2));
-		}
 		return (executor(&data->executor, data));
 	}
 	return (0);
@@ -95,34 +96,29 @@ static int	executor_single_builtin_process(t_executor *ex, t_data *data)
 	free(f.result_redirs);
 	if (result != 0)
 		return (result);
-	return (executor_builtin_func(ex->process_array[0], data));
+	else
+		return (executor_exec_single_builtin_proc(ex->process_array[0], data));
 }
 
+/*	This function is used when there is more than one process to execute. That
+	means this process was forked. If there is just one process in a job and that
+	process is a builtin, we use the function executor_single_builtin_process.*/
 static int	executor_builtin_func(t_process *proc, t_data *data)
 {
-	t_token	*builtin_token;
+	int	dup_result;
 
 	if (proc->fd_in != STDIN_FILENO)
-		dup2(proc->fd_in, STDIN_FILENO);
+	{
+		dup_result = dup2(proc->fd_in, STDIN_FILENO);
+		close(proc->fd_in);
+	}
 	if (proc->fd_out != STDOUT_FILENO)
-		dup2(proc->fd_out, STDOUT_FILENO);
+	{
+		dup_result = dup2(proc->fd_out, STDOUT_FILENO);
+		close(proc->fd_out);
+	}
 	close_all_pipe_fds(&data->executor);
-	builtin_token = process_get_cmd_token(proc);
-	if (!ft_strncmp_casein(builtin_token->string, "cd", 3))
-		return (cd(builtin_token->args, data));
-	if (!ft_strncmp_casein(builtin_token->string, "echo", 5))
-		return (echo(builtin_token->args));
-	if (!ft_strncmp_casein(builtin_token->string, "pwd", 4))
-		return (pwd());
-	if (!ft_strncmp_casein(builtin_token->string, "export", 7))
-		return (export(builtin_token->args, data));
-	if (!ft_strncmp_casein(builtin_token->string, "unset", 6))
-		return (unset(builtin_token->args, data));
-	if (!ft_strncmp_casein(builtin_token->string, "env", 4))
-		return (env(builtin_token->args, data));
-	if (!ft_strncmp_casein(builtin_token->string, "exit", 5))
-		return (minishell_exit(builtin_token->args, data));
-	return (0);
+	return (executor_find_and_exec_builtin(proc, data));
 }
 
 /*	this is the function the child process will go into to execute the proc.
@@ -139,9 +135,15 @@ static void	executor_exec_cmd(t_process *proc, t_data *data)
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
 	if (proc->fd_in != STDIN_FILENO)
+	{
 		dup2(proc->fd_in, STDIN_FILENO);
+		close(proc->fd_in);
+	}
 	if (proc->fd_out != STDOUT_FILENO)
+	{
 		dup2(proc->fd_out, STDOUT_FILENO);
+		close(proc->fd_out);
+	}
 	close_all_pipe_fds(&data->executor);
 	cmd_token = process_get_cmd_token(proc);
 	if (proc->cmd_path)

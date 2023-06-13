@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 16:18:41 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/22 17:24:18 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/07 15:18:14 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../../include/tokenizer.h"
 
 void	tokens_clean_up(t_data *data);
-void	read_line_clean_up(t_data *data, char *read_line);
+void	read_line_parts_clean_up(t_data *data);
 
 /*----------------------------------------------------------------------------*/
 
@@ -33,6 +33,8 @@ void	tokens_clean_up(t_data *data)
 		tmp2 = tmp1->next;
 		if (tmp1->string)
 			free(tmp1->string);
+		if (tmp1->rl_part_string)
+			free(tmp1->rl_part_string);
 		if (tmp1->args)
 			free(tmp1->args);
 		tmp1->type = T_UNIDENTIFIED;
@@ -43,13 +45,10 @@ void	tokens_clean_up(t_data *data)
 	data->parser.token_lst = NULL;
 }
 
-/*	This function handle the freeing of everything allocated for the
-	read_line and the rl_parts.*/
-void	read_line_clean_up(t_data *data, char *read_line)
+/*	This function handle the freeing of everything allocated for
+	the rl_parts.*/
+void	read_line_parts_clean_up(t_data *data)
 {
-	if (read_line)
-		free(read_line);
-	read_line = NULL;
 	ft_lstclear(&data->parser.rl_parts_lst, free);
 	data->parser.rl_parts_lst = NULL;
 }

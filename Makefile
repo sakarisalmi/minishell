@@ -6,7 +6,7 @@
 #    By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/04 10:03:33 by ssalmi            #+#    #+#              #
-#    Updated: 2023/05/25 15:21:15 by ssalmi           ###   ########.fr        #
+#    Updated: 2023/06/08 18:47:21 by ssalmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,14 +27,14 @@ SRCS_DIR = srcs/
 OBJS_DIR = objs/
 
 BUILTIN_DIR = builtin/
-BUILTIN_FILES = check_for_builtin echo pwd env cd exit export \
+BUILTIN_FILES = check_for_builtin echo pwd env cd exit export export_utils1 \
 				unset
 
 PARSER_DIR = parser/
 PARSER_FILES = ft_funcs minishell_parser read_line_split rl_split_utils1 \
 				rl_split_utils2 tokens_creator token_unpacker \
-				token_unpacker_get_var token_unpacker_error_msg token_lst_utils1 \
-				token_unpacker_pipe_and_redir parser_clean_up
+				token_unpacker_get_var token_unpacker_utils1 token_lst_utils1 \
+				parser_clean_up
 
 TOKENIZER_DIR = tokenizer/
 TOKENIZER_FILES = tokenizer tokenizer_set_token_args tokenizer_error_msg
@@ -43,11 +43,11 @@ EXECUTOR_DIR = executor/
 EXECUTOR_FILES = executor process_utils1 handle_redirs handle_redirs_utils1 \
 				handle_redirs_utils2 handle_redirs_utils3 fds_array_utils1 \
 				fds_array_utils2 executor_cmd_utils1 executor_utils1 \
-				executor_utils2 executor_clean_up
+				executor_utils2 executor_utils3 executor_clean_up
 
 MISC_DIR = misc/
-MISC_FILES = minishell str_array_utils1 ft_strncmp_casein \
-			minishell_loop_clean_up signal_utils1 signal_utils2
+MISC_FILES = minishell minishell_env_setup str_array_utils1 ft_strncmp_casein \
+			minishell_loop_clean_up signal_utils1 signal_utils2 ms_funcs
 
 FILES += $(addprefix $(BUILTIN_DIR), $(BUILTIN_FILES))
 FILES += $(addprefix $(PARSER_DIR), $(PARSER_FILES))

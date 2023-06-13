@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:40:47 by Sharsune          #+#    #+#             */
-/*   Updated: 2023/05/25 13:13:24 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/07 17:00:27 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,38 +16,37 @@
 
 int			cd(char **args, t_data *data);
 static char	**cd_get_export(char *env_var);
-static char	*cd_get_home_dir(char **envs);
-static int	cd_chdir_failure(char **export_pwd);
+static char	*cd_get_home_dir(char **envs, char **export_pwd);
+static int	cd_chdir_failure(char **export_pwd, char *arg);
+static int	cd_change_dir(char *dir);
 
 /*----------------------------------------------------------------------------*/
 
 int	cd(char **args, t_data *data)
 {
-	int		result;
-	char	**export_pwd;
-	char	*dir;
+	t_cd_func	f;
 
-	export_pwd = cd_get_export("OLDPWD=");
+	f.export_pwd = cd_get_export("OLDPWD=");
 	if (!args[1] || !ft_strncmp(args[1], "$HOME", 6))
 	{
-		dir = cd_get_home_dir(data->envs);
-		if (!dir)
+		f.dir = cd_get_home_dir(data->envs, f.export_pwd);
+		if (!f.dir)
 			return (1);
 	}
 	else if (args[1])
-		dir = args[1];
-	result = chdir(dir);
-	if (result == -1)
-		return (cd_chdir_failure(export_pwd));
+		f.dir = args[1];
+	f.result = cd_change_dir(f.dir);
+	if (f.result == -1)
+		return (cd_chdir_failure(f.export_pwd, args[1]));
 	else
 	{
-		export(export_pwd, data);
-		str_array_free_everything(export_pwd);
-		export_pwd = cd_get_export("PWD=");
-		export(export_pwd, data);
-		str_array_free_everything(export_pwd);
+		export(f.export_pwd, data);
+		str_array_free_everything(f.export_pwd);
+		f.export_pwd = cd_get_export("PWD=");
+		export(f.export_pwd, data);
+		str_array_free_everything(f.export_pwd);
 	}
-	return (result);
+	return (f.result);
 }
 
 static char	**cd_get_export(char *env_var)
@@ -72,7 +71,7 @@ static char	**cd_get_export(char *env_var)
 	return (export_cwd);
 }
 
-static char	*cd_get_home_dir(char **envs)
+static char	*cd_get_home_dir(char **envs, char **export_pwd)
 {
 	int	i;
 
@@ -86,12 +85,25 @@ static char	*cd_get_home_dir(char **envs)
 			return (envs[i] + 5);
 	}
 	ft_putendl_fd("MINISHELL: cd: HOME not set", 2);
+	str_array_free_everything(export_pwd);
 	return (NULL);
 }
 
-static int	cd_chdir_failure(char **export_pwd)
+static int	cd_chdir_failure(char **export_pwd, char *arg)
 {
-	perror("MINISHELL: cd");
+	ft_putstr_fd("MINISHELL: cd: ", 2);
+	perror(arg);
 	str_array_free_everything(export_pwd);
 	return (1);
+}
+
+static int	cd_change_dir(char *dir)
+{
+	int	result;
+
+	if (dir[0] == '\0')
+		result = 0;
+	else
+		result = chdir(dir);
+	return (result);
 }

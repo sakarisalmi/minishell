@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 14:04:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/24 14:10:24 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/07 15:14:35 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,22 @@ static void	set_token_unpacker_var_struct_vals(t_token_unpacker_var *f);
 	dollar-sign is found. This function was made to save space in
 	tunp_outside_quotes and tunp_in_quotes. */
 char	*token_unpacker_hit_var(char *rl_part, char *token,
-	t_token_unpacker *tunp, t_data *data)
+	t_token_unpacker *f, t_data *data)
 {
-	if (ft_isspace(rl_part[tunp->i + 1]) || rl_part[tunp->i + 1] == '\0'
-		|| (tunp->in_quotes && (rl_part[tunp->i + 1] == '"'
-				|| rl_part[tunp->i + 1] == '\'')))
+	if (ft_isspace(rl_part[f->i + 1]) || rl_part[f->i + 1] == '\0'
+		|| (f->in_quotes && (rl_part[f->i + 1] == '"'
+				|| rl_part[f->i + 1] == '\'')))
 	{
-		tunp->token_length++;
-		token = ft_realloc(token, tunp->token_length);
+		f->token_length++;
+		token = ms_realloc(token, f->token_length, data);
 		ft_strncat(token, "$", 1);
-		tunp->i++;
+		f->i++;
 		return (token);
 	}
-	else if (rl_part[tunp->i + 1] == '?')
-		return (token_unpacker_get_last_exit(rl_part, token, tunp, data));
+	else if (rl_part[f->i + 1] == '?')
+		return (token_unpacker_get_last_exit(rl_part, token, f, data));
 	else
-		return (token_unpacker_get_var(rl_part, token, tunp, data));
+		return (token_unpacker_get_var(rl_part, token, f, data));
 	return (NULL);
 }
 
@@ -60,20 +60,14 @@ static char	*token_unpacker_get_var(char *rl_part, char *token,
 	f.j = tunp->i;
 	while (ft_isalnum(rl_part[f.j]) || rl_part[f.j] == '_')
 		f.j++;
-	f.var_name = ft_calloc(f.j - tunp->i + 1, sizeof(char));
-	if (!f.var_name)
-	{
-		tunp->i = f.j;
-		ft_putendl_fd("tunp_get_var malloc failure", 2);
-		return (token);
-	}
+	f.var_name = ms_calloc(f.j - tunp->i + 1, sizeof(char), data);
 	ft_strncpy(f.var_name, rl_part + tunp->i, f.j - tunp->i);
 	tunp->i = f.j;
 	f.result = token_unpacker_get_var_from_env(f.var_name, data);
 	if (!f.result)
 		return (token);
 	tunp->token_length += ft_strlen(f.result);
-	token = (char *)ft_realloc(token, tunp->token_length);
+	token = (char *)ms_realloc(token, tunp->token_length, data);
 	ft_strncat(token, f.result, ft_strlen(f.result));
 	free (f.result);
 	return (token);
@@ -112,8 +106,10 @@ static char	*token_unpacker_get_last_exit(char *rl_part, char *token,
 	(void)rl_part;
 	tunp->i += 2;
 	result = ft_itoa(data->latest_exit_status);
+	if (!result)
+		minishell_fatal_error_exit(data);
 	tunp->token_length += ft_strlen(result);
-	token = (char *)ft_realloc(token, tunp->token_length);
+	token = (char *)ms_realloc(token, tunp->token_length, data);
 	ft_strncat(token, result, ft_strlen(result));
 	free(result);
 	return (token);

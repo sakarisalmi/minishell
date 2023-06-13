@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 15:34:55 by Sharsune          #+#    #+#             */
-/*   Updated: 2023/05/19 17:53:27 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/05/27 14:01:25 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int			export(char **args, t_data *data);
 static void	export_print(t_data *data);
-static char	**export_find_match(char *new_str, char **envs);
+static char	**export_find_match(char *new_str, char **envs, t_data *data);
 static char	*export_replace_match(char *new_str, char *env_str);
 static int	export_check_if_invalid(char *str);
 
@@ -41,7 +41,7 @@ int	export(char **args, t_data *data)
 			result = 1;
 		}
 		else
-			data->envs = export_find_match(args[i], data->envs);
+			data->envs = export_find_match(args[i], data->envs, data);
 	}
 	return (result);
 }
@@ -75,7 +75,7 @@ static void	export_print(t_data *data)
 	}
 }
 
-static char	**export_find_match(char *new_str, char **envs)
+static char	**export_find_match(char *new_str, char **envs, t_data *data)
 {
 	int	i;
 	int	j;
@@ -83,20 +83,20 @@ static char	**export_find_match(char *new_str, char **envs)
 
 	found_match = 0;
 	j = 0;
-	while (new_str[j] && new_str[j] != '=')
+	while (new_str[j] && new_str[j] != '=' && new_str[j] != '+')
 		j++;
 	i = -1;
 	while (envs[++i] && found_match == 0)
 	{
 		if (ft_strncmp(new_str, envs[i], j) == 0 && (envs[i][j] == '='
-			|| envs[i][j] == '\0'))
+			|| envs[i][j] == '+' || envs[i][j] == '\0'))
 		{
 			found_match = 1;
 			envs[i] = export_replace_match(new_str, envs[i]);
 		}
 	}
 	if (found_match == 0)
-		envs = str_array_add_str(envs, ft_strdup(new_str));
+		envs = export_add_new_var(new_str, envs, data);
 	return (envs);
 }
 
@@ -106,9 +106,15 @@ static char	*export_replace_match(char *new_str, char *env_str)
 	char	*new_env_str;
 
 	i = 0;
-	while (new_str[i] && new_str[i] != '=')
+	while (new_str[i] && new_str[i] != '=' && new_str[i] != '+')
 		i++;
-	if (new_str[i] == '=')
+	if (new_str[i] == '+')
+	{
+		new_env_str = ft_strjoin(env_str, new_str + i + 2);
+		free(env_str);
+		return (new_env_str);
+	}
+	else if (new_str[i] == '=')
 	{
 		free(env_str);
 		new_env_str = ft_calloc(ft_strlen(new_str) + 1, sizeof(char));
@@ -131,7 +137,7 @@ static int	export_check_if_invalid(char *str)
 			return (1);
 		else
 		{
-			if (str[i] == '=')
+			if (str[i] == '=' || (str[i] == '+' && str[i + 1] == '='))
 				equals_sign = 1;
 			else
 				if (!ft_isalnum(str[i]) && str[i] != '_')

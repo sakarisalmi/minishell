@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/24 13:09:21 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/13 13:52:02 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ typedef struct s_executor_function
 int			executor_pre_setup(t_data *data);
 
 // process_utils1.c
-t_process	**create_processes_from_tokens(t_token *token_lst);
-void		process_free_process(t_process *proc);
+t_process	**create_processes_from_tokens(t_token *token_lst,
+				t_data *data);
 
 // handle_redirs.c
 int			job_handle_redirs(t_data *data, t_executor_function *f);
@@ -71,6 +71,8 @@ char		*here_doc_process_line(char *s, t_data *data);
 
 // handle_redirs_utils3.c
 void		here_doc_send_str_to_pipe(t_data *data, int process_idx, char *str);
+int			process_get_token_idx_in_proc(t_process *proc, t_token *token);
+int			handle_redirs_should_fd_be_closed(int fd, t_executor *ex);
 
 // fds_array_utils1.c
 int			executor_pipe_set_up(t_executor *exec);
@@ -103,7 +105,14 @@ void		executor_start_print_redir_err_msgs(t_executor_function *f);
 int			executor_start_malloc_f_vars(t_executor_function *f,
 				int process_amount);
 
+// executor_utils3.c
+void		executor_close_proc_fds(t_process *proc);
+int			executor_find_and_exec_builtin(t_process *proc, t_data *data);
+int			executor_exec_single_builtin_proc(t_process *proc, t_data *data);
+
 // executor_clean_up.c
 void		executor_clean_up(t_data *data, int process_amount);
+int			handle_redirs_check_for_empty_filename(t_token *token,
+				t_executor_function *f);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:32:58 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/17 14:21:27 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/13 13:51:16 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	executor_set_up_here_doc_pipe(t_executor *exec,
 		return (1);
 	if (pipe(exec->here_doc_array[idx]) == -1)
 	{
-		ft_putendl_fd("MINISHELL: here_doc malloc error", 2);
+		ft_putendl_fd("MINISHELL: here_doc pipe failure", 2);
 		return (2);
 	}
 	return (0);

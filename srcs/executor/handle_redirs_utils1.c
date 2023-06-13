@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:28:16 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/23 17:36:31 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/13 13:57:40 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,12 @@ int	handle_redir_greater(t_token *token, t_executor_function *f)
 	int		result;
 	char	*err_msg;
 
+	if (handle_redirs_check_for_empty_filename(token, f))
+		return (-1);
 	result = open(token->args[0], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (result < 0)
 	{
-		err_msg = ft_calloc(43 * ft_strlen(token->args[0]), sizeof(char));
+		err_msg = ft_calloc(43 + ft_strlen(token->args[0]), sizeof(char));
 		if (!err_msg)
 		{
 			ft_putendl_fd("MINISHELL: handle_redir malloc failure", 2);
@@ -52,10 +54,12 @@ int	handle_redir_greater_greater(t_token *token, t_executor_function *f)
 	int		result;
 	char	*err_msg;
 
+	if (handle_redirs_check_for_empty_filename(token, f))
+		return (-1);
 	result = open(token->args[0], O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (result < 0)
 	{
-		err_msg = ft_calloc(43 * ft_strlen(token->args[0]), sizeof(char));
+		err_msg = ft_calloc(43 + ft_strlen(token->args[0]), sizeof(char));
 		if (!err_msg)
 		{
 			ft_putendl_fd("MINISHELL: handle_redir malloc failure", 2);
@@ -93,15 +97,12 @@ int	handle_redir_lesser(t_token *token, t_executor_function *f)
 	return (result);
 }
 
-/*	Do later! how do you do the here_doc, check for examples!*/
 int	handle_redir_lesser_lesser(t_token *token, t_process *proc, t_data *data)
 {
 	int		process_idx;
 	int		result;
 
 	process_idx = get_process_idx(proc, data);
-	if (process_idx == -1)
-		return (-1);
 	result = handle_redir_lesser_lesser_here_doc(token, data, process_idx);
 	if (result == 1)
 		return (-42);

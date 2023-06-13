@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:01:45 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/05/24 13:26:38 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/12 17:40:25 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 int			executor_end_here_doc_ctrl_c(t_executor_function *f,
 				t_executor *ex);
-// static void	executor_end_here_doc_close_all(t_executor *ex);
 void		executor_start_allocation_failure_free(t_executor_function *f);
 void		executor_start_print_redir_err_msgs(t_executor_function *f);
 int			executor_start_malloc_f_vars(t_executor_function *f,
@@ -37,23 +36,6 @@ int	executor_end_here_doc_ctrl_c(t_executor_function *f, t_executor *ex)
 		free(f->result_redirs);
 	return (1);
 }
-
-// static void	executor_end_here_doc_close_all(t_executor *ex)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (++i < ex->process_amount)
-// 	{
-// 		if (i != 0)
-// 		{
-// 			close(ex->fds_array[i - 1][0]);
-// 			close(ex->fds_array[i - 1][1]);
-// 		}
-// 		close(ex->here_doc_array[i][0]);
-// 		close(ex->here_doc_array[i][1]);
-// 	}
-// }
 
 void	executor_start_allocation_failure_free(t_executor_function *f)
 {
