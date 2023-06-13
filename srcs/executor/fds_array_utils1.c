@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 13:49:03 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/13 13:50:39 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/13 14:37:51 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,11 @@ void	fds_array_free(int **fds_array, int free_until_idx)
 	while (i < free_until_idx)
 	{
 		if (fds_array[i])
+		{
+			close(fds_array[i][0]);
+			close(fds_array[i][1]);
 			free(fds_array[i]);
+		}
 		i++;
 	}
 	free(fds_array);
