@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:38:36 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/12 15:01:28 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/13 13:52:10 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static t_process	**executor_process_array_add_new_job(t_process **proc_array,
 static t_process	*process_init_new_process(t_data *data);
 static t_token		**process_tokens_array_add_new_token(t_token **tokens_array,
 						t_token *new_token, t_data *data);
-void				process_free_process(t_process *job);
 
 /*----------------------------------------------------------------------------*/
 
@@ -107,12 +106,4 @@ static t_token	**process_tokens_array_add_new_token(t_token **tokens_array,
 	new_tokens_array[i] = new_token;
 	new_tokens_array[i + 1] = NULL;
 	return (new_tokens_array);
-}
-
-/*	This function handles freeing a job. HUOM: the tokens should be freed
-	separately, so in the job we only free the token_array and not the individual
-	tokens inside it. MORE TO COME!*/
-void	process_free_process(t_process *job)
-{
-	free(job->tokens_array);
 }

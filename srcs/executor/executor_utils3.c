@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 18:45:44 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/12 17:39:51 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/13 13:50:05 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int	executor_exec_single_builtin_proc(t_process *proc, t_data *data)
 	int	out;
 	int	result;
 
-	printf("in executor_exec_single_builtin_proc\n");
 	in = -42;
 	out = -42;
 	if (proc->fd_in != STDIN_FILENO)

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:00:35 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/12 19:05:48 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/13 13:49:36 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 #include "../../include/executor.h"
 #include "../../include/tokenizer.h"
 #include "../../include/builtin.h"
-
-//remove later
-#include <fcntl.h>
-
-
 
 static int		executor(t_executor *ex, t_data *data);
 int				executor_pre_setup(t_data *data);
@@ -92,15 +87,12 @@ static int	executor_single_builtin_process(t_executor *ex, t_data *data)
 	int					result;
 	t_executor_function	f;
 
-	printf("in executor_single_builtint_process\n");
 	if (executor_start(&f, ex, data) != 0)
 		return (executor_end_here_doc_ctrl_c(&f, ex));
-	printf("executor_single_builtint_process; stage 1\n");
 	result = f.result_fork[0];
 	free(f.pid);
 	free(f.result_fork);
 	free(f.result_redirs);
-	printf("executor_single_builtint_process; stage 2\n");
 	if (result != 0)
 		return (result);
 	else
@@ -114,19 +106,14 @@ static int	executor_builtin_func(t_process *proc, t_data *data)
 {
 	int	dup_result;
 
-	printf("\tproc[%d] executor_builtin_func\n", get_process_idx(proc, data));
 	if (proc->fd_in != STDIN_FILENO)
 	{
-		printf("\tproc[%d] fd_in: %d\n", get_process_idx(proc, data), proc->fd_in);
 		dup_result = dup2(proc->fd_in, STDIN_FILENO);
-		printf("\tproc[%d] executor_builtin_func; dup2 fd_in result: %d\n", get_process_idx(proc, data), dup_result);
 		close(proc->fd_in);
 	}
 	if (proc->fd_out != STDOUT_FILENO)
 	{
-		printf("\tproc[%d] fd_out: %d\n", get_process_idx(proc, data), proc->fd_out);
 		dup_result = dup2(proc->fd_out, STDOUT_FILENO);
-		printf("\tproc[%d] executor_builtin_func; dup2 fd_out result: %d\n", get_process_idx(proc, data), dup_result);
 		close(proc->fd_out);
 	}
 	close_all_pipe_fds(&data->executor);
@@ -140,47 +127,18 @@ static int	executor_builtin_func(t_process *proc, t_data *data)
 	we will exit the process with zero. 
 	HUOM: what to do about built-ins? will prob have to go in another func
 	(this functions line amount is close to the limit)*/
-
-int isFileDescriptorOpen(int fd) {
-    int flags = fcntl(fd, F_GETFL);
-    return (flags != -1);
-}
-
 static void	executor_exec_cmd(t_process *proc, t_data *data)
 {
 	t_token	*cmd_token;
-	int		proc_idx;
-	int		dup_result;
 
-	proc_idx = get_process_idx(proc, data);
-	dprintf(2, "EXECUTOR proc[%d] fd_in: %d\n", proc_idx, proc->fd_in);
-	if (isFileDescriptorOpen(proc->fd_in)) {
-        printf("proc[%d]: fd_in is open.\n", proc_idx);
-    } else {
-        printf("proc[%d]fd_in is not open.\n", proc_idx);
-    }
-	if (isFileDescriptorOpen(proc->fd_out)) {
-        printf("proc[%d]; fd_out is open.\n", proc_idx);
-    } else {
-        printf("proc[%d]; fd_out is not open.\n", proc_idx);
-    }
-	dprintf(2, "EXECUTOR proc[%d] fd_out: %d\n", proc_idx, proc->fd_out);
 	if (proc->fd_in != STDIN_FILENO)
 	{
-		dprintf(2, "proc[%d] dupping fd_in: %d\n", proc_idx, proc->fd_in);
-		dup_result = dup2(proc->fd_in, STDIN_FILENO);
-		dprintf(2, "proc[%d] result of fd_in dup: %d\n", proc_idx, dup_result);
-		if (dup_result == -1)
-			perror("\t\t\033[0;31mdup failure reason\033[0;37m");
+		dup2(proc->fd_in, STDIN_FILENO);
 		close(proc->fd_in);
 	}
 	if (proc->fd_out != STDOUT_FILENO)
 	{
-		dprintf(2, "proc[%d] dupping fd_out: %d\n", proc_idx, proc->fd_out);
-		dup_result = dup2(proc->fd_out, STDOUT_FILENO);
-		dprintf(2, "proc[%d] result of fd_out dup: %d\n", proc_idx, dup_result);
-		if (dup_result == -1)
-			perror("\t\t\033[0;31mdup failure reason\033[0;37m");
+		dup2(proc->fd_out, STDOUT_FILENO);
 		close(proc->fd_out);
 	}
 	close_all_pipe_fds(&data->executor);

@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:32:58 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/08 18:00:58 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/13 13:51:16 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	close_all_pipe_fds(t_executor *exec)
 {
 	int	i;
 
-	dprintf(2, "\tin close all pipe fds; proc amount: %d\n", exec->process_amount);
 	i = -1;
 	if (exec->fds_array)
 	{
@@ -37,15 +36,12 @@ void	close_all_pipe_fds(t_executor *exec)
 	i = -1;
 	while (++i < exec->process_amount)
 	{
-		dprintf(2, "\tlooping here_doc[%d]\n", i);
 		if (exec->here_doc_array[i])
 		{
-			dprintf(2, "\tclosing here_doc_array[%d] pipe ends\n", i);
 			close(exec->here_doc_array[i][0]);
 			close(exec->here_doc_array[i][1]);
 		}
 	}
-	dprintf(2, "\tend of close all pipe fds\n");
 }
 
 int	**executor_set_up_here_doc_array(t_executor *exec)
@@ -78,10 +74,8 @@ static int	**executor_create_here_doc_array(t_executor *exec)
 int	executor_set_up_here_doc_pipe(t_executor *exec,
 	int idx)
 {
-	printf("\nin executor_set_up_here_doc_pipe: idx: %d\n", idx);
 	if (exec->here_doc_array[idx])
 	{
-		printf("closing prev here_doc\n");
 		close(exec->here_doc_array[idx][T_PIPE_READ]);
 		close(exec->here_doc_array[idx][T_PIPE_WRITE]);
 		free(exec->here_doc_array[idx]);
@@ -95,6 +89,5 @@ int	executor_set_up_here_doc_pipe(t_executor *exec,
 		ft_putendl_fd("MINISHELL: here_doc pipe failure", 2);
 		return (2);
 	}
-	printf("proc[%d]: here_doc; write_end: %d; read_end: %d\n", idx, exec->here_doc_array[idx][T_PIPE_WRITE], exec->here_doc_array[idx][T_PIPE_READ]);
 	return (0);
 }

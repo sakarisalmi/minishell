@@ -6,7 +6,7 @@
 /*   By: ssalmi <ssalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:37:00 by ssalmi            #+#    #+#             */
-/*   Updated: 2023/06/13 13:33:13 by ssalmi           ###   ########.fr       */
+/*   Updated: 2023/06/13 13:52:02 by ssalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int			executor_pre_setup(t_data *data);
 // process_utils1.c
 t_process	**create_processes_from_tokens(t_token *token_lst,
 				t_data *data);
-void		process_free_process(t_process *proc);
 
 // handle_redirs.c
 int			job_handle_redirs(t_data *data, t_executor_function *f);
